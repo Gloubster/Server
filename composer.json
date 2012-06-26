@@ -6,10 +6,29 @@
             "email": "imprec@gmail.com"
         }
     ],
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name" : "twitter/bootstrap",
+                "version" : "dev-master",
+                "source" : {
+                    "url" : "https://github.com/twitter/bootstrap.git",
+                    "type" : "git",
+                    "reference" : "master"
+                }
+            }
+        }
+    ],
     "require": {
+	"kriswallsmith/assetic": "dev-master",
         "doctrine/mongodb-odm": "dev-master",
         "twig/twig": "dev-master",
-        "silex/silex": "dev-master"
+        "silex/silex": "dev-master",
+        "symfony/twig-bridge" : "2.1.*",
+        "twitter/bootstrap" : "dev-master",
+        "fate/silex-extensions":"dev-master",
+        "leafo/lessphp":"dev-master"
     },
     "autoload": {
         "psr-0": {

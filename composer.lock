@@ -1,5 +1,5 @@
 {
-    "hash": "8b99a25cf8913486caccaed7ad84210a",
+    "hash": "ffab2b5301dc23c085e33de21e189b13",
     "packages": [
         {
             "package": "doctrine/common",
@@ -23,10 +23,25 @@
             "source-reference": "61fe79e074c8cf9d5bf2f072263f081038b406ee"
         },
         {
-            "package": "pimple/pimple",
+            "package": "fate/silex-extensions",
             "version": "dev-master",
-            "alias-pretty-version": "1.0.x-dev",
-            "alias-version": "1.0.9999999.9999999-dev"
+            "source-reference": "19e11ccb7a6ab32be0879d1a3b4b3af57eea76c9"
+        },
+        {
+            "package": "kriswallsmith/assetic",
+            "version": "dev-master",
+            "source-reference": "d6f89a3170c5280ad554347dc113eb25fdf00ad7"
+        },
+        {
+            "package": "kriswallsmith/assetic",
+            "version": "dev-master",
+            "alias-pretty-version": "1.1.x-dev",
+            "alias-version": "1.1.9999999.9999999-dev"
+        },
+        {
+            "package": "leafo/lessphp",
+            "version": "dev-master",
+            "source-reference": "85487a83381ae292e8bba1c699eb4af31d87eb9e"
         },
         {
             "package": "pimple/pimple",
@@ -34,15 +49,21 @@
             "source-reference": "86cae5c9e85cd02f1703c774ddf12f2448a5938c"
         },
         {
-            "package": "silex/silex",
+            "package": "pimple/pimple",
             "version": "dev-master",
-            "source-reference": "c1711986850d828c71dc60b050275eb80004fc7a"
+            "alias-pretty-version": "1.0.x-dev",
+            "alias-version": "1.0.9999999.9999999-dev"
         },
         {
             "package": "silex/silex",
             "version": "dev-master",
             "alias-pretty-version": "1.0.x-dev",
             "alias-version": "1.0.9999999.9999999-dev"
+        },
+        {
+            "package": "silex/silex",
+            "version": "dev-master",
+            "source-reference": "c1711986850d828c71dc60b050275eb80004fc7a"
         },
         {
             "package": "symfony/console",
@@ -69,13 +90,19 @@
         {
             "package": "symfony/http-foundation",
             "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
+            "source-reference": "eede6abb9b49fa6632f9776c857c703d8d8268e0"
         },
         {
             "package": "symfony/http-foundation",
             "version": "dev-master",
-            "source-reference": "eede6abb9b49fa6632f9776c857c703d8d8268e0"
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/http-kernel",
+            "version": "dev-master",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/http-kernel",
@@ -83,10 +110,15 @@
             "source-reference": "37338444a653dfd26e4c6c9abe535318de0957e6"
         },
         {
-            "package": "symfony/http-kernel",
+            "package": "symfony/process",
             "version": "dev-master",
             "alias-pretty-version": "2.1.x-dev",
             "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/process",
+            "version": "dev-master",
+            "source-reference": "v2.1.0-BETA1"
         },
         {
             "package": "symfony/routing",
@@ -100,15 +132,26 @@
             "alias-version": "2.1.9999999.9999999-dev"
         },
         {
-            "package": "symfony/yaml",
+            "package": "symfony/twig-bridge",
             "version": "dev-master",
             "source-reference": "v2.1.0-BETA1"
+        },
+        {
+            "package": "symfony/twig-bridge",
+            "version": "dev-master",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/yaml",
             "version": "dev-master",
             "alias-pretty-version": "2.1.x-dev",
             "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/yaml",
+            "version": "dev-master",
+            "source-reference": "v2.1.0-BETA1"
         },
         {
             "package": "twig/twig",
@@ -119,7 +162,12 @@
         {
             "package": "twig/twig",
             "version": "dev-master",
-            "source-reference": "4679ad51c5390648b7ea4c8f0ecd2c0c344145ba"
+            "source-reference": "cd049dac38dda63bd0fb264bbd939a547c7c4b1a"
+        },
+        {
+            "package": "twitter/bootstrap",
+            "version": "dev-master",
+            "source-reference": "master"
         }
     ],
     "packages-dev": null,
@@ -128,8 +176,12 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "kriswallsmith/assetic": 20,
         "doctrine/mongodb-odm": 20,
         "twig/twig": 20,
-        "silex/silex": 20
+        "silex/silex": 20,
+        "twitter/bootstrap": 20,
+        "fate/silex-extensions": 20,
+        "leafo/lessphp": 20
     }
 }

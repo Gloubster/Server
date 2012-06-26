@@ -1,0 +1,9 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <ul>
+    {% for jobset in jobsets %}
+        <li>{{ jobset.getId() }} - {{ jobset.getFile() }}</li>
+    {% endfor %}
+    </ul>
+{% endblock %}

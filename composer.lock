@@ -1,5 +1,5 @@
 {
-    "hash": "e870f08eac1f39007eff90902edb76e3",
+    "hash": "8b99a25cf8913486caccaed7ad84210a",
     "packages": [
         {
             "package": "doctrine/common",
@@ -47,13 +47,13 @@
         {
             "package": "symfony/console",
             "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
+            "source-reference": "808bf42b4b74c12e6c6a6a9750688035f1c49f9c"
         },
         {
             "package": "symfony/console",
             "version": "dev-master",
-            "source-reference": "808bf42b4b74c12e6c6a6a9750688035f1c49f9c"
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/event-dispatcher",
@@ -69,24 +69,24 @@
         {
             "package": "symfony/http-foundation",
             "version": "dev-master",
-            "source-reference": "eede6abb9b49fa6632f9776c857c703d8d8268e0"
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/http-foundation",
             "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/http-kernel",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
+            "source-reference": "eede6abb9b49fa6632f9776c857c703d8d8268e0"
         },
         {
             "package": "symfony/http-kernel",
             "version": "dev-master",
             "source-reference": "37338444a653dfd26e4c6c9abe535318de0957e6"
+        },
+        {
+            "package": "symfony/http-kernel",
+            "version": "dev-master",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/routing",
@@ -109,6 +109,17 @@
             "version": "dev-master",
             "alias-pretty-version": "2.1.x-dev",
             "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "twig/twig",
+            "version": "dev-master",
+            "alias-pretty-version": "1.8.x-dev",
+            "alias-version": "1.8.9999999.9999999-dev"
+        },
+        {
+            "package": "twig/twig",
+            "version": "dev-master",
+            "source-reference": "4679ad51c5390648b7ea4c8f0ecd2c0c344145ba"
         }
     ],
     "packages-dev": null,
@@ -118,6 +129,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "doctrine/mongodb-odm": 20,
+        "twig/twig": 20,
         "silex/silex": 20
     }
 }

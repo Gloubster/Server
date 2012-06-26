@@ -26,6 +26,10 @@
         "twig/twig": "dev-master",
         "silex/silex": "dev-master",
         "symfony/twig-bridge" : "2.1.*",
+        "symfony/translation": "2.1.*",
+        "symfony/config": "2.1.*",
+        "symfony/validator": "2.1.*",
+        "symfony/form": "2.1.*",
         "twitter/bootstrap" : "dev-master",
         "fate/silex-extensions":"dev-master",
         "leafo/lessphp":"dev-master"

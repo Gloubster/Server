@@ -1,9 +1,15 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
+    <a href="{{ path('jobset_create') }}">Create</a>
     <ul>
     {% for jobset in jobsets %}
-        <li>{{ jobset.getId() }} - {{ jobset.getFile() }}</li>
+        <li>
+            {{ jobset.getId() }} - <a href="{{ path('jobset', { 'jobset_id': jobset.getId() }) }}">{{ jobset.getFile() }}</a>
+            <a href="{{ path('jobset_delete_confirm', { 'jobset_id': jobset.getId() }) }}">
+                <i class="icon-remove"></i>
+            </a>
+        </li>
     {% endfor %}
     </ul>
 {% endblock %}

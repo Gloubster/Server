@@ -22,7 +22,7 @@ class Specification
     /**
      * @var boolean $done
      */
-    protected $done;
+    protected $done = false;
 
 
     /**
@@ -77,5 +77,34 @@ class Specification
     public function getDone()
     {
         return $this->done;
+    }
+    /**
+     * @var Gloubster\Documents\Parameter
+     */
+    protected $parameters = array();
+
+    public function __construct()
+    {
+        $this->parameters = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add parameters
+     *
+     * @param Gloubster\Documents\Parameter $parameters
+     */
+    public function addParameters(\Gloubster\Documents\Parameter $parameters)
+    {
+        $this->parameters[] = $parameters;
+    }
+
+    /**
+     * Get parameters
+     *
+     * @return Doctrine\Common\Collections\Collection $parameters
+     */
+    public function getParameters()
+    {
+        return $this->parameters;
     }
 }

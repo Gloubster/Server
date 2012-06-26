@@ -1,0 +1,14 @@
+{% extends 'layout.html.twig' %}
+
+
+{% block content %}
+    {{ 'Are you sure you want to delete this jobset ?' | trans }}
+
+    <h1>{{ jobset.getId() }} {{ jobset.getFile() }}</h1>
+
+    <form method="post" action={{ path('jobset_delete', { 'jobset_id': jobset.getId() }) }}>
+        <button type="submit" class="btn btn-primary">{{ 'Ok I\'m sure' | trans }}</button>
+        or <a href="{{ path('homepage') }}">I'm not so sure...</a>
+    </form>
+
+{% endblock %}

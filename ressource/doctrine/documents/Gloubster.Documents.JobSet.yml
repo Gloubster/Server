@@ -1,0 +1,12 @@
+Gloubster\Documents\JobSet:
+  identifier: jobset
+  fields:
+    id:
+      type: id
+      id: true
+    file:
+      type: string
+  referenceMany:
+    specifications:
+      targetDocument: Gloubster\Documents\Specification
+      cascade: all

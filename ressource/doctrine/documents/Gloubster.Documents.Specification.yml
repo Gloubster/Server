@@ -1,0 +1,10 @@
+Gloubster\Documents\Specification:
+  identifier: specification
+  fields:
+    id:
+      type: id
+      id: true
+    name:
+      type: string
+    done:
+      type: boolean

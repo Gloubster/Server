@@ -1,0 +1,19 @@
+{
+    "name": "gloubster/gloubster",
+    "authors": [
+        {
+            "name": "Romain Neutron",
+            "email": "imprec@gmail.com"
+        }
+    ],
+    "require": {
+        "doctrine/mongodb-odm": "dev-master",
+        "silex/silex": "dev-master"
+    },
+    "autoload": {
+        "psr-0": {
+            "Gloubster": "src",
+            "Knp": "src"
+        }
+    }
+}

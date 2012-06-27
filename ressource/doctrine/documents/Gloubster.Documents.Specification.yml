@@ -8,3 +8,7 @@ Gloubster\Documents\Specification:
       type: string
     done:
       type: boolean
+  referenceMany:
+    parameters:
+      targetDocument: Gloubster\Documents\Parameter
+      cascade: all

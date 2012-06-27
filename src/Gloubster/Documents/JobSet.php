@@ -60,7 +60,7 @@ class JobSet
     {
         $this->specifications = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Add specifications
      *
@@ -69,6 +69,16 @@ class JobSet
     public function addSpecifications(\Gloubster\Documents\Specification $specifications)
     {
         $this->specifications[] = $specifications;
+    }
+
+    /**
+     * Set specifications
+     *
+     * @param mixed $specifications
+     */
+    public function setSpecifications($specifications)
+    {
+        $this->specifications = $specifications;
     }
 
     /**

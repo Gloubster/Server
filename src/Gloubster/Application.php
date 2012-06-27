@@ -32,14 +32,7 @@ class Application implements ControllerProviderInterface
 
         $controllers->match('/jobsets/create', function() use ($app) {
 
-                $form = $app['form.factory']->createBuilder('form')
-                        ->add('file', 'text', array(
-                            'label'       => 'File (HTTP)',
-                            'constraints' => array(
-                                new NotBlank(),
-                                new Url(),
-                            ),
-                        ))->getForm();
+                $form = $app['form.factory']->createBuilder('jobset')->getForm();
 
                 if ('POST' === $app['request']->getMethod()) {
                     $form->bindRequest($app['request']);
@@ -48,6 +41,12 @@ class Application implements ControllerProviderInterface
                         $jobset = new JobSet();
                         $jobset->setFile($form->get('file')->getData());
 
+                        foreach($form->get('specifications')->getData() as $spec) {
+//                            $spec = new Documents\Specification();
+//                            $spec->setName($spec);
+                            $app['dm']->persist($spec);
+                            $jobset->addSpecifications($spec);
+                        }
                         $app['dm']->persist($jobset);
                         $app['dm']->flush();
 
@@ -57,8 +56,48 @@ class Application implements ControllerProviderInterface
                     }
                 }
 
+//                $specs = array();
+//
+//                $spec = new Documents\Specification();
+//                $spec->setName('Image');
+//
+//                $specs[] = $spec;
+//
+//                $form->get('specifications')->setData($specs);
+
+//                $view = $form->createView();
+//                var_dump(get_class($view['specifications']));
                 return $app['twig']->render('jobset-create.html.twig', array('form' => $form->createView()));
             })->Bind('jobset_create');
+
+        $controllers->match('/create-task', function(SilexApp $app, Request $request) {
+
+            $task = new Documents\Task();
+
+            // dummy code - this is here just so that the Task has some tags
+            // otherwise, this isn't an interesting example
+            $tag1 = new Documents\Tag();
+            $tag1->name = 'tag1';
+            $task->getTags()->add($tag1);
+            $tag2 = new Documents\Tag();
+            $tag2->name = 'tag2';
+            $task->getTags()->add($tag2);
+            // end dummy code
+
+            $form = $app['form.factory']->createBuilder('task', $task)->getForm();
+
+            // process the form on POST
+            if ('POST' === $request->getMethod()) {
+                $form->bindRequest($request);
+                if ($form->isValid()) {
+                    // maybe do some form processing, like saving the Task and Tag objects
+                }
+            }
+
+            return $app['twig']->render('task.new.html.twig', array(
+                'form' => $form->createView(),
+            ));
+        });
 
         $controllers->get('/jobset/{jobset_id}', function($jobset_id, SilexApp $app) {
 
@@ -73,6 +112,19 @@ class Application implements ControllerProviderInterface
                 return $app['twig']->render('jobset.html.twig', array('jobset' => $jobset));
             })->Bind('jobset')->assert('jobset_id', '[a-fA-F0-9]{24}');
 
+        $controllers->get('/jobset/{jobset_id}/add-specification', function($jobset_id, SilexApp $app) {
+
+                $repository = $app['dm']->getRepository('Gloubster\\Documents\\JobSet');
+
+                $jobset = $repository->find($jobset_id);
+
+                if ($jobset === null) {
+                    throw new NotFoundHttpException('Jobset not found');
+                }
+
+                return $app['twig']->render('specification-add.html.twig', array('jobset' => $jobset));
+            })->Bind('specification_add')->assert('jobset_id', '[a-fA-F0-9]{24}');
+
         $controllers->match('/jobset/{jobset_id}/edit', function($jobset_id, SilexApp $app) {
 
                 $repository = $app['dm']->getRepository('Gloubster\\Documents\\JobSet');
@@ -83,11 +135,7 @@ class Application implements ControllerProviderInterface
                     throw new NotFoundHttpException('Jobset not found');
                 }
 
-                $form = $app['form.factory']->createBuilder('form')
-                        ->add('file', 'text', array(
-                            'label'       => 'File (HTTP)',
-                            'constraints' => array(new NotBlank(), new Url())
-                        ))->getForm();
+                $form = $app['form.factory']->createBuilder('jobset')->getForm();
 
                 if ('POST' === $app['request']->getMethod()) {
                     $form->bindRequest($app['request']);

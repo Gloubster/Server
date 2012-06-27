@@ -5,7 +5,8 @@
     <ul>
     {% for jobset in jobsets %}
         <li>
-            {{ jobset.getId() }} - <a href="{{ path('jobset', { 'jobset_id': jobset.getId() }) }}">{{ jobset.getFile() }}</a>
+            <a href="{{ path('jobset', { 'jobset_id': jobset.getId() }) }}">{{ jobset.getFile() }}</a>
+            ({% for spec in jobset.getSpecifications() %} {{ spec.getName() }} {% endfor %})
             <a href="{{ path('jobset_delete_confirm', { 'jobset_id': jobset.getId() }) }}">
                 <i class="icon-remove"></i>
             </a>

@@ -139,6 +139,12 @@ $app->register(new \SilexExtension\AsseticExtension(), array(
 ));
 
 
+$app['form.factory'] = $app->extend('form.factory', function($factory, $c){
+    $factory->addType(new Form\Type\JobSetType());
+    $factory->addType(new Form\Type\SpecificationType());
+
+    return $factory;
+});
 
 $app['dm'] = $app->share(function () use ($app) {
    return $app['doctrine.odm.mongodb.dm'];

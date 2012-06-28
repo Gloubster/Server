@@ -2,11 +2,13 @@
 
 namespace Gloubster;
 
+use JsonSchema\Validator;
 use Silex\Application as SilexApp;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class API implements ControllerProviderInterface
 {
@@ -29,7 +31,48 @@ class API implements ControllerProviderInterface
          */
         $controllers->put('/jobsets', function(SilexApp $app, Request $request) {
 
-                filter_var($request, FILTER_VALIDATE_URL);
+                $validator = new Validator();
+                $validator->check(json_decode($request->getContent()), json_decode(file_get_contents(__DIR__ . '/../../ressource/json/jobset.json')));
+
+                if (false === $validator->isValid()) {
+                    $errors = array();
+                    foreach ($validator->getErrors() as $error) {
+                        $errors[]  =sprintf("[%s] %s\n", $error['property'], $error['message']);
+                    }
+                    throw new HttpException(400, implode("\n", $errors));
+                }
+
+                $datas = json_decode($request->getContent(), true);
+
+                $jobset = new Documents\JobSet();
+                $jobset->setFile($datas['file']);
+
+                if (isset($datas['specifications'])) {
+                    foreach ($datas['specifications'] as $spec) {
+                        $specification = new Documents\Specification();
+                        $specification->setName($spec['name']);
+
+                        if ( ! isset($spec['parameters'])) {
+                            continue;
+                        }
+
+                        foreach ($spec['parameters'] as $name => $value) {
+                            $param = new Documents\Parameter();
+
+                            $param->setName($name);
+                            $param->setValue($value);
+
+                            $specification->addParameters($param);
+                            $app['dm']->persist($param);
+                        }
+
+                        $jobset->addSpecifications($specification);
+                        $app['dm']->persist($specification);
+                    }
+                }
+
+                $app['dm']->persist($jobset);
+                $app['dm']->flush();
             })->bind('api_jobset_create');
 
         /**

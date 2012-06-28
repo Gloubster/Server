@@ -5,11 +5,11 @@ namespace Gloubster;
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use Knp\Silex\ServiceProvider\DoctrineMongoDBServiceProvider;
-use Silex\Application;
+use Silex\Application as SilexApplication;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\FormServiceProvider;
 
-$app = new Application();
+$app = new SilexApplication();
 
 $app['debug'] = true;
 

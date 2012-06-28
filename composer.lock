@@ -1,29 +1,35 @@
 {
-    "hash": "c6fcc3a0ecf0d396782dc59951d8b81c",
+    "hash": "39e4c4465196a972f5b2d61993cc5396",
     "packages": [
         {
             "package": "doctrine/common",
             "version": "dev-master",
-            "source-reference": "8df9cdf3b921a3b59bbba51d5ba9063509ef6a1a",
-            "commit-date": "1340561340"
+            "source-reference": "0e454a92409ee594a93c362f74a3e0f42424d663",
+            "commit-date": "1340828547"
         },
         {
             "package": "doctrine/mongodb",
             "version": "dev-master",
-            "source-reference": "b5c5d0499f4db2531de6eea54d38b75e485ceef4",
-            "commit-date": "1340182241"
+            "source-reference": "b8c1b54b870c4fecc87d4daae44b34c262b0e6f8",
+            "commit-date": "1340833401"
         },
         {
             "package": "doctrine/mongodb-odm",
             "version": "dev-master",
-            "source-reference": "61fe79e074c8cf9d5bf2f072263f081038b406ee",
-            "commit-date": "1340641457"
+            "source-reference": "11ddc65325d11731d899094bc54f4ec62949621a",
+            "commit-date": "1340834404"
         },
         {
             "package": "fate/silex-extensions",
             "version": "dev-master",
             "source-reference": "19e11ccb7a6ab32be0879d1a3b4b3af57eea76c9",
             "commit-date": "1339054457"
+        },
+        {
+            "package": "justinrainbow/json-schema",
+            "version": "dev-master",
+            "source-reference": "535962c9997d0b09582189914cfae1a5ed1e3317",
+            "commit-date": "1337277049"
         },
         {
             "package": "kriswallsmith/assetic",
@@ -36,6 +42,12 @@
             "version": "dev-master",
             "source-reference": "85487a83381ae292e8bba1c699eb4af31d87eb9e",
             "commit-date": "1340173483"
+        },
+        {
+            "package": "monolog/monolog",
+            "version": "dev-master",
+            "source-reference": "6cbdc0410c08fb03d7eee6b69126661fcbb89c41",
+            "commit-date": "1340715384"
         },
         {
             "package": "pimple/pimple",
@@ -52,8 +64,8 @@
         {
             "package": "silex/silex",
             "version": "dev-master",
-            "source-reference": "c1711986850d828c71dc60b050275eb80004fc7a",
-            "commit-date": "1340712238"
+            "source-reference": "6f99eb8e850c8188980881172b703828290d54a1",
+            "commit-date": "1340859767"
         },
         {
             "package": "symfony/config",
@@ -66,6 +78,12 @@
             "version": "dev-master",
             "source-reference": "v2.1.0-BETA1",
             "commit-date": "1340300540"
+        },
+        {
+            "package": "symfony/console",
+            "version": "dev-master",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/console",
@@ -220,8 +238,14 @@
         {
             "package": "twig/twig",
             "version": "dev-master",
-            "source-reference": "cd049dac38dda63bd0fb264bbd939a547c7c4b1a",
-            "commit-date": "1340727866"
+            "alias-pretty-version": "1.8.x-dev",
+            "alias-version": "1.8.9999999.9999999-dev"
+        },
+        {
+            "package": "twig/twig",
+            "version": "dev-master",
+            "source-reference": "73da773aaad0f97f2e967ec8241b8adf7b1e03d2",
+            "commit-date": "1340890758"
         },
         {
             "package": "twitter/bootstrap",

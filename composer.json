@@ -23,8 +23,11 @@
     "require": {
 	"kriswallsmith/assetic": "dev-master",
         "doctrine/mongodb-odm": "dev-master",
+        "justinrainbow/json-schema": "*",
+        "monolog/monolog": "*",
         "twig/twig": "dev-master",
         "silex/silex": "dev-master",
+        "symfony/console" : "2.1.*",
         "symfony/twig-bridge" : "2.1.*",
         "symfony/translation": "2.1.*",
         "symfony/config": "2.1.*",

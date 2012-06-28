@@ -72,16 +72,6 @@ class JobSet
     }
 
     /**
-     * Set specifications
-     *
-     * @param mixed $specifications
-     */
-    public function setSpecifications($specifications)
-    {
-        $this->specifications = $specifications;
-    }
-
-    /**
      * Get specifications
      *
      * @return Doctrine\Common\Collections\Collection $specifications

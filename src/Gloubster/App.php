@@ -38,7 +38,7 @@ $app->register(new DoctrineMongoDBServiceProvider(), array(
     'doctrine.odm.mongodb.documents' => array(
         array(
             'type'                                       => 'yml',
-            'path'                                       => __DIR__ . '/../../ressource/doctrine/documents',
+            'path'                                       => __DIR__ . '/../../ressources/doctrine/documents',
             'namespace'                                  => 'Gloubster\\Documents'
         ),
     ),
@@ -96,14 +96,14 @@ $app->register(new \SilexExtension\AsseticExtension(), array(
             ));
             $am->set('modernizr', new \Assetic\Asset\AssetCache(
                     new \Assetic\Asset\FileAsset(
-                        __DIR__ . '/../../ressource/assets/modernizr.2.5.3.js'
+                        __DIR__ . '/../../ressources/assets/modernizr.2.5.3.js'
                         , array($fm->get('yui_js')))
                     ,
                     new \Assetic\Cache\FilesystemCache(__DIR__ . '/../../cache/assetic')
             ));
             $am->set('jquery', new \Assetic\Asset\AssetCache(
                     new \Assetic\Asset\FileAsset(
-                        __DIR__ . '/../../ressource/assets/jquery-1.7.2.js'
+                        __DIR__ . '/../../ressources/assets/jquery-1.7.2.js'
                         , array($fm->get('yui_js')))
                     ,
                     new \Assetic\Cache\FilesystemCache(__DIR__ . '/../../cache/assetic')
@@ -144,6 +144,10 @@ $app['form.factory'] = $app->extend('form.factory', function($factory, $c){
     $factory->addType(new Form\Type\SpecificationType());
 
     return $factory;
+});
+
+$app['configuration'] = $app->share(function() {
+    return new Client\Configuration(file_get_contents(__DIR__ . '/../../config/config.json'));
 });
 
 $app['dm'] = $app->share(function () use ($app) {

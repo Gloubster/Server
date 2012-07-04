@@ -1,0 +1,24 @@
+{
+    "name": "Configuration",
+    "type": "object",
+    "additionalProperties": true,
+    "properties": {
+        "client": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": true,
+            "properties": {
+                "stack": {
+                    "type": "number",
+                    "description": "Number of items in the stack",
+                    "required": true
+                },
+                "period": {
+                    "type": "number",
+                    "description": "The period between two DB checks in ms",
+                    "required": true
+                }
+            }
+        }
+    }
+}

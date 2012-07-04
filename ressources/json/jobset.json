@@ -1,0 +1,46 @@
+{
+    "name": "Jobset",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "file": {
+            "type": "string",
+            "description": "A file ressource",
+            "required": true
+        },
+        "specifications": {
+            "type": "array",
+            "description": "A list of specifications to transmute the file",
+            "required": true,
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": true,
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "The name of the specification",
+                        "required": true
+                    },
+                    "parameters": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "required": true
+                                },
+                                "value": {
+                                    "type": "string",
+                                    "required": true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

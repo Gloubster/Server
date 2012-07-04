@@ -32,7 +32,7 @@ class API implements ControllerProviderInterface
         $controllers->put('/jobsets', function(SilexApp $app, Request $request) {
 
                 $validator = new Validator();
-                $validator->check(json_decode($request->getContent()), json_decode(file_get_contents(__DIR__ . '/../../ressource/json/jobset.json')));
+                $validator->check(json_decode($request->getContent()), json_decode(file_get_contents(__DIR__ . '/../../ressources/json/jobset.json')));
 
                 if (false === $validator->isValid()) {
                     $errors = array();

@@ -23,6 +23,7 @@
     "require": {
 	"kriswallsmith/assetic": "dev-master",
         "doctrine/mongodb-odm": "dev-master",
+        "gloubster/communications": "dev-master",
         "justinrainbow/json-schema": "*",
         "monolog/monolog": "*",
         "twig/twig": "dev-master",

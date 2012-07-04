@@ -1,6 +1,6 @@
 <?php
 
-namespace Gloubster\Command;
+namespace Gloubster\Client;
 
 use Monolog\Logger;
 use Monolog\Handler\NullHandler;
@@ -9,8 +9,9 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class GearmanClient extends Command
+class RunClient extends Command
 {
+
     public function __contruct($name = null)
     {
         parent::__construct($name);
@@ -22,13 +23,18 @@ class GearmanClient extends Command
         $app = require __DIR__ . '/../App.php';
 
         $logger = new Logger('Gearman Client');
-        if($input->getOption('verbose')) {
+        if ($input->getOption('verbose')) {
             $logger->pushHandler(new StreamHandler('php://stdout'));
         } else {
             $logger->pushHandler(new NullHandler());
         }
 
-        $client = new \Gloubster\Gearman\Client($app['dm'], $logger);
+        $client = new \Gloubster\Client\Client(new \GearmanClient(), $app['configuration'], $app['dm'], $logger);
+
+        foreach ($app['configuration']['gearman-servers'] as $server) {
+            $client->addServer($server['host'], $server['port']);
+        }
+
         $client->run();
     }
 }

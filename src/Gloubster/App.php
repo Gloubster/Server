@@ -4,17 +4,32 @@ namespace Gloubster;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-use Knp\Silex\ServiceProvider\DoctrineMongoDBServiceProvider;
+use Assetic\Asset\AssetCache;
+use Assetic\Asset\AssetCollection;
+use Assetic\Asset\FileAsset;
+use Assetic\Filter\LessFilter;
+use Assetic\Filter\Yui\CssCompressorFilter;
+use Assetic\Filter\Yui\JsCompressorFilter;
+use Assetic\Cache\FilesystemCache;
+use Gloubster\Application as GloubsterApp;
+use Gloubster\Client\Configuration as ClientConfiguration;
 use Silex\Application as SilexApplication;
-use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\FormServiceProvider;
+use Silex\Provider\SessionServiceProvider;
+use Silex\Provider\TranslationServiceProvider;
+use Silex\Provider\TwigServiceProvider;
+use Silex\Provider\UrlGeneratorServiceProvider;
+use Silex\Provider\ValidatorServiceProvider;
+use SilexExtension\AsseticExtension;
+use Symfony\Component\Translation\Loader\YamlFileLoader;
+use Knp\Silex\ServiceProvider\DoctrineMongoDBServiceProvider;
 
 $app = new SilexApplication();
 
 $app['debug'] = true;
 
 $app['configuration'] = $app->share(function() {
-        return new Client\Configuration(file_get_contents(__DIR__ . '/../../config/config.json'));
+        return new ClientConfiguration(file_get_contents(__DIR__ . '/../../config/config.json'));
     });
 
 $app->register(new TwigServiceProvider(), array(
@@ -29,10 +44,10 @@ $app->register(new TwigServiceProvider(), array(
     ),
 ));
 
-$app->register(new \Silex\Provider\ValidatorServiceProvider());
+$app->register(new ValidatorServiceProvider());
 $app->register(new FormServiceProvider());
-$app->register(new \Silex\Provider\UrlGeneratorServiceProvider());
-$app->register(new \Silex\Provider\SessionServiceProvider());
+$app->register(new UrlGeneratorServiceProvider());
+$app->register(new SessionServiceProvider());
 
 $app->register(new DoctrineMongoDBServiceProvider(), array(
     'doctrine.odm.mongodb.connection_options' => array(
@@ -52,14 +67,12 @@ $app->register(new DoctrineMongoDBServiceProvider(), array(
     'doctrine.odm.mongodb.metadata_cache'        => 'array',
 ));
 
-
-
-$app->register(new \Silex\Provider\TranslationServiceProvider(), array(
+$app->register(new TranslationServiceProvider(), array(
     'locale_fallback' => 'fr_FR',
 ));
 
 $app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
-            $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
+            $translator->addLoader('yaml', new YamlFileLoader());
 
             $translator->addResource('yaml', __DIR__ . '/../../locales/en_US.yml', 'en_US');
             $translator->addResource('yaml', __DIR__ . '/../../locales/fr_FR.yml', 'fr_FR');
@@ -69,70 +82,69 @@ $app['translator'] = $app->share($app->extend('translator', function($translator
 
 $app['locale'] = 'fr';
 
-$app->register(new \SilexExtension\AsseticExtension(), array(
+$app->register(new AsseticExtension(), array(
     'assetic.path_to_web' => __DIR__ . '/../../www/assets',
     'assetic.options'     => array(
         'debug'           => $app['debug'],
     ),
     'assetic.filters' => $app->protect(function($fm) {
-            $fm->set('yui_css', new \Assetic\Filter\Yui\CssCompressorFilter(
+            $fm->set('yui_css', new CssCompressorFilter(
                     '/usr/share/yui-compressor/yui-compressor.jar'
             ));
-            $fm->set('yui_js', new \Assetic\Filter\Yui\JsCompressorFilter(
+            $fm->set('yui_js', new JsCompressorFilter(
                     '/usr/share/yui-compressor/yui-compressor.jar'
             ));
         }),
     'assetic.assets' => $app->protect(function($am, $fm) {
-            $am->set('base_css', new \Assetic\Asset\AssetCache(
-                    new \Assetic\Asset\AssetCollection(array(
-                        new \Assetic\Asset\FileAsset(
+            $am->set('base_css', new AssetCache(
+                    new AssetCollection(array(
+                        new FileAsset(
                             __DIR__ . '/../../vendor/twitter/bootstrap/less/bootstrap.less',
                             array(
-                                new \Assetic\Filter\LessFilter(
+                                new LessFilter(
                                     '/usr/local/bin/node', array('/usr/local/lib/node_modules')
                                 ),
                                 $fm->get('yui_css'))
                         ),
-                        new \Assetic\Asset\FileAsset(__DIR__ . '/../../views/application.css', array($fm->get('yui_css'))),)
+                        new FileAsset(__DIR__ . '/../../views/application.css', array($fm->get('yui_css'))),)
                     )
                     ,
-                    new \Assetic\Cache\FilesystemCache(__DIR__ . '/../../cache/assetic')
+                    new FilesystemCache(__DIR__ . '/../../cache/assetic')
             ));
-            $am->set('modernizr', new \Assetic\Asset\AssetCache(
-                    new \Assetic\Asset\FileAsset(
+            $am->set('modernizr', new AssetCache(
+                    new FileAsset(
                         __DIR__ . '/../../ressources/assets/modernizr.2.5.3.js'
                         , array($fm->get('yui_js')))
                     ,
-                    new \Assetic\Cache\FilesystemCache(__DIR__ . '/../../cache/assetic')
+                    new FilesystemCache(__DIR__ . '/../../cache/assetic')
             ));
-            $am->set('jquery', new \Assetic\Asset\AssetCache(
-                    new \Assetic\Asset\FileAsset(
+            $am->set('jquery', new AssetCache(
+                    new FileAsset(
                         __DIR__ . '/../../ressources/assets/jquery-1.7.2.js'
                         , array($fm->get('yui_js')))
                     ,
-                    new \Assetic\Cache\FilesystemCache(__DIR__ . '/../../cache/assetic')
+                    new FilesystemCache(__DIR__ . '/../../cache/assetic')
             ));
-            $am->set('bootstrap_js', new \Assetic\Asset\AssetCache(
-                    new \Assetic\Asset\AssetCollection(array(
-                        new \Assetic\Asset\FileAsset(__DIR__ . '/../../vendor/twitter/bootstrap/js/bootstrap-alert.js'),
-                        new \Assetic\Asset\FileAsset(__DIR__ . '/../../vendor/twitter/bootstrap/js/bootstrap-button.js'),
-                        new \Assetic\Asset\FileAsset(__DIR__ . '/../../vendor/twitter/bootstrap/js/bootstrap-collapse.js'),
-                        new \Assetic\Asset\FileAsset(__DIR__ . '/../../vendor/twitter/bootstrap/js/bootstrap-dropdown.js'),
-                        new \Assetic\Asset\FileAsset(__DIR__ . '/../../vendor/twitter/bootstrap/js/bootstrap-modal.js'),
-                        new \Assetic\Asset\FileAsset(__DIR__ . '/../../vendor/twitter/bootstrap/js/bootstrap-tooltip.js'),
-                        new \Assetic\Asset\FileAsset(__DIR__ . '/../../vendor/twitter/bootstrap/js/bootstrap-popover.js'),
-                        new \Assetic\Asset\FileAsset(__DIR__ . '/../../vendor/twitter/bootstrap/js/bootstrap-scrollspy.js'),
-                        new \Assetic\Asset\FileAsset(__DIR__ . '/../../vendor/twitter/bootstrap/js/bootstrap-tab.js'),
-                        new \Assetic\Asset\FileAsset(__DIR__ . '/../../vendor/twitter/bootstrap/js/bootstrap-transition.js'),
-                        new \Assetic\Asset\FileAsset(__DIR__ . '/../../vendor/twitter/bootstrap/js/bootstrap-typeahead.js'),
+            $am->set('bootstrap_js', new AssetCache(
+                    new AssetCollection(array(
+                        new FileAsset(__DIR__ . '/../../vendor/twitter/bootstrap/js/bootstrap-alert.js'),
+                        new FileAsset(__DIR__ . '/../../vendor/twitter/bootstrap/js/bootstrap-button.js'),
+                        new FileAsset(__DIR__ . '/../../vendor/twitter/bootstrap/js/bootstrap-collapse.js'),
+                        new FileAsset(__DIR__ . '/../../vendor/twitter/bootstrap/js/bootstrap-dropdown.js'),
+                        new FileAsset(__DIR__ . '/../../vendor/twitter/bootstrap/js/bootstrap-modal.js'),
+                        new FileAsset(__DIR__ . '/../../vendor/twitter/bootstrap/js/bootstrap-tooltip.js'),
+                        new FileAsset(__DIR__ . '/../../vendor/twitter/bootstrap/js/bootstrap-popover.js'),
+                        new FileAsset(__DIR__ . '/../../vendor/twitter/bootstrap/js/bootstrap-scrollspy.js'),
+                        new FileAsset(__DIR__ . '/../../vendor/twitter/bootstrap/js/bootstrap-tab.js'),
+                        new FileAsset(__DIR__ . '/../../vendor/twitter/bootstrap/js/bootstrap-transition.js'),
+                        new FileAsset(__DIR__ . '/../../vendor/twitter/bootstrap/js/bootstrap-typeahead.js'),
                         ), array($fm->get('yui_js')))
                     ,
-                    new \Assetic\Cache\FilesystemCache(__DIR__ . '/../../cache/assetic')
+                    new FilesystemCache(__DIR__ . '/../../cache/assetic')
             ));
             $am->set('bootstrap_img', new \Assetic\Asset\AssetCache(
-                    new \Assetic\Asset\FileAsset(__DIR__ . '/../../vendor/twitter/bootstrap/img/glyphicons-halflings.png')
-                    ,
-                    new \Assetic\Cache\FilesystemCache(__DIR__ . '/../../cache/assetic')
+                    new FileAsset(__DIR__ . '/../../vendor/twitter/bootstrap/img/glyphicons-halflings.png'),
+                    new FilesystemCache(__DIR__ . '/../../cache/assetic')
             ));
             $am->get('base_css')->setTargetPath('css/styles.css');
             $am->get('bootstrap_img')->setTargetPath('img/glyphicons-halflings.png');
@@ -142,24 +154,11 @@ $app->register(new \SilexExtension\AsseticExtension(), array(
         })
 ));
 
-
-$app['form.factory'] = $app->extend('form.factory', function($factory, $c) {
-    $factory->addType(new Form\Type\JobSetType());
-    $factory->addType(new Form\Type\SpecificationType());
-
-    return $factory;
-});
-
-$app['configuration'] = $app->share(function() {
-    return new Client\Configuration(file_get_contents(__DIR__ . '/../../config/config.json'));
-});
-
 $app['dm'] = $app->share(function () use ($app) {
-   return $app['doctrine.odm.mongodb.dm'];
-});
+        return $app['doctrine.odm.mongodb.dm'];
+    });
 
-
-$app->mount('/', new \Gloubster\Application());
+$app->mount('/', new GloubsterApp());
 
 $app->mount('/api', new API());
 

@@ -2,10 +2,12 @@
 
 namespace Gloubster\Client;
 
+use Gloubster\Delivery\DeliveryInterface;
 use Gloubster\Delivery\Factory;
 use Gloubster\Documents\Specification;
 use Gloubster\Communication\Query;
 use Gloubster\Communication\Result;
+use Gloubster\Exception\InvalidArgumentException;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\PersistentCollection;
@@ -23,7 +25,7 @@ class JobsContainer implements \Countable
 
     /**
      *
-     * @var \Gloubster\Delivery\DeliveryInterface
+     * @var DeliveryInterface
      */
     protected $delivery;
     protected $stack;
@@ -39,7 +41,7 @@ class JobsContainer implements \Countable
         $this->stack = new ArrayCollection();
     }
 
-    public function setDelivery(\Gloubster\Delivery\DeliveryInterface $delivery)
+    public function setDelivery(DeliveryInterface $delivery)
     {
         $this->delivery = $delivery;
 
@@ -54,7 +56,7 @@ class JobsContainer implements \Countable
     public function setCapacity($capacity)
     {
         if ($capacity < 1) {
-            throw new \Gloubster\Exception\InvalidArgumentException('Invalid capacity, it should be greater than or equal to 1');
+            throw new InvalidArgumentException('Invalid capacity, it should be greater than or equal to 1');
         }
 
         $this->capacity = (int) $capacity;
@@ -114,7 +116,6 @@ class JobsContainer implements \Countable
         /* @var $cursor \Doctrine\ODM\MongoDB\EagerCursor */
         foreach ($cursor as $specification) {
 
-            $jobset = $specification->getJobset();
             if ($this->stack->containsKey($specification->getId())) {
                 $this->logger->addCritical('Fetch an item that should not exists');
                 continue;
@@ -122,17 +123,14 @@ class JobsContainer implements \Countable
 
             $parameters = $this->parametersToArray($specification->getParameters());
 
-            $query = new Query($specification->getId(), $jobset->getFile(), $this->delivery->getName(), $this->delivery->getSignature(), $parameters);
+            $query = new Query($specification->getId(), $specification->getJobset()->getFile(), $this->delivery->getName(), $this->delivery->getSignature(), $parameters);
 
-            $jobHandle = $this->addJob(
-                $this->getJobName($specification->getName()), $query
-            );
-
-            $specification
-                ->setJobHandle(
-                    $jobHandle
+            $specification->setJobHandle(
+                $this->addJob(
+                    $this->getJobName($specification->getName()), $query
                 )
-                ->setSubmittedOn(new \DateTime());
+            )->setSubmittedOn(new \DateTime());
+
             $this->DM->persist(
                 $specification
             );
@@ -167,7 +165,7 @@ class JobsContainer implements \Countable
                 $name = Query::FUNCTION_TRANSMUTE_IMAGE;
                 break;
             default:
-                throw new \Gloubster\Exception\InvalidArgumentException(sprintf('Unknown spec name `%s`', $specName));
+                throw new InvalidArgumentException(sprintf('Unknown spec name `%s`', $specName));
                 break;
         }
 

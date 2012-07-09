@@ -23,13 +23,14 @@ class RunClient extends Command
         $app = require __DIR__ . '/../App.php';
 
         $logger = new Logger('Gearman Client');
+        
         if ($input->getOption('verbose')) {
             $logger->pushHandler(new StreamHandler('php://stdout'));
         } else {
             $logger->pushHandler(new NullHandler());
         }
 
-        $client = new \Gloubster\Client\Client(new \GearmanClient(), $app['configuration'], $app['dm'], $logger);
+        $client = new Client(new \GearmanClient(), $app['configuration'], $app['dm'], $logger);
 
         foreach ($app['configuration']['gearman-servers'] as $server) {
             $client->addServer($server['host'], $server['port']);

@@ -2,17 +2,10 @@
 
 namespace Gloubster;
 
-use Gloubster\Documents\JobSet;
 use Silex\Application as SilexApp;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Url;
-use Symfony\Component\Form\FormError;
 
 class Application implements ControllerProviderInterface
 {

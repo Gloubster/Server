@@ -2,6 +2,9 @@
 
 namespace Gloubster;
 
+use Gloubster\Documents\JobSet;
+use Gloubster\Documents\Parameter;
+use Gloubster\Documents\Specification;
 use JsonSchema\Validator;
 use Silex\Application as SilexApp;
 use Silex\ControllerProviderInterface;
@@ -37,19 +40,19 @@ class API implements ControllerProviderInterface
                 if (false === $validator->isValid()) {
                     $errors = array();
                     foreach ($validator->getErrors() as $error) {
-                        $errors[]  =sprintf("[%s] %s\n", $error['property'], $error['message']);
+                        $errors[] = sprintf("[%s] %s\n", $error['property'], $error['message']);
                     }
                     throw new HttpException(400, implode("\n", $errors));
                 }
 
                 $datas = json_decode($request->getContent(), true);
 
-                $jobset = new Documents\JobSet();
+                $jobset = new JobSet();
                 $jobset->setFile($datas['file']);
 
                 if (isset($datas['specifications'])) {
                     foreach ($datas['specifications'] as $spec) {
-                        $specification = new Documents\Specification();
+                        $specification = new Specification();
                         $specification->setName($spec['name']);
 
                         if ( ! isset($spec['parameters'])) {
@@ -57,7 +60,7 @@ class API implements ControllerProviderInterface
                         }
 
                         foreach ($spec['parameters'] as $name => $value) {
-                            $param = new Documents\Parameter();
+                            $param = new Parameter();
 
                             $param->setName($name);
                             $param->setValue($value);

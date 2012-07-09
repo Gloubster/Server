@@ -26,7 +26,7 @@
         "gloubster/communications": "dev-master",
         "justinrainbow/json-schema": "*",
         "monolog/monolog": "*",
-        "twig/twig": "dev-master",
+        "twig/twig": "*",
         "silex/silex": "dev-master",
         "symfony/console" : "2.1.*",
         "symfony/twig-bridge" : "2.1.*",
@@ -37,6 +37,10 @@
         "twitter/bootstrap" : "dev-master",
         "fate/silex-extensions":"dev-master",
         "leafo/lessphp":"dev-master"
+    },
+    "require-dev": {
+        "symfony/finder": "2.1.*",
+        "fabpot/php-cs-fixer": "*"
     },
     "autoload": {
         "psr-0": {

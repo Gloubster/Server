@@ -14,6 +14,10 @@
     },
     "client": {
         "stack": 500,
-        "period": 2000
+        "period": 2000,
+        "mongo": {
+            "host":"localhost",
+            "database":"gloubster"
+        },
     }
 }

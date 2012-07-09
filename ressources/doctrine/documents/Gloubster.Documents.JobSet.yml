@@ -6,7 +6,8 @@ Gloubster\Documents\JobSet:
       id: true
     file:
       type: string
-  referenceMany:
+  embedMany:
     specifications:
       targetDocument: Gloubster\Documents\Specification
+      mappedBy: jobset
       cascade: all

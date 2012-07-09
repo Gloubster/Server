@@ -6,8 +6,24 @@ Gloubster\Documents\Specification:
       id: true
     name:
       type: string
+    jobHandle:
+      type: string
+    submittedOn:
+      type: date
+    workerName:
+      type: string
+    start:
+      type: float
+    stop:
+      type: float
     done:
       type: boolean
+    error:
+      type: boolean
+  referenceOne:
+    jobset:
+      targetDocument: Gloubster\Documents\JobSet
+      inversedBy: specifications
   referenceMany:
     parameters:
       targetDocument: Gloubster\Documents\Parameter

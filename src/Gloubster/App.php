@@ -13,6 +13,10 @@ $app = new SilexApplication();
 
 $app['debug'] = true;
 
+$app['configuration'] = $app->share(function() {
+        return new Client\Configuration(file_get_contents(__DIR__ . '/../../config/config.json'));
+    });
+
 $app->register(new TwigServiceProvider(), array(
     'twig.path'    => __DIR__ . '/../../views',
     'twig.options' => array(
@@ -139,7 +143,7 @@ $app->register(new \SilexExtension\AsseticExtension(), array(
 ));
 
 
-$app['form.factory'] = $app->extend('form.factory', function($factory, $c){
+$app['form.factory'] = $app->extend('form.factory', function($factory, $c) {
     $factory->addType(new Form\Type\JobSetType());
     $factory->addType(new Form\Type\SpecificationType());
 

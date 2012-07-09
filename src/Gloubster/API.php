@@ -66,6 +66,7 @@ class API implements ControllerProviderInterface
                             $app['dm']->persist($param);
                         }
 
+                        $specification->setJobset($jobset);
                         $jobset->addSpecifications($specification);
                         $app['dm']->persist($specification);
                     }

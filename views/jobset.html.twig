@@ -1,9 +1,0 @@
-{% extends 'layout.html.twig' %}
-
-
-{% block content %}
-
-    <h1>{{ jobset.getId() }} {{ jobset.getFile() }}</h1>
-    <a href="{{ path('jobset_edit', { 'jobset_id': jobset.getId() } ) }}">Edit</a>
-
-{% endblock %}

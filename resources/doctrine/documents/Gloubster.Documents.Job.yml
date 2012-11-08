@@ -1,0 +1,28 @@
+Gloubster\Documents\Job:
+  identifier: job
+  fields:
+    id:
+      type: id
+      id: true
+    error:
+      type: boolean
+    errorMessage:
+      type: string
+    workerId:
+      type: string
+    beginning:
+      type: string
+    end:
+      type: string
+    delivery:
+      type: string
+    deliveryId:
+      type: string
+    processDuration:
+      type: string
+    deliveryDuration:
+      type: string
+    routingKey:
+      type: string
+    exchangeName:
+      type: string

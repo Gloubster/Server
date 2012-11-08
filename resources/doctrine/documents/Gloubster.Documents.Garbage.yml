@@ -1,0 +1,8 @@
+Gloubster\Documents\Garbage:
+  identifier: garbage
+  fields:
+    id:
+      type: id
+      id: true
+    data:
+      type: string

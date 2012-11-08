@@ -20,6 +20,8 @@ Gloubster\Documents\Specification:
       type: boolean
     error:
       type: boolean
+    timers:
+      type: string
   referenceOne:
     jobset:
       targetDocument: Gloubster\Documents\JobSet

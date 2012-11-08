@@ -2,13 +2,16 @@
 
 {% block content %}
     <ul>
-    {% for jobset in jobsets %}
+    {% for specification in specifications %}
         <li>
-            <a href="{{ path('jobset', { 'jobset_id': jobset.getId() }) }}">{{ jobset.getFile() }}</a>
-            ({% for spec in jobset.getSpecifications() %} {{ spec.getName() }} {% endfor %})
-            <a href="{{ path('jobset_delete_confirm', { 'jobset_id': jobset.getId() }) }}">
+            <a href="{{ path('jobset', { 'jobset_id': specification.getJobset().getId() }) }}">{{ specification.getJobset.getFile() }}</a>
+           {{ specification.getName() }}
+            <a href="{{ path('jobset_delete_confirm', { 'jobset_id': specification.getJobset().getId() }) }}">
                 <i class="icon-remove"></i>
             </a>
+            {% if specification.getDone() %}
+                Done
+            {% endif %}
         </li>
     {% endfor %}
     </ul>

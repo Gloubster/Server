@@ -18,6 +18,7 @@ class JobsContainer implements \Countable
     const PRIORITY_HIGH = 'high';
     const PRIORITY_LOW = 'low';
     const PRIORITY_NORMAL = 'normal';
+    const WAITING_STATUS = 'waiting';
 
     protected $DM;
     protected $client;
@@ -29,7 +30,7 @@ class JobsContainer implements \Countable
      */
     protected $delivery;
     protected $stack;
-    protected $ratio = 0.5;
+    protected $ratio = 0.7;
     protected $capacity = 500;
 
     public function __construct(\GearmanClient $client, Configuration $configuration, DocumentManager $DM, Logger $logger)
@@ -39,6 +40,10 @@ class JobsContainer implements \Countable
         $this->client = $client;
         $this->delivery = Factory::build($configuration);
         $this->stack = new ArrayCollection();
+        $this->loops = 0;
+        $this->time = 0;
+        $this->loopsRemove = 0;
+        $this->timeRemove = 0;
     }
 
     public function setDelivery(DeliveryInterface $delivery)
@@ -79,12 +84,20 @@ class JobsContainer implements \Countable
         $removed = array();
 
         foreach ($this->stack as $uuid => $specification) {
+            $startLoop = $start = microtime(true);
             $stat = $this->client->jobStatus($specification->getJobHandle());
+            $stop = microtime(true);
+
+            $this->logger->addInfo("jobstatus got in " . ($stop - $start));
 
             if ( ! $stat[0]) {
+                $this->logger->addInfo('sending the remove signal');
+                $startRemove = microtime(true);
                 $removed[] = $uuid;
                 $this->removeJob($uuid);
                 $this->logger->addInfo(sprintf('Job %s done', $uuid));
+                $this->timeRemove += (microtime(true) - $startRemove);
+                $this->loopsRemove ++;
             } else {
                 if ($stat[1]) {
                     $this->logger->addInfo(sprintf('Job %s running', $uuid));
@@ -92,6 +105,17 @@ class JobsContainer implements \Countable
                     $this->logger->addInfo(sprintf('Job %s pending', $uuid));
                 }
             }
+            $this->time += (microtime(true) - $startLoop);
+            $this->loops ++;
+        }
+        $this->logger->addInfo('sending the flush signal');
+        $this->DM->flush();
+
+        if ($this->loops) {
+            $this->logger->addInfo("Average time per loop : " . ($this->time / $this->loops));
+        }
+        if ($this->loopsRemove) {
+            $this->logger->addInfo("Average time per remove : " . ($this->timeRemove / $this->loopsRemove));
         }
 
         return $removed;
@@ -103,20 +127,36 @@ class JobsContainer implements \Countable
             return;
         }
 
-        /**
-         * Before retrieving, items should be booked, so concurrent process
-         * do not corrupt datas
-         */
-        $cursor = $this->DM->createQueryBuilder('Gloubster\\Documents\\Specification')
-            ->field('jobHandle')->equals(null)
-            ->limit(max(0, $this->capacity - count($this)))
-            ->getQuery()
-            ->execute();
+        $n = $this->capacity - count($this);
 
-        /* @var $cursor \Doctrine\ODM\MongoDB\EagerCursor */
-        foreach ($cursor as $specification) {
+        while ($n > 0) {
+            $specification = $this->DM->createQueryBuilder()
+                ->findAndUpdate('Gloubster\Documents\Specification')
+                ->returnNew(true)
+                ->field('jobHandle')->equals(null)
+                ->field('jobHandle')->set(self::WAITING_STATUS)
+                ->getQuery()
+                ->execute();
+
+            if (null === $specification) {
+                break;
+            }
+
+            $priority = self::PRIORITY_HIGH;
+
+            foreach ($specification->getJobset()->getSpecifications() as $spec) {
+                if ($spec->getJobHandle() !== null && $spec->getId() != $specification->getId()) {
+                    $priority = self::PRIORITY_NORMAL;
+                    break;
+                }
+            }
 
             if ($this->stack->containsKey($specification->getId())) {
+                $this->logger->addCritical('Fetch an item that should not exists');
+                continue;
+            }
+
+            if ($specification->getJobHandle() !== self::WAITING_STATUS) {
                 $this->logger->addCritical('Fetch an item that should not exists');
                 continue;
             }
@@ -125,26 +165,20 @@ class JobsContainer implements \Countable
 
             $query = new Query($specification->getId(), $specification->getJobset()->getFile(), $this->delivery->getName(), $this->delivery->getSignature(), $parameters);
 
-            $specification->setJobHandle(
-                $this->addJob(
-                    $this->getJobName($specification->getName()), $query
-                )
-            )->setSubmittedOn(new \DateTime());
-
             $this->DM->persist(
-                $specification
+                $specification->setJobHandle(
+                    $this->addJob(
+                        $this->getJobName($specification->getName()), $query, $priority
+                    )
+                )->setSubmittedOn(new \DateTime())
             );
 
             $this->stack->set($specification->getId(), $specification);
+
+            $n --;
         }
 
         $this->DM->flush();
-
-        foreach ($this->stack as $uuid => $spec) {
-            $specification = $this->DM->getRepository('Gloubster\Documents\Specification')->find($uuid);
-        }
-
-        unset($cursor);
     }
 
     private function parametersToArray(PersistentCollection $parameters)
@@ -174,14 +208,55 @@ class JobsContainer implements \Countable
 
     private function removeJob($key)
     {
-        $this->DM->persist(
-            $this->updateSpecification(
-                $this->stack->get($key), $this->delivery->retrieve($key)
-            )
-        );
 
-        $this->DM->flush();
-        $this->stack->remove($key);
+        try {
+            $start = microtime(true);
+            $spec = $this->stack->get($key);
+            $stop = microtime(true);
+
+            $this->logger->addInfo("step 2 " . ($stop - $start));
+
+
+            $start = microtime(true);
+            $this->logger->addInfo("removing job... about to retrieve ...");
+            try {
+                $retrieved = $this->delivery->retrieve($key);
+            } catch (\Exception $e) {
+                $this->logger->addInfo('EXCEPTION : ' . $e->getMessage());
+
+                $spec->setJobHandle(null);
+                $this->DM->persist($spec);
+                $this->DM->flush();
+                $this->stack->remove($key);
+
+                return;
+            }
+
+            $this->logger->addInfo("removing job... retrieved");
+            $stop = microtime(true);
+
+            $this->logger->addInfo("step 1 " . ($stop - $start));
+
+            $start = microtime(true);
+            $update = $this->updateSpecification($spec, $retrieved);
+            $stop = microtime(true);
+
+            $this->logger->addInfo("step 3 " . ($stop - $start));
+
+            $start = microtime(true);
+            $this->DM->persist($update);
+            $stop = microtime(true);
+
+            $this->logger->addInfo("step 4 " . ($stop - $start));
+
+            $start = microtime(true);
+            $this->stack->remove($key);
+            $stop = microtime(true);
+
+            $this->logger->addInfo("step 5 " . ($stop - $start));
+        } catch (\Exception $e) {
+            $this->logger->addCritical('UNHANDELD CRITICAL EXCEPTION ' . $e->getMessage());
+        }
     }
 
     private function updateSpecification(Specification $specification, Result $result)
@@ -191,7 +266,19 @@ class JobsContainer implements \Countable
                 ->setStop($result->getStop())
                 ->setError((Boolean) $result->getErrors())
                 ->setWorkerName($result->getWorkerName())
-                ->setDone(true);
+                ->setDone(true)
+                ->setTimers(serialize($result->getTimers()));
+
+//        foreach ($result->getTimers() as $key => $time) {
+//            $timer = new \Gloubster\Documents\Timer();
+//            $timer->setName('indice-')->setValue(0.12);
+//            $this->DM->persist($timer);
+//            $specification->addTimers($timer);
+//            $this->logger->addInfo(sprintf('add timer with name %s and value %s ', $key, $time));
+//        }
+//        $this->DM->persist($specification);
+//        $this->DM->flush();
+//        return $specification;
     }
 
     private function addJob($function, Query $query, $priority = self::PRIORITY_NORMAL)
@@ -218,7 +305,7 @@ class JobsContainer implements \Countable
             case GEARMAN_SUCCESS:
                 $this->logger->addInfo(
                     sprintf(
-                        'Sending job `%s` with payload %s', $function, serialize($query)
+                        'Sending job `%s` with payload %s and priority %s', $function, serialize($query), $priority
                     )
                 );
                 break;

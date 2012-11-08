@@ -25,15 +25,30 @@ class Client
         }
 
         $this->jobsContainer = new JobsContainer( $client, $configuration, $DM, $logger);
+
+        if( $configuration['client']['stack']) {
+            $this->jobsContainer->setCapacity( $configuration['client']['stack']);
+        }
+
     }
 
     public function run()
     {
         while (true) {
+//            try {
+            $this->logger->addInfo('about to drain');
             $this->jobsContainer->drain();
+            $this->logger->addInfo('about to fill');
             $this->jobsContainer->fill();
+            if(count($this->jobsContainer) === 0) {
+                //$this->logger->addInfo('about to Stopping');
+                //break;
+            }
             $this->logger->addInfo(sprintf('Now using %dMo', memory_get_usage() >> 20));
             usleep($this->period);
+//            } catch(\Exception $e) {
+//                $this->logger->addCritical('CRITICAL EXCEPTION'.$e->getFile().':'.$e->getLine().' - '.$e->getMessage());
+//            }
         }
     }
 }

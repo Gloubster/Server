@@ -16,11 +16,11 @@ class Application implements ControllerProviderInterface
 
         $controllers->get('/', function() use ($app) {
 
-                $repository = $app['dm']->getRepository('Gloubster\\Documents\\JobSet');
+                $repository = $app['dm']->getRepository('Gloubster\\Documents\\Specification');
 
-                $jobsets = $repository->findAll();
+                $specifications = $repository->findAll();
 
-                return $app['twig']->render('index.html.twig', array('jobsets' => $jobsets));
+                return $app['twig']->render('index.html.twig', array('specifications' => $specifications));
             })->bind('homepage');
 
         $controllers->get('/jobset/{jobset_id}', function($jobset_id, SilexApp $app) {
@@ -60,6 +60,46 @@ class Application implements ControllerProviderInterface
 
                 return new RedirectResponse($app['url_generator']->generate('homepage'));
             })->bind('jobset_delete')->assert('jobset_id', '[a-fA-F0-9]{24}');
+
+
+        $controllers->get('/graph', function(SilexApp $app) {
+
+                $specifications = $app['dm']->createQueryBuilder('Gloubster\\Documents\\Specification')
+                    ->field('done', true)
+                    ->sort('submittedOn', 'ASC')
+                    ->getQuery()
+                    ->execute();
+
+                $workers = array();
+
+                $n = 0;
+                $stop = 0;
+                $start = microtime(true);
+                $durations = 0;
+
+                foreach ($specifications as $spec) {
+
+                    $spec->setTimers(unserialize($spec->getTimers()));
+
+                    if ($spec->getStart()) {
+                        $start = min($spec->getStart(), $start);
+                    }
+                    if ($spec->getStop()) {
+                        $stop = max($stop, $spec->getStop());
+                    }
+                    $workers[$spec->getWorkerName()][] = $spec;
+                    if ($spec->getDone()) {
+                        $n ++;
+                        $durations += ($spec->getStop() - $spec->getStart());
+                    }
+
+                }
+
+                $avg = $durations/$n;
+                ksort($workers);
+
+                return $app['twig']->render('graph.html.twig', array('avg'=>$avg,  'workers' => $workers, 'start'   => $start, 'stop'    => $stop, 'total'   => $n));
+            })->bind('graph');
 
         $controllers->before(function() use ($app) {
                 $app['session']->start();

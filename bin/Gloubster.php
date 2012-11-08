@@ -7,5 +7,6 @@ $cli = new \Symfony\Component\Console\Application('Gloubster CLI', '0');
 
 $cli->addCommands(array(
     new Gloubster\Client\RunClient('gloubster:run-client'),
+    new Gloubster\Client\FeedClient('gloubster:feed-client'),
 ));
 $cli->run();

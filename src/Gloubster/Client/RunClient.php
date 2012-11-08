@@ -22,20 +22,32 @@ class RunClient extends Command
     {
         $app = require __DIR__ . '/../App.php';
 
-        $logger = new Logger('Gearman Client');
-        
-        if ($input->getOption('verbose')) {
-            $logger->pushHandler(new StreamHandler('php://stdout'));
-        } else {
-            $logger->pushHandler(new NullHandler());
-        }
+//        $manager = new \Spork\ProcessManager(new \Spork\EventDispatcher\EventDispatcher());
 
-        $client = new Client(new \GearmanClient(), $app['configuration'], $app['dm'], $logger);
+        $i = 1;
+//        for ($i = 1; $i <= 3; $i ++ ) {
 
-        foreach ($app['configuration']['gearman-servers'] as $server) {
-            $client->addServer($server['host'], $server['port']);
-        }
+            $logger = new Logger('Client-'.$i);
 
-        $client->run();
+//            $logger->pushHandler(new \Monolog\Handler\RotatingFileHandler(__DIR__ . '/../../../logs/client-'.$i.'.log'));
+
+            if ($input->getOption('verbose')) {
+//                $logger->pushHandler(new StreamHandler('php://stdout'));
+            } else {
+                $logger->pushHandler(new NullHandler());
+            }
+
+            $output->write("Launching Client <info>$i</info> ...");
+
+            $client = new Client(new \GearmanClient(), $app['configuration'], $app['dm'], $logger);
+
+
+//            $manager->fork(function() use ($client) {
+                $client->run();
+//            });
+
+            $output->writeln("Success !");
+
+//        }
     }
 }

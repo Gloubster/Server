@@ -1,0 +1,26 @@
+{
+    "name": "alchemy/rabbit-mq",
+    "description": "RabbitMQ OO Library",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Romain Neutron",
+            "email": "imprec@gmail.com"
+        }
+    ],
+    "require": {
+        "gloubster/communications": "dev-master",
+        "videlalvaro/php-amqplib": "dev-master",
+        "doctrine/mongodb-odm": "dev-master",
+        "monolog/monolog": "*",
+        "neutron/mongo-odm-silex-provider": "dev-master",
+        "silex/silex": "dev-master",
+        "symfony/console" : ">=2.0,<=2.2"
+    },
+    "autoload": {
+        "psr-0": {
+            "Gloubster": "src",
+            "Knp": "src"
+        }
+    }
+}

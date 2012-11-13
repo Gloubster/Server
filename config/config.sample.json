@@ -1,0 +1,12 @@
+{
+    "server": {
+        "host": "localhost",
+        "port": 5672,
+        "user": "guest",
+        "password": "guest",
+        "vhost": "/"
+    },
+    "logs": {
+        "queue-name": "Gloubster\\Queue::LOGS"
+    }
+}

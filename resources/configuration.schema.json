@@ -1,0 +1,20 @@
+{
+    "name": "Configuration",
+    "type": "object",
+    "additionalProperties": true,
+    "properties": {
+        "logs": {
+            "type": "object",
+            "description": "Gloubster Log configuration",
+            "required": true,
+            "additionalProperties": true,
+            "properties": {
+                "queue-name": {
+                    "type": "string",
+                    "description": "Log queue name",
+                    "required": true
+                }
+            }
+        }
+    }
+}

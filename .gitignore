@@ -1,3 +1,4 @@
 vendor
 nbproject
 tests/phpunit_report
+composer.phar

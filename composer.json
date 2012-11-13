@@ -9,6 +9,7 @@
         }
     ],
     "require": {
+        "guzzle/guzzle": "dev-master",
         "gloubster/communications": "dev-master",
         "videlalvaro/php-amqplib": "dev-master",
         "doctrine/mongodb-odm": "dev-master",

@@ -11,10 +11,14 @@ use Silex\Application as SilexApplication;
 //use Assetic\Filter\Yui\CssCompressorFilter;
 //use Assetic\Filter\Yui\JsCompressorFilter;
 //use Assetic\Cache\FilesystemCache;
+use Doctrine\Common\Cache\ArrayCache;
+use Monolog\Handler\NullHandler;
+use Monolog\Logger;
 //use Gloubster\Application as GloubsterApp;
 //use Gloubster\Client\Configuration as ClientConfiguration;
 //use Silex\Provider\FormServiceProvider;
 //use Silex\Provider\SessionServiceProvider;
+use Silex\Provider\MonologServiceProvider;
 //use Silex\Provider\TranslationServiceProvider;
 //use Silex\Provider\TwigServiceProvider;
 //use Silex\Provider\UrlGeneratorServiceProvider;
@@ -46,6 +50,18 @@ class Application extends SilexApplication
         //    ),
         //));
         //
+        $this->register(new MonologServiceProvider());
+
+        $this['monolog.handler'] = function (Application $app) {
+            return new NullHandler();
+        };
+
+        $this['monolog.level'] = function () {
+            return Logger::DEBUG;
+        };
+
+        $this['monolog.name'] = 'myapp';
+
         //$this->register(new ValidatorServiceProvider());
         //$this->register(new FormServiceProvider());
         //$this->register(new UrlGeneratorServiceProvider());
@@ -66,7 +82,7 @@ class Application extends SilexApplication
             'doctrine.odm.mongodb.proxies_dir'           => __DIR__ . '/../../../cache/doctrine/odm/mongodb/Proxy',
             'doctrine.odm.mongodb.auto_generate_proxies' => true,
             'doctrine.odm.mongodb.hydrators_dir'         => __DIR__ . '/../../../cache/doctrine/odm/mongodb/Hydrator',
-            'doctrine.odm.mongodb.metadata_cache'        => 'array',
+            'doctrine.odm.mongodb.metadata_cache'        => new ArrayCache(),
         ));
         //
         //$this->register(new TranslationServiceProvider(), array(

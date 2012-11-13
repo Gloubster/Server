@@ -2,9 +2,8 @@
 
 namespace Gloubster\Server;
 
-use Symfony\Component\Console;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Console\Command\Command;
+use Gloubster\Server\Console\AbstractCommand;
 use Symfony\Component\Console\Shell;
 use Symfony\Component\Console\Application as ConsoleApplication;
 
@@ -59,9 +58,9 @@ class CLI extends Application
      *
      * If a command with the same name already exists, it will be overridden.
      *
-     * @param \Cilex\Command\Command $command A Command object
+     * @param AbstractCommand $command A Command object
      */
-    public function command(Command $command)
+    public function command(AbstractCommand $command)
     {
         $command->setContainer($this);
         $this['console']->add($command);

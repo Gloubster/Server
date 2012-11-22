@@ -9,6 +9,7 @@
         }
     ],
     "require": {
+        "alchemy/rabbitmq-management-client": "dev-master",
         "guzzle/guzzle": "dev-master",
         "gloubster/communications": "dev-master",
         "videlalvaro/php-amqplib": "dev-master",

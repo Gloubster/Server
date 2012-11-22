@@ -1,24 +1,76 @@
 {
-    "hash": "207e2b7d9a54746c0c72808440a63f97",
+    "hash": "1eaf144815c355419a5cdc8584115f97",
     "packages": [
+        {
+            "name": "alchemy/rabbitmq-management-client",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alchemy-fr/RabbitMQ-Management-API-Client",
+                "reference": "646f62112f378330ac6109a4afd79d977f040fa6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/alchemy-fr/RabbitMQ-Management-API-Client/archive/646f62112f378330ac6109a4afd79d977f040fa6.zip",
+                "reference": "646f62112f378330ac6109a4afd79d977f040fa6",
+                "shasum": ""
+            },
+            "require": {
+                "guzzle/guzzle": "dev-master",
+                "doctrine/common": "dev-master"
+            },
+            "require-dev": {
+                "videlalvaro/php-amqplib": "dev-master",
+                "sami/sami": "dev-master"
+            },
+            "time": "1353600417",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1.x-dev"
+                }
+            },
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "RabbitMQ": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Romain Neutron",
+                    "email": "imprec@gmail.com",
+                    "homepage": "http://www.lickmychip.com/"
+                }
+            ],
+            "description": "RabbitMQ Management Plugin API Client",
+            "keywords": [
+                "api",
+                "rabbitmq",
+                "management"
+            ]
+        },
         {
             "name": "doctrine/common",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/common",
-                "reference": "30b8cea3bfe22f5eb58b5b0165f21df750aeb2e2"
+                "reference": "d8c17cd427ff345ebc13193ebbf3a4dee49e44ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/doctrine/common/archive/30b8cea3bfe22f5eb58b5b0165f21df750aeb2e2.zip",
-                "reference": "30b8cea3bfe22f5eb58b5b0165f21df750aeb2e2",
+                "url": "https://github.com/doctrine/common/archive/d8c17cd427ff345ebc13193ebbf3a4dee49e44ff.zip",
+                "reference": "d8c17cd427ff345ebc13193ebbf3a4dee49e44ff",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2"
             },
-            "time": "1352815365",
+            "time": "1353465164",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -197,12 +249,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Gloubster/Communications",
-                "reference": "2f86f3d3322fb7e456dbacb921ededcff9735ec8"
+                "reference": "5e948219e3e6fcfda5ec76445d52f8b3c4197dc8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/Gloubster/Communications/archive/2f86f3d3322fb7e456dbacb921ededcff9735ec8.zip",
-                "reference": "2f86f3d3322fb7e456dbacb921ededcff9735ec8",
+                "url": "https://github.com/Gloubster/Communications/archive/5e948219e3e6fcfda5ec76445d52f8b3c4197dc8.zip",
+                "reference": "5e948219e3e6fcfda5ec76445d52f8b3c4197dc8",
                 "shasum": ""
             },
             "require": {
@@ -213,7 +265,7 @@
                 "symfony/finder": ">=2.0,<=2.2.x-dev",
                 "symfony/filesystem": ">=2.0,<=2.2.x-dev"
             },
-            "time": "1352823865",
+            "time": "1353604492",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -238,12 +290,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle",
-                "reference": "77a7238650b7d038378626a3270ee49db41ba229"
+                "reference": "a7ef21155f08cf62fbe55ed7a5ae41f7babd67df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/guzzle/guzzle/archive/77a7238650b7d038378626a3270ee49db41ba229.zip",
-                "reference": "77a7238650b7d038378626a3270ee49db41ba229",
+                "url": "https://github.com/guzzle/guzzle/archive/a7ef21155f08cf62fbe55ed7a5ae41f7babd67df.zip",
+                "reference": "a7ef21155f08cf62fbe55ed7a5ae41f7babd67df",
                 "shasum": ""
             },
             "require": {
@@ -290,7 +342,7 @@
                 "zend/zend-cache": "2.0.0beta3",
                 "zend/zend-log": "2.0.0beta3"
             },
-            "time": "1352746873",
+            "time": "1353380245",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -386,12 +438,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog",
-                "reference": "bcb51e01406965ebd030d4b99eb199a9226c3fef"
+                "reference": "b23cfd3d6ce0b6c050dda723040b83a1a6d7637e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/Seldaek/monolog/archive/bcb51e01406965ebd030d4b99eb199a9226c3fef.zip",
-                "reference": "bcb51e01406965ebd030d4b99eb199a9226c3fef",
+                "url": "https://github.com/Seldaek/monolog/archive/b23cfd3d6ce0b6c050dda723040b83a1a6d7637e.zip",
+                "reference": "b23cfd3d6ce0b6c050dda723040b83a1a6d7637e",
                 "shasum": ""
             },
             "require": {
@@ -405,7 +457,7 @@
                 "ext-amqp": "Allow sending log messages to an AMQP server (1.0+ required)",
                 "ext-mongo": "Allow sending log messages to a MongoDB server"
             },
-            "time": "1352653384",
+            "time": "1352907970",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -725,18 +777,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpFoundation",
-                "reference": "a961c2ca3106a074bfb5cbadc7e10423123d1a82"
+                "reference": "1019af12f75155fdf9b90240d22f7fa5a0e16ceb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/HttpFoundation/archive/a961c2ca3106a074bfb5cbadc7e10423123d1a82.zip",
-                "reference": "a961c2ca3106a074bfb5cbadc7e10423123d1a82",
+                "url": "https://github.com/symfony/HttpFoundation/archive/1019af12f75155fdf9b90240d22f7fa5a0e16ceb.zip",
+                "reference": "1019af12f75155fdf9b90240d22f7fa5a0e16ceb",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "1352728711",
+            "time": "1353084667",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -773,12 +825,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpKernel",
-                "reference": "9c75c75993f009c3183696ab9ed7320f3df351b8"
+                "reference": "5b46b62217dab8296098607100500bb7bb3087bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/HttpKernel/archive/9c75c75993f009c3183696ab9ed7320f3df351b8.zip",
-                "reference": "9c75c75993f009c3183696ab9ed7320f3df351b8",
+                "url": "https://github.com/symfony/HttpKernel/archive/5b46b62217dab8296098607100500bb7bb3087bd.zip",
+                "reference": "5b46b62217dab8296098607100500bb7bb3087bd",
                 "shasum": ""
             },
             "require": {
@@ -804,7 +856,7 @@
                 "symfony/dependency-injection": "2.1.*",
                 "symfony/finder": "2.1.*"
             },
-            "time": "1352544437",
+            "time": "1352985780",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -840,12 +892,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Routing",
-                "reference": "dc3f3a2dfedb2689d275008c641f0f957c1d48dc"
+                "reference": "52e7becbf50c3ab1bdc4516b530bcd5c1275ca49"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/Routing/archive/dc3f3a2dfedb2689d275008c641f0f957c1d48dc.zip",
-                "reference": "dc3f3a2dfedb2689d275008c641f0f957c1d48dc",
+                "url": "https://github.com/symfony/Routing/archive/52e7becbf50c3ab1bdc4516b530bcd5c1275ca49.zip",
+                "reference": "52e7becbf50c3ab1bdc4516b530bcd5c1275ca49",
                 "shasum": ""
             },
             "require": {
@@ -862,7 +914,7 @@
                 "symfony/config": "2.2.*",
                 "symfony/yaml": "2.2.*"
             },
-            "time": "1352815684",
+            "time": "1353334742",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -985,6 +1037,7 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "alchemy/rabbitmq-management-client": 20,
         "guzzle/guzzle": 20,
         "gloubster/communications": 20,
         "videlalvaro/php-amqplib": 20,

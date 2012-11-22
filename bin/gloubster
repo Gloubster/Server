@@ -4,7 +4,7 @@
 use Gloubster\Server\CLI;
 use Gloubster\Server\Console\LogProcess;
 use Gloubster\Configuration;
-use Gloubster\RabbitMQFactory;
+use Gloubster\Server\Console\ServerEnsureConfiguration;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -12,12 +12,7 @@ $conf = new Configuration(file_get_contents(__DIR__ . '/../config/config.json'),
         file_get_contents(__DIR__ . '/../resources/configuration.schema.json')
 ));
 
-$connection = RabbitMQFactory::createConnection($conf);
-$channel = $connection->channel();
-
-//$channel->basic_consume(\Gloubster\Queue::LOGS, null, false, true, false, false, array( 'process'));
-//exit;
 $gloubster = new CLI('Gloubster');
-$gloubster->command(new LogProcess($channel, $conf));
-$gloubster->command(new Gloubster\Server\Console\QueuesEnsure($connection, $conf));
+$gloubster->command(new LogProcess($conf));
+$gloubster->command(new ServerEnsureConfiguration($conf));
 $gloubster->run();

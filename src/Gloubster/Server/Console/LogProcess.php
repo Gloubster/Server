@@ -8,6 +8,7 @@ use PhpAmqpLib\Channel\AMQPChannel;
 use Gloubster\Configuration;
 use Gloubster\Worker\Factory;
 use Monolog\Logger;
+use Gloubster\RabbitMQFactory;
 use Neutron\TemporaryFilesystem\TemporaryFilesystem;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
@@ -17,15 +18,16 @@ use Symfony\Component\Console\Command\Command;
 
 class LogProcess extends AbstractCommand
 {
-    private $logger;
+    private $conn;
     private $channel;
     private $conf;
 
-    public function __construct(AMQPChannel $channel, Configuration $conf)
+    public function __construct(Configuration $conf)
     {
         parent::__construct('log:process');
 
-        $this->channel = $channel;
+        $this->conn = RabbitMQFactory::createConnection($conf);
+        $this->channel = $this->conn->channel();
         $this->conf = $conf;
         $this->setDescription('Process log queue');
 
@@ -38,15 +40,9 @@ class LogProcess extends AbstractCommand
     {
         $output->writeln("Processing log messages ...");
 
-        $queue = $this->conf['logs']['queue-name'];
-
-        if (defined($queue)) {
-            $queue = constant($queue);
-        }
-
         $iterations = $input->getOption('iterations')? : true;
 
-        $worker = new LogWorker($this->container['dm'], $this->channel, $queue, $this->container['monolog']);
+        $worker = new LogWorker($this->container['dm'], $this->channel, $this->container['monolog']);
         $worker->run($iterations);
     }
 }

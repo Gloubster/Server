@@ -6,7 +6,11 @@
         "password": "guest",
         "vhost": "/"
     },
-    "logs": {
-        "queue-name": "Gloubster\\Queue::LOGS"
+    "server-management": {
+        "url": "localhost",
+        "port": 55672,
+        "scheme": "http",
+        "user": "guest",
+        "password": "guest"
     }
 }

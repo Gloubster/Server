@@ -3,15 +3,35 @@
     "type": "object",
     "additionalProperties": true,
     "properties": {
-        "logs": {
+        "server-management": {
             "type": "object",
             "description": "Gloubster Log configuration",
             "required": true,
             "additionalProperties": true,
             "properties": {
-                "queue-name": {
+                "url": {
                     "type": "string",
-                    "description": "Log queue name",
+                    "description": "Management server url",
+                    "required": true
+                },
+                "port": {
+                    "type": "number",
+                    "description": "Management server port",
+                    "required": true
+                },
+                "scheme": {
+                    "type": "string",
+                    "description": "Management server scheme",
+                    "required": true
+                },
+                "user": {
+                    "type": "string",
+                    "description": "Management server user",
+                    "required": true
+                },
+                "password": {
+                    "type": "string",
+                    "description": "Management server password",
                     "required": true
                 }
             }

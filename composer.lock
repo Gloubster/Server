@@ -7,12 +7,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/alchemy-fr/RabbitMQ-Management-API-Client",
-                "reference": "3b258da18e3afd4ea32355a8db04f667633288b9"
+                "reference": "6c2d1cf64dd226da176a2c200787ea42bc3a5c05"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/alchemy-fr/RabbitMQ-Management-API-Client/archive/3b258da18e3afd4ea32355a8db04f667633288b9.zip",
-                "reference": "3b258da18e3afd4ea32355a8db04f667633288b9",
+                "url": "https://github.com/alchemy-fr/RabbitMQ-Management-API-Client/archive/6c2d1cf64dd226da176a2c200787ea42bc3a5c05.zip",
+                "reference": "6c2d1cf64dd226da176a2c200787ea42bc3a5c05",
                 "shasum": ""
             },
             "require": {
@@ -23,7 +23,7 @@
                 "videlalvaro/php-amqplib": "dev-master",
                 "sami/sami": "dev-master"
             },
-            "time": "1353693997",
+            "time": "1354117272",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -294,12 +294,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Gloubster/Communications",
-                "reference": "5e948219e3e6fcfda5ec76445d52f8b3c4197dc8"
+                "reference": "ccd85fb150879d1087d7a46c6895a24b1b3a3ea9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/Gloubster/Communications/archive/5e948219e3e6fcfda5ec76445d52f8b3c4197dc8.zip",
-                "reference": "5e948219e3e6fcfda5ec76445d52f8b3c4197dc8",
+                "url": "https://github.com/Gloubster/Communications/archive/ccd85fb150879d1087d7a46c6895a24b1b3a3ea9.zip",
+                "reference": "ccd85fb150879d1087d7a46c6895a24b1b3a3ea9",
                 "shasum": ""
             },
             "require": {
@@ -310,7 +310,7 @@
                 "symfony/finder": ">=2.0,<=2.2.x-dev",
                 "symfony/filesystem": ">=2.0,<=2.2.x-dev"
             },
-            "time": "1353604492",
+            "time": "1354119697",
             "type": "library",
             "installation-source": "source",
             "autoload": {

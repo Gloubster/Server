@@ -1,33 +1,47 @@
 #!/usr/bin/env php
 <?php
 
-require __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
+use Gloubster\Server\Application;
+use Doctrine\ODM\MongoDB\Tools\Console\Helper\DocumentManagerHelper;
+use Symfony\Component\Console\Application as ConsoleApplication;
+use Doctrine\ODM\MongoDB\Version;
+use Doctrine\ODM\MongoDB\Tools\Console\Command\Schema\CreateCommand;
+use Doctrine\ODM\MongoDB\Tools\Console\Command\Schema\DropCommand;
+use Doctrine\ODM\MongoDB\Tools\Console\Command\ClearCache\MetadataCommand;
+use Doctrine\ODM\MongoDB\Tools\Console\Command\QueryCommand;
+use Doctrine\ODM\MongoDB\Tools\Console\Command\GenerateRepositoriesCommand;
+use Doctrine\ODM\MongoDB\Tools\Console\Command\GenerateProxiesCommand;
+use Doctrine\ODM\MongoDB\Tools\Console\Command\GenerateHydratorsCommand;
+use Doctrine\ODM\MongoDB\Tools\Console\Command\GenerateDocumentsCommand;
 
-$Gloubster = new \Gloubster\Server\Application();
+return call_user_func(function(){
+    $Gloubster = new Application();
 
-$helpers = array(
-  'dm' => new Doctrine\ODM\MongoDB\Tools\Console\Helper\DocumentManagerHelper($Gloubster['doctrine.odm.mongodb.dm']),
-);
+    $helpers = array(
+        'dm' => new DocumentManagerHelper($Gloubster['doctrine.odm.mongodb.dm']),
+    );
 
-$cli = new \Symfony\Component\Console\Application('Doctrine ODM MongoDB Command Line Interface', Doctrine\ODM\MongoDB\Version::VERSION);
+    $cli = new ConsoleApplication('Doctrine ODM MongoDB Command Line Interface', Version::VERSION);
 
-$cli->setCatchExceptions(true);
+    $cli->setCatchExceptions(true);
 
-$helperSet = $cli->getHelperSet();
-foreach ($helpers as $name => $helper)
-{
-  $helperSet->set($helper, $name);
-}
+    $helperSet = $cli->getHelperSet();
+    foreach ($helpers as $name => $helper) {
+        $helperSet->set($helper, $name);
+    }
 
-$cli->addCommands(array(
-  new \Doctrine\ODM\MongoDB\Tools\Console\Command\Schema\CreateCommand(),
-  new \Doctrine\ODM\MongoDB\Tools\Console\Command\Schema\DropCommand(),
-  new \Doctrine\ODM\MongoDB\Tools\Console\Command\ClearCache\MetadataCommand(),
-  new \Doctrine\ODM\MongoDB\Tools\Console\Command\QueryCommand(),
-  new \Doctrine\ODM\MongoDB\Tools\Console\Command\GenerateRepositoriesCommand,
-  new \Doctrine\ODM\MongoDB\Tools\Console\Command\GenerateProxiesCommand,
-  new \Doctrine\ODM\MongoDB\Tools\Console\Command\GenerateHydratorsCommand,
-  new \Doctrine\ODM\MongoDB\Tools\Console\Command\GenerateDocumentsCommand,
-));
-$cli->run();
+    $cli->addCommands(array(
+        new CreateCommand(),
+        new DropCommand(),
+        new MetadataCommand(),
+        new QueryCommand(),
+        new GenerateRepositoriesCommand(),
+        new GenerateProxiesCommand(),
+        new GenerateHydratorsCommand(),
+        new GenerateDocumentsCommand(),
+    ));
+
+    return $cli->run();
+});

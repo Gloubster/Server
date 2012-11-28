@@ -116,17 +116,18 @@ class ServerEnsureConfiguration extends AbstractCommand
         $output->writeln("<title> Exchanges configuration </title>");
 
         $exchanges = array(
-            Exchange::GLOUBSTER_DISPATCHER,
+            Exchange::GLOUBSTER_DISPATCHER => 'direct',
+            Exchange::GLOUBSTER_MONITOR    => 'fanout',
         );
 
-        foreach ($exchanges as $name) {
+        foreach ($exchanges as $name => $type) {
             try {
 
                 $exchange = new RabbitMQExchange();
                 $exchange->vhost = $this->conf['server']['vhost'];
                 $exchange->name = $name;
                 $exchange->durable = true;
-                $exchange->type = 'direct';
+                $exchange->type = $type;
 
                 $status = $this->guaranteeManager->probeExchange($exchange);
 
@@ -167,23 +168,23 @@ class ServerEnsureConfiguration extends AbstractCommand
         }
 
         $output->writeln("");
-        $output->writeln("<title> Exchanges configuration </title>");
+        $output->writeln("<title> Routing configuration </title>");
 
         $routing_keys = array(
-            RoutingKey::ERROR            => Queue::ERRORS,
-            RoutingKey::IMAGE_PROCESSING => Queue::IMAGE_PROCESSING,
-            RoutingKey::LOG              => Queue::LOGS,
-            RoutingKey::VIDEO_PROCESSING => Queue::VIDEO_PROCESSING,
-            RoutingKey::WORKER           => Queue::WORKERS,
+            RoutingKey::ERROR            => array(Exchange::GLOUBSTER_DISPATCHER, Queue::ERRORS),
+            RoutingKey::IMAGE_PROCESSING => array(Exchange::GLOUBSTER_DISPATCHER, Queue::IMAGE_PROCESSING),
+            RoutingKey::LOG              => array(Exchange::GLOUBSTER_DISPATCHER, Queue::LOGS),
+            RoutingKey::VIDEO_PROCESSING => array(Exchange::GLOUBSTER_DISPATCHER, Queue::VIDEO_PROCESSING),
         );
 
-        foreach ($routing_keys as $routing => $queueName) {
+        foreach ($routing_keys as $routing => $queueData) {
             try {
 
+                list($exchangeName, $queueName) = $queueData;
                 $binding = new RabbitMQBinding();
                 $binding->routing_key = $routing;
                 $binding->vhost = $this->conf['server']['vhost'];
-                $binding->source = Exchange::GLOUBSTER_DISPATCHER;
+                $binding->source = $exchangeName;
                 $binding->destination = $queueName;
                 $binding->routing_key = $binding->routing_key;
 
@@ -197,7 +198,7 @@ class ServerEnsureConfiguration extends AbstractCommand
                             sprintf(
                                 " routing %s on %s => %s %s ",
                                 $this->setToLength($routing, 22),
-                                Exchange::GLOUBSTER_DISPATCHER,
+                                $exchangeName,
                                 $queueName,
                                 $pendingAction
                             )
@@ -211,7 +212,7 @@ class ServerEnsureConfiguration extends AbstractCommand
                             sprintf(
                                 " routing %s on %s => %s %s ",
                                 $this->setToLength($routing, 22),
-                                Exchange::GLOUBSTER_DISPATCHER,
+                                $exchangeName,
                                 $queueName,
                                 $pendingAction
                             )
@@ -225,7 +226,7 @@ class ServerEnsureConfiguration extends AbstractCommand
                             sprintf(
                                 " routing %s on %s => %s ",
                                 $this->setToLength($routing, 22),
-                                Exchange::GLOUBSTER_DISPATCHER,
+                                $exchangeName,
                                 $queueName
                             )
                         );
@@ -248,7 +249,7 @@ class ServerEnsureConfiguration extends AbstractCommand
             $output->writeln("");
         }
 
-            $output->writeln("");
+        $output->writeln("");
 
         if ($errors) {
             $output->writeln(sprintf("<error>%d error(s) occured</error>", $errors));

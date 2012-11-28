@@ -4,7 +4,9 @@ namespace Gloubster\Server\Worker;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Gloubster\Documents\Job;
+use Gloubster\Documents\Garbage;
 use Gloubster\Job\JobInterface;
+use Gloubster\Queue;
 use Monolog\Logger;
 use Neutron\TemporaryFilesystem\TemporaryFilesystem;
 use PhpAmqpLib\Channel\AMQPChannel;
@@ -29,10 +31,9 @@ class LogWorker
      */
     protected $logger;
 
-    public function __construct(DocumentManager $dm, AMQPChannel $channel, $queue, Logger $logger)
+    public function __construct(DocumentManager $dm, AMQPChannel $channel, Logger $logger)
     {
         $this->dm = $dm;
-        $this->queue = $queue;
         $this->channel = $channel;
         $this->logger = $logger;
     }
@@ -43,7 +44,7 @@ class LogWorker
             $this->logger->addDebug(sprintf('Current memory usage : %s Mo', round(memory_get_usage() / (1024 * 1024),3)));
             try {
                 $this->logger->addInfo('Waiting for messages ...');
-                $this->channel->basic_consume($this->queue, null, false, true, false, false, array($this, 'process'));
+                $this->channel->basic_consume(Queue::LOGS, null, false, true, false, false, array($this, 'process'));
 
                 while (count($this->channel->callbacks)) {
                     $this->channel->wait();

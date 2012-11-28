@@ -10,14 +10,16 @@
     ],
     "require": {
         "alchemy/rabbitmq-management-client": "dev-master",
-        "guzzle/guzzle": "dev-master",
+        "guzzle/guzzle": "2.8.*",
         "gloubster/communications": "dev-master",
         "videlalvaro/php-amqplib": "dev-master",
         "doctrine/mongodb-odm": "dev-master",
         "monolog/monolog": "*",
         "neutron/mongo-odm-silex-provider": "dev-master",
+	"react/react": "0.2.*",
         "silex/silex": "dev-master",
-        "symfony/console" : ">=2.0,<=2.2"
+        "symfony/console" : ">=2.0,<=2.2",
+        "twig/twig" : ">=1.9"
     },
     "autoload": {
         "psr-0": {

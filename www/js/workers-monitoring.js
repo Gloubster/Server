@@ -31,7 +31,7 @@
         ab.connect(wsuri,
             function (session) {
                 console.log('connected');
-                session.subscribe("monitor",
+                session.subscribe("http://phraseanet.com/gloubster/monitor",
                     function (topic, event) {
                         var presence = eval('(' + event + ')');
 

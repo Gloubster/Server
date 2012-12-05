@@ -37,7 +37,7 @@ class WebsocketServer extends AbstractCommand
 
     public function doExecute(InputInterface $input, OutputInterface $output)
     {
-        $wsApplication = new WsApplication();
+        $wsApplication = new WsApplication($this->container['monolog']);
         $loop = LoopFactory::create();
 
         $socket = new Reactor($loop);
@@ -69,6 +69,7 @@ class WebsocketServer extends AbstractCommand
                        )
                    ), $socket, $loop);
 
+        $output->writeln(sprintf('Server listening on %s:%d', $this->conf['websocket-server']['address'], $this->conf['websocket-server']['port']));
         $loop->run();
     }
 

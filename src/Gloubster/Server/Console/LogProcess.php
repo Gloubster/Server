@@ -19,30 +19,29 @@ use Symfony\Component\Console\Command\Command;
 class LogProcess extends AbstractCommand
 {
     private $conn;
-    private $channel;
     private $conf;
 
     public function __construct(Configuration $conf)
     {
         parent::__construct('log:process');
 
-        $this->conn = RabbitMQFactory::createConnection($conf);
-        $this->channel = $this->conn->channel();
         $this->conf = $conf;
-        $this->setDescription('Process log queue');
 
-        $this->addOption('iterations', 'i', InputOption::VALUE_OPTIONAL, 'The number of iterations', true);
+        $this->setDescription('Process log queue')
+             ->addOption('iterations', 'i', InputOption::VALUE_OPTIONAL, 'The number of iterations', true);
 
         return $this;
     }
 
     public function doExecute(InputInterface $input, OutputInterface $output)
     {
+        $output->writeln("Establishing connection ...");
+
+        $this->conn = RabbitMQFactory::createConnection($this->conf);
+
         $output->writeln("Processing log messages ...");
 
-        $iterations = $input->getOption('iterations')? : true;
-
-        $worker = new LogWorker($this->container['dm'], $this->channel, $this->container['monolog']);
-        $worker->run($iterations);
+        $worker = new LogWorker($this->container['dm'], $this->conn->channel(), $this->container['monolog']);
+        $worker->run($input->getOption('iterations')? : true);
     }
 }

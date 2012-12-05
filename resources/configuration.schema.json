@@ -35,6 +35,47 @@
                     "required": true
                 }
             }
+        },
+        "session-server": {
+            "type": "object",
+            "description": "Gloubster session server",
+            "required": true,
+            "additionalProperties": true,
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "description": "Server type",
+                    "required": true
+                },
+                "host": {
+                    "type": "string",
+                    "description": "Session server host",
+                    "required": true
+                },
+                "port": {
+                    "type": "number",
+                    "description": "Session server port",
+                    "required": true
+                }
+            }
+        },
+        "websocket-server": {
+            "type": "object",
+            "description": "Gloubster websocket server conf",
+            "required": true,
+            "additionalProperties": true,
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "description": "The address to listen",
+                    "required": true
+                },
+                "port": {
+                    "type": "number",
+                    "description": "The port number",
+                    "required": true
+                }
+            }
         }
     }
 }

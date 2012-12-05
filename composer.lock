@@ -1,5 +1,5 @@
 {
-    "hash": "ad675082386bfd29e37b739626cb92f6",
+    "hash": "bd2b73a7be3562fb647c128788fff07d",
     "packages": [
         {
             "name": "alchemy/rabbitmq-management-client",
@@ -7,23 +7,26 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/alchemy-fr/RabbitMQ-Management-API-Client",
-                "reference": "6c2d1cf64dd226da176a2c200787ea42bc3a5c05"
+                "reference": "4d6d6452d465f2066799e6e2e4cde7eb6f06a249"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/alchemy-fr/RabbitMQ-Management-API-Client/archive/6c2d1cf64dd226da176a2c200787ea42bc3a5c05.zip",
-                "reference": "6c2d1cf64dd226da176a2c200787ea42bc3a5c05",
+                "url": "https://github.com/alchemy-fr/RabbitMQ-Management-API-Client/archive/4d6d6452d465f2066799e6e2e4cde7eb6f06a249.zip",
+                "reference": "4d6d6452d465f2066799e6e2e4cde7eb6f06a249",
                 "shasum": ""
             },
             "require": {
-                "guzzle/guzzle": ">=2.8",
-                "doctrine/common": ">=2.0"
+                "doctrine/common": ">=2.0",
+                "react/promise": "1.0.*",
+                "react/react": "0.2.*",
+                "react/curry": "1.0.*",
+                "guzzle/guzzle": "3.0.*"
             },
             "require-dev": {
                 "videlalvaro/php-amqplib": "dev-master",
                 "sami/sami": "dev-master"
             },
-            "time": "1354117272",
+            "time": "1354132640",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -54,23 +57,72 @@
             ]
         },
         {
+            "name": "cboden/Ratchet",
+            "version": "v0.2.3",
+            "source": {
+                "type": "git",
+                "url": "git://github.com/cboden/Ratchet.git",
+                "reference": "v0.2.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/cboden/Ratchet/archive/v0.2.3.zip",
+                "reference": "v0.2.3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "react/socket": "0.2.*",
+                "guzzle/http": "3.0.*",
+                "symfony/http-foundation": "2.1.*"
+            },
+            "time": "2012-11-22 02:12:07",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-0": {
+                    "Ratchet\\Tests": "tests",
+                    "Ratchet": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chris Boden",
+                    "email": "cboden@gmail.com",
+                    "homepage": "http://res.im",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP WebSocket library",
+            "homepage": "http://socketo.me",
+            "keywords": [
+                "sockets",
+                "server",
+                "WebSockets",
+                "Ratchet"
+            ]
+        },
+        {
             "name": "doctrine/common",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/common",
-                "reference": "a836c86c13e964051549e234250cf665a5f5a190"
+                "reference": "d514e3920656921ba1148f16a4089222c58bc83a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/doctrine/common/archive/a836c86c13e964051549e234250cf665a5f5a190.zip",
-                "reference": "a836c86c13e964051549e234250cf665a5f5a190",
+                "url": "https://github.com/doctrine/common/archive/d514e3920656921ba1148f16a4089222c58bc83a.zip",
+                "reference": "d514e3920656921ba1148f16a4089222c58bc83a",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2"
             },
-            "time": "1353613273",
+            "time": "1354709019",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -128,12 +180,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/mongodb",
-                "reference": "807f9ccb692fcf082e9a10d72b9303e374873405"
+                "reference": "9ac0ba4f96ea50d20de940b9147ee68b308ea356"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/doctrine/mongodb/archive/807f9ccb692fcf082e9a10d72b9303e374873405.zip",
-                "reference": "807f9ccb692fcf082e9a10d72b9303e374873405",
+                "url": "https://github.com/doctrine/mongodb/archive/9ac0ba4f96ea50d20de940b9147ee68b308ea356.zip",
+                "reference": "9ac0ba4f96ea50d20de940b9147ee68b308ea356",
                 "shasum": ""
             },
             "require": {
@@ -143,7 +195,7 @@
                 "symfony/yaml": ">=2.0,<2.3-dev",
                 "symfony/console": ">=2.0,<2.3-dev"
             },
-            "time": "1352703241",
+            "time": "1354489257",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -189,12 +241,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/mongodb-odm.git",
-                "reference": "75eee822369b8f8bd73aaa98490981f54950504a"
+                "reference": "205de81707fea1e6e7d4ed735ffd7a93d454949b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/doctrine/mongodb-odm/archive/75eee822369b8f8bd73aaa98490981f54950504a.zip",
-                "reference": "75eee822369b8f8bd73aaa98490981f54950504a",
+                "url": "https://github.com/doctrine/mongodb-odm/archive/205de81707fea1e6e7d4ed735ffd7a93d454949b.zip",
+                "reference": "205de81707fea1e6e7d4ed735ffd7a93d454949b",
                 "shasum": ""
             },
             "require": {
@@ -204,7 +256,7 @@
                 "symfony/yaml": ">=2.0-dev,<2.3-dev",
                 "symfony/console": ">=2.0-dev,<2.3-dev"
             },
-            "time": "1352348147",
+            "time": "1354558429",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -294,12 +346,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Gloubster/Communications",
-                "reference": "ccd85fb150879d1087d7a46c6895a24b1b3a3ea9"
+                "reference": "914fd3107a56e081f361825d78f930e9b6d05b69"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/Gloubster/Communications/archive/ccd85fb150879d1087d7a46c6895a24b1b3a3ea9.zip",
-                "reference": "ccd85fb150879d1087d7a46c6895a24b1b3a3ea9",
+                "url": "https://github.com/Gloubster/Communications/archive/914fd3107a56e081f361825d78f930e9b6d05b69.zip",
+                "reference": "914fd3107a56e081f361825d78f930e9b6d05b69",
                 "shasum": ""
             },
             "require": {
@@ -310,7 +362,7 @@
                 "symfony/finder": ">=2.0,<=2.2.x-dev",
                 "symfony/filesystem": ">=2.0,<=2.2.x-dev"
             },
-            "time": "1354119697",
+            "time": "1354706051",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -331,16 +383,16 @@
         },
         {
             "name": "guzzle/guzzle",
-            "version": "v2.8.8",
+            "version": "v3.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle",
-                "reference": "v2.8.8"
+                "reference": "v3.0.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/guzzle/guzzle/zipball/v2.8.8",
-                "reference": "v2.8.8",
+                "url": "https://github.com/guzzle/guzzle/archive/v3.0.5.zip",
+                "reference": "v3.0.5",
                 "shasum": ""
             },
             "require": {
@@ -349,24 +401,39 @@
                 "symfony/event-dispatcher": "2.1.*"
             },
             "replace": {
+                "guzzle/batch": "self.version",
+                "guzzle/cache": "self.version",
                 "guzzle/common": "self.version",
                 "guzzle/http": "self.version",
-                "guzzle/parser": "self.version"
+                "guzzle/inflection": "self.version",
+                "guzzle/iterator": "self.version",
+                "guzzle/log": "self.version",
+                "guzzle/parser": "self.version",
+                "guzzle/plugin": "self.version",
+                "guzzle/plugin-async": "self.version",
+                "guzzle/plugin-backoff": "self.version",
+                "guzzle/plugin-cache": "self.version",
+                "guzzle/plugin-cookie": "self.version",
+                "guzzle/plugin-curlauth": "self.version",
+                "guzzle/plugin-history": "self.version",
+                "guzzle/plugin-log": "self.version",
+                "guzzle/plugin-md5": "self.version",
+                "guzzle/plugin-mock": "self.version",
+                "guzzle/plugin-oauth": "self.version",
+                "guzzle/service": "self.version",
+                "guzzle/stream": "self.version"
             },
             "require-dev": {
                 "doctrine/common": "*",
                 "symfony/class-loader": "*",
                 "monolog/monolog": "1.*",
-                "zendframework/zend-cache": "2.0.0beta4",
-                "zendframework/zend-log": "2.0.0beta4",
-                "zendframework/zend-loader": "2.0.0beta4",
-                "zendframework/zend-stdlib": "2.0.0beta4",
-                "zendframework/zend-eventmanager": "2.0.0beta4",
-                "zendframework/zend-servicemanager": "2.0.0beta4",
+                "zendframework/zend-cache": "2.0.*",
+                "zendframework/zend-log": "2.0.*",
                 "zend/zend-log1": "1.12",
-                "zend/zend-cache1": "1.12"
+                "zend/zend-cache1": "1.12",
+                "phpunit/phpunit": "3.7.*"
             },
-            "time": "2012-10-15 17:25:16",
+            "time": "2012-11-19 00:15:33",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -407,18 +474,18 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/justinrainbow/json-schema.git",
-                "reference": "6573b23bed508c6744a61ffbe196a73a327761b7"
+                "reference": "1.2.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/justinrainbow/json-schema/archive/6573b23bed508c6744a61ffbe196a73a327761b7.zip",
-                "reference": "6573b23bed508c6744a61ffbe196a73a327761b7",
+                "url": "https://github.com/justinrainbow/json-schema/archive/1.2.2.zip",
+                "reference": "1.2.2",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "1351872170",
+            "time": "1354205478",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -457,17 +524,139 @@
             ]
         },
         {
+            "name": "kriswallsmith/assetic",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "http://github.com/kriswallsmith/assetic.git",
+                "reference": "deed96bb7ba009d8e05aaeeb1b73c1d67a8f3719"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/kriswallsmith/assetic/archive/deed96bb7ba009d8e05aaeeb1b73c1d67a8f3719.zip",
+                "reference": "deed96bb7ba009d8e05aaeeb1b73c1d67a8f3719",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/process": ">=2.1.0,<2.3-dev",
+                "php": ">=5.3.1"
+            },
+            "require-dev": {
+                "twig/twig": ">=1.6.0,<2.0",
+                "leafo/lessphp": "*",
+                "leafo/scssphp": "*",
+                "ptachoire/cssembed": "*",
+                "leafo/scssphp-compass": "*"
+            },
+            "suggest": {
+                "twig/twig": "Assetic provides the integration with the Twig templating engine",
+                "leafo/lessphp": "Assetic provides the integration with the lessphp LESS compiler",
+                "leafo/scssphp": "Assetic provides the integration with the scssphp SCSS compiler",
+                "ptachoire/cssembed": "Assetic provides the integration with phpcssembed to embed data uris",
+                "leafo/scssphp-compass": "Assetic provides the integration with the SCSS compass plugin"
+            },
+            "time": "1354022858",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1-dev"
+                }
+            },
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "Assetic": "src/"
+                },
+                "files": [
+                    "src/functions.php"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kris Wallsmith",
+                    "email": "kris.wallsmith@gmail.com",
+                    "homepage": "http://kriswallsmith.net/"
+                }
+            ],
+            "description": "Asset Management for PHP",
+            "homepage": "https://github.com/kriswallsmith/assetic",
+            "keywords": [
+                "assets",
+                "compression",
+                "minification"
+            ]
+        },
+        {
+            "name": "mheap/silex-assetic",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mheap/Silex-Assetic.git",
+                "reference": "e9c5da1e18a46ad40e03c79b7010216391258db9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/mheap/Silex-Assetic/archive/e9c5da1e18a46ad40e03c79b7010216391258db9.zip",
+                "reference": "e9c5da1e18a46ad40e03c79b7010216391258db9",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0",
+                "kriswallsmith/assetic": ">=1.0",
+                "symfony/finder": "2.1.*"
+            },
+            "require-dev": {
+                "silex/silex": "*",
+                "twig/twig": ">=1.2.0"
+            },
+            "suggest": {
+                "twig/twig": ">=1.2.0"
+            },
+            "time": "1353163495",
+            "type": "library",
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "SilexAssetic": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sven Eisenschmidt",
+                    "email": "sven.eisenschmidt@gmail.com",
+                    "homepage": "http://unsicherheitsagent.de/"
+                },
+                {
+                    "name": "Michael Heap",
+                    "email": "m@michaelheap.com",
+                    "homepage": "http://michaelheap.com/"
+                }
+            ],
+            "description": "Assetic extension for Silex",
+            "homepage": "https://github.com/mheap/Silex-Assetic",
+            "keywords": [
+                "silex",
+                "assetic"
+            ]
+        },
+        {
             "name": "monolog/monolog",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog",
-                "reference": "b23cfd3d6ce0b6c050dda723040b83a1a6d7637e"
+                "reference": "546225bed27bea7d00b836e0f7d8954272e0cf42"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/Seldaek/monolog/archive/b23cfd3d6ce0b6c050dda723040b83a1a6d7637e.zip",
-                "reference": "b23cfd3d6ce0b6c050dda723040b83a1a6d7637e",
+                "url": "https://github.com/Seldaek/monolog/archive/546225bed27bea7d00b836e0f7d8954272e0cf42.zip",
+                "reference": "546225bed27bea7d00b836e0f7d8954272e0cf42",
                 "shasum": ""
             },
             "require": {
@@ -481,7 +670,7 @@
                 "ext-amqp": "Allow sending log messages to an AMQP server (1.0+ required)",
                 "ext-mongo": "Allow sending log messages to a MongoDB server"
             },
-            "time": "1352907970",
+            "time": "1354622369",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -615,34 +804,122 @@
             ]
         },
         {
-            "name": "react/react",
-            "version": "v0.2.2",
+            "name": "react/curry",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/reactphp/react",
-                "reference": "v0.2.2"
+                "url": "https://github.com/reactphp/curry",
+                "reference": "d3b4a19f9e41ffcc24379c336f3c071589c1c3a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/reactphp/react/archive/v0.2.2.zip",
-                "reference": "v0.2.2",
+                "url": "https://github.com/reactphp/curry/archive/d3b4a19f9e41ffcc24379c336f3c071589c1c3a6.zip",
+                "reference": "d3b4a19f9e41ffcc24379c336f3c071589c1c3a6",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3",
+                "php": ">=5.3.2"
+            },
+            "time": "1352337237",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "React\\Curry": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Partial function application.",
+            "keywords": [
+                "curry",
+                "currying",
+                "functional-programming"
+            ]
+        },
+        {
+            "name": "react/promise",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/reactphp/promise",
+                "reference": "8fe0e60dfbb7244d63c30bf8301f31d8efc9c0c4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/reactphp/promise/archive/8fe0e60dfbb7244d63c30bf8301f31d8efc9c0c4.zip",
+                "reference": "8fe0e60dfbb7244d63c30bf8301f31d8efc9c0c4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "time": "1354522966",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "React\\Promise": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jan Sorgalla",
+                    "email": "jsorgalla@googlemail.com",
+                    "homepage": "http://sorgalla.com",
+                    "role": "maintainer"
+                }
+            ],
+            "description": "A lightweight implementation of CommonJS Promises/A for PHP"
+        },
+        {
+            "name": "react/react",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/reactphp/react",
+                "reference": "v0.2.5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/reactphp/react/archive/v0.2.5.zip",
+                "reference": "v0.2.5",
+                "shasum": ""
+            },
+            "require": {
                 "evenement/evenement": "1.0.*",
-                "guzzle/http": "2.8.*",
-                "guzzle/parser": "2.8.*"
+                "php": ">=5.3.3",
+                "guzzle/http": "3.0.*",
+                "guzzle/parser": "3.0.*",
+                "react/promise": "1.0.*"
             },
             "replace": {
                 "react/event-loop": "self.version",
-                "react/stream": "self.version",
                 "react/socket": "self.version",
                 "react/http": "self.version",
+                "react/stream": "self.version",
                 "react/dns": "self.version",
                 "react/http-client": "self.version"
             },
-            "time": "2012-10-28 14:33:46",
+            "require-dev": {
+                "ext-libevent": "*",
+                "ext-libev": "*"
+            },
+            "time": "1353897994",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -665,17 +942,59 @@
             ]
         },
         {
+            "name": "react/stomp",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/reactphp/stomp",
+                "reference": "5e8213ca5f00ae27586ea5d9cbdc9a0de8b4cf63"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/reactphp/stomp/archive/5e8213ca5f00ae27586ea5d9cbdc9a0de8b4cf63.zip",
+                "reference": "5e8213ca5f00ae27586ea5d9cbdc9a0de8b4cf63",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2",
+                "evenement/evenement": "1.0.*",
+                "react/socket": "0.2.*",
+                "react/promise": "1.0.*"
+            },
+            "time": "1353335891",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1-dev"
+                }
+            },
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "React\\Stomp": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "STOMP bindings for React.",
+            "keywords": [
+                "rabbitmq",
+                "stomp"
+            ]
+        },
+        {
             "name": "silex/silex",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "git://github.com/fabpot/Silex.git",
-                "reference": "46ac91f06d2b5b37bde03d7f185b82645f10f691"
+                "reference": "7e5862934aa831ededc9ca188a56816dc46e70b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/fabpot/Silex/archive/46ac91f06d2b5b37bde03d7f185b82645f10f691.zip",
-                "reference": "46ac91f06d2b5b37bde03d7f185b82645f10f691",
+                "url": "https://github.com/fabpot/Silex/archive/7e5862934aa831ededc9ca188a56816dc46e70b4.zip",
+                "reference": "7e5862934aa831ededc9ca188a56816dc46e70b4",
                 "shasum": ""
             },
             "require": {
@@ -710,7 +1029,7 @@
                 "symfony/css-selector": ">=2.1,<2.3-dev",
                 "symfony/dom-crawler": ">=2.1,<2.3-dev"
             },
-            "time": "1354007893",
+            "time": "1354471498",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -750,12 +1069,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console",
-                "reference": "528b030bd94d74b06735c9da9fd9495db0567800"
+                "reference": "v2.1.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/Console/archive/528b030bd94d74b06735c9da9fd9495db0567800.zip",
-                "reference": "528b030bd94d74b06735c9da9fd9495db0567800",
+                "url": "https://github.com/symfony/Console/archive/v2.1.4.zip",
+                "reference": "v2.1.4",
                 "shasum": ""
             },
             "require": {
@@ -797,12 +1116,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/EventDispatcher",
-                "reference": "b5b6807bcc192f3a1c4fba7ef48466ebbd3c4485"
+                "reference": "v2.1.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/EventDispatcher/archive/b5b6807bcc192f3a1c4fba7ef48466ebbd3c4485.zip",
-                "reference": "b5b6807bcc192f3a1c4fba7ef48466ebbd3c4485",
+                "url": "https://github.com/symfony/EventDispatcher/archive/v2.1.4.zip",
+                "reference": "v2.1.4",
                 "shasum": ""
             },
             "require": {
@@ -845,24 +1164,71 @@
             "homepage": "http://symfony.com"
         },
         {
+            "name": "symfony/finder",
+            "version": "2.1.x-dev",
+            "target-dir": "Symfony/Component/Finder",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/Finder",
+                "reference": "v2.1.4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/symfony/Finder/archive/v2.1.4.zip",
+                "reference": "v2.1.4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "time": "1352368308",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1-dev"
+                }
+            },
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\Finder": ""
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Finder Component",
+            "homepage": "http://symfony.com"
+        },
+        {
             "name": "symfony/http-foundation",
             "version": "2.1.x-dev",
             "target-dir": "Symfony/Component/HttpFoundation",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpFoundation",
-                "reference": "1019af12f75155fdf9b90240d22f7fa5a0e16ceb"
+                "reference": "v2.1.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/HttpFoundation/archive/1019af12f75155fdf9b90240d22f7fa5a0e16ceb.zip",
-                "reference": "1019af12f75155fdf9b90240d22f7fa5a0e16ceb",
+                "url": "https://github.com/symfony/HttpFoundation/archive/v2.1.4.zip",
+                "reference": "v2.1.4",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "1353084667",
+            "time": "1354279994",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -899,12 +1265,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpKernel",
-                "reference": "5b46b62217dab8296098607100500bb7bb3087bd"
+                "reference": "56164fbab3f6567116ad4f04b7ff31a72b824113"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/HttpKernel/archive/5b46b62217dab8296098607100500bb7bb3087bd.zip",
-                "reference": "5b46b62217dab8296098607100500bb7bb3087bd",
+                "url": "https://github.com/symfony/HttpKernel/archive/56164fbab3f6567116ad4f04b7ff31a72b824113.zip",
+                "reference": "56164fbab3f6567116ad4f04b7ff31a72b824113",
                 "shasum": ""
             },
             "require": {
@@ -930,7 +1296,7 @@
                 "symfony/dependency-injection": "2.1.*",
                 "symfony/finder": "2.1.*"
             },
-            "time": "1352985780",
+            "time": "1354471267",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -960,18 +1326,65 @@
             "homepage": "http://symfony.com"
         },
         {
+            "name": "symfony/process",
+            "version": "dev-master",
+            "target-dir": "Symfony/Component/Process",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/Process",
+                "reference": "6ec0a1493b6bc36c196a86382839df470a703bf6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/symfony/Process/archive/6ec0a1493b6bc36c196a86382839df470a703bf6.zip",
+                "reference": "6ec0a1493b6bc36c196a86382839df470a703bf6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "time": "1354185165",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev"
+                }
+            },
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\Process\\": ""
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Process Component",
+            "homepage": "http://symfony.com"
+        },
+        {
             "name": "symfony/routing",
             "version": "dev-master",
             "target-dir": "Symfony/Component/Routing",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Routing",
-                "reference": "1198e4e883628bc1dec64b75e7ec51142c7bff8b"
+                "reference": "de5f6ded706bf50922c89864693c60793d21e935"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/Routing/archive/1198e4e883628bc1dec64b75e7ec51142c7bff8b.zip",
-                "reference": "1198e4e883628bc1dec64b75e7ec51142c7bff8b",
+                "url": "https://github.com/symfony/Routing/archive/de5f6ded706bf50922c89864693c60793d21e935.zip",
+                "reference": "de5f6ded706bf50922c89864693c60793d21e935",
                 "shasum": ""
             },
             "require": {
@@ -988,7 +1401,7 @@
                 "symfony/config": "2.2.*",
                 "symfony/yaml": "2.2.*"
             },
-            "time": "1354102265",
+            "time": "1354572697",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1070,18 +1483,18 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/fabpot/Twig.git",
-                "reference": "b58df0e1ae4b664f561bfaeffdb673829daa6b79"
+                "reference": "6810dbe8a7be204813a4397b1bddcfdb875fe2e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/fabpot/Twig/archive/b58df0e1ae4b664f561bfaeffdb673829daa6b79.zip",
-                "reference": "b58df0e1ae4b664f561bfaeffdb673829daa6b79",
+                "url": "https://github.com/fabpot/Twig/archive/6810dbe8a7be204813a4397b1bddcfdb875fe2e2.zip",
+                "reference": "6810dbe8a7be204813a4397b1bddcfdb875fe2e2",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.4"
             },
-            "time": "1353925549",
+            "time": "1354387289",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1119,18 +1532,18 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/videlalvaro/php-amqplib.git",
-                "reference": "bdf9f66dd918ffbb314c7ea0f810a39dcb25942e"
+                "reference": "6ce5a028496a5c68371bd571d47467c583d17154"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/videlalvaro/php-amqplib/archive/bdf9f66dd918ffbb314c7ea0f810a39dcb25942e.zip",
-                "reference": "bdf9f66dd918ffbb314c7ea0f810a39dcb25942e",
+                "url": "https://github.com/videlalvaro/php-amqplib/archive/6ce5a028496a5c68371bd571d47467c583d17154.zip",
+                "reference": "6ce5a028496a5c68371bd571d47467c583d17154",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "1354109121",
+            "time": "1354633718",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -1152,19 +1565,17 @@
             ]
         }
     ],
-    "packages-dev": [
-
-    ],
+    "packages-dev": null,
     "aliases": [
 
     ],
     "minimum-stability": "dev",
     "stability-flags": {
         "alchemy/rabbitmq-management-client": 20,
-        "gloubster/communications": 20,
-        "videlalvaro/php-amqplib": 20,
         "doctrine/mongodb-odm": 20,
+        "gloubster/communications": 20,
         "neutron/mongo-odm-silex-provider": 20,
-        "silex/silex": 20
+        "silex/silex": 20,
+        "videlalvaro/php-amqplib": 20
     }
 }

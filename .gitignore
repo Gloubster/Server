@@ -1,4 +1,5 @@
-vendor
-nbproject
-tests/phpunit_report
-composer.phar
+/cache
+/components
+/vendor
+/tests/phpunit_report
+/composer.phar

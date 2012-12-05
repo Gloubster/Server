@@ -1,0 +1,3 @@
+[submodule "components/relative-date"]
+	path = components/relative-date
+	url = git://github.com/azer/relative-date.git

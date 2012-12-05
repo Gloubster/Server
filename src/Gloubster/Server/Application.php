@@ -9,6 +9,7 @@ use Assetic\Filter\Yui\CssCompressorFilter;
 use Assetic\Filter\Yui\JsCompressorFilter;
 use Assetic\Cache\FilesystemCache;
 use Doctrine\Common\Cache\ArrayCache;
+use Gloubster\Configuration;
 use Gloubster\Server\SessionHandler;
 use Monolog\Handler\NullHandler;
 use Monolog\Logger;

@@ -1,3 +1,6 @@
 [submodule "components/relative-date"]
 	path = components/relative-date
 	url = git://github.com/azer/relative-date.git
+[submodule "components/filesize.js"]
+	path = components/filesize.js
+	url = git://github.com/avoidwork/filesize.js.git

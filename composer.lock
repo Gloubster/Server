@@ -7,12 +7,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/alchemy-fr/RabbitMQ-Management-API-Client",
-                "reference": "4d6d6452d465f2066799e6e2e4cde7eb6f06a249"
+                "reference": "7f6c75a06ac4ce3ab889dbe62b1a84e1e30512d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/alchemy-fr/RabbitMQ-Management-API-Client/archive/4d6d6452d465f2066799e6e2e4cde7eb6f06a249.zip",
-                "reference": "4d6d6452d465f2066799e6e2e4cde7eb6f06a249",
+                "url": "https://github.com/alchemy-fr/RabbitMQ-Management-API-Client/archive/7f6c75a06ac4ce3ab889dbe62b1a84e1e30512d4.zip",
+                "reference": "7f6c75a06ac4ce3ab889dbe62b1a84e1e30512d4",
                 "shasum": ""
             },
             "require": {
@@ -26,7 +26,7 @@
                 "videlalvaro/php-amqplib": "dev-master",
                 "sami/sami": "dev-master"
             },
-            "time": "1354132640",
+            "time": "2012-12-05 14:58:25",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -39,6 +39,7 @@
                     "RabbitMQ": "src"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -122,7 +123,6 @@
             "require": {
                 "php": ">=5.3.2"
             },
-            "time": "1354709019",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -172,7 +172,8 @@
                 "eventmanager",
                 "annotations",
                 "persistence"
-            ]
+            ],
+            "time": "2012-12-05 12:03:39"
         },
         {
             "name": "doctrine/mongodb",
@@ -195,7 +196,7 @@
                 "symfony/yaml": ">=2.0,<2.3-dev",
                 "symfony/console": ">=2.0,<2.3-dev"
             },
-            "time": "1354489257",
+            "time": "2012-12-02 23:00:57",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -256,7 +257,7 @@
                 "symfony/yaml": ">=2.0-dev,<2.3-dev",
                 "symfony/console": ">=2.0-dev,<2.3-dev"
             },
-            "time": "1354558429",
+            "time": "2012-12-03 18:13:49",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -312,7 +313,6 @@
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "1351909043",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -338,7 +338,8 @@
             "description": "Événement is a very simple event dispatching library for PHP 5.3",
             "keywords": [
                 "event-dispatcher"
-            ]
+            ],
+            "time": "2012-11-03 02:17:23"
         },
         {
             "name": "gloubster/communications",
@@ -362,7 +363,6 @@
                 "symfony/finder": ">=2.0,<=2.2.x-dev",
                 "symfony/filesystem": ">=2.0,<=2.2.x-dev"
             },
-            "time": "1354706051",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -379,7 +379,8 @@
                     "email": "imprec@gmail.com",
                     "homepage": "http://www.lickmychip.com/"
                 }
-            ]
+            ],
+            "time": "2012-12-05 11:14:11"
         },
         {
             "name": "guzzle/guzzle",
@@ -435,7 +436,7 @@
             },
             "time": "2012-11-19 00:15:33",
             "type": "library",
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-0": {
                     "Guzzle\\Tests": "tests/",
@@ -485,7 +486,6 @@
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "1354205478",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -521,7 +521,8 @@
             "keywords": [
                 "json",
                 "schema"
-            ]
+            ],
+            "time": "2012-11-29 16:11:18"
         },
         {
             "name": "kriswallsmith/assetic",
@@ -555,7 +556,6 @@
                 "ptachoire/cssembed": "Assetic provides the integration with phpcssembed to embed data uris",
                 "leafo/scssphp-compass": "Assetic provides the integration with the SCSS compass plugin"
             },
-            "time": "1354022858",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -587,7 +587,8 @@
                 "assets",
                 "compression",
                 "minification"
-            ]
+            ],
+            "time": "2012-11-27 13:27:38"
         },
         {
             "name": "mheap/silex-assetic",
@@ -615,7 +616,6 @@
             "suggest": {
                 "twig/twig": ">=1.2.0"
             },
-            "time": "1353163495",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -643,7 +643,8 @@
             "keywords": [
                 "silex",
                 "assetic"
-            ]
+            ],
+            "time": "2012-11-17 14:44:55"
         },
         {
             "name": "monolog/monolog",
@@ -670,7 +671,6 @@
                 "ext-amqp": "Allow sending log messages to an AMQP server (1.0+ required)",
                 "ext-mongo": "Allow sending log messages to a MongoDB server"
             },
-            "time": "1354622369",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -699,7 +699,8 @@
             "keywords": [
                 "log",
                 "logging"
-            ]
+            ],
+            "time": "2012-12-04 11:59:29"
         },
         {
             "name": "neutron/mongo-odm-silex-provider",
@@ -722,7 +723,6 @@
             "require-dev": {
                 "silex/silex": "dev-master"
             },
-            "time": "1352732090",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -755,7 +755,8 @@
                 "silex",
                 "doctrine",
                 "odm"
-            ]
+            ],
+            "time": "2012-11-12 14:54:50"
         },
         {
             "name": "pimple/pimple",
@@ -774,7 +775,6 @@
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "1352622754",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -801,7 +801,8 @@
             "keywords": [
                 "dependency injection",
                 "container"
-            ]
+            ],
+            "time": "2012-11-11 08:32:34"
         },
         {
             "name": "react/curry",
@@ -820,7 +821,6 @@
             "require": {
                 "php": ">=5.3.2"
             },
-            "time": "1352337237",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -841,7 +841,8 @@
                 "curry",
                 "currying",
                 "functional-programming"
-            ]
+            ],
+            "time": "2012-11-08 01:13:57"
         },
         {
             "name": "react/promise",
@@ -860,7 +861,7 @@
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "1354522966",
+            "time": "2012-12-03 08:22:46",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -919,7 +920,6 @@
                 "ext-libevent": "*",
                 "ext-libev": "*"
             },
-            "time": "1353897994",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -939,7 +939,8 @@
             "keywords": [
                 "event-loop",
                 "reactor"
-            ]
+            ],
+            "time": "2012-11-26 02:46:34"
         },
         {
             "name": "react/stomp",
@@ -961,7 +962,6 @@
                 "react/socket": "0.2.*",
                 "react/promise": "1.0.*"
             },
-            "time": "1353335891",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -981,7 +981,8 @@
             "keywords": [
                 "rabbitmq",
                 "stomp"
-            ]
+            ],
+            "time": "2012-11-19 14:38:11"
         },
         {
             "name": "silex/silex",
@@ -1029,7 +1030,7 @@
                 "symfony/css-selector": ">=2.1,<2.3-dev",
                 "symfony/dom-crawler": ">=2.1,<2.3-dev"
             },
-            "time": "1354471498",
+            "time": "2012-12-02 18:04:58",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1080,7 +1081,7 @@
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "1352451171",
+            "time": "2012-11-09 08:52:51",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1134,7 +1135,7 @@
                 "symfony/dependency-injection": "2.1.*",
                 "symfony/http-kernel": "2.1.*"
             },
-            "time": "1352368308",
+            "time": "2012-11-08 09:51:48",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1181,7 +1182,7 @@
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "1352368308",
+            "time": "2012-11-08 09:51:48",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1228,7 +1229,6 @@
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "1354279994",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1256,7 +1256,8 @@
                 }
             ],
             "description": "Symfony HttpFoundation Component",
-            "homepage": "http://symfony.com"
+            "homepage": "http://symfony.com",
+            "time": "2012-11-30 12:53:14"
         },
         {
             "name": "symfony/http-kernel",
@@ -1296,7 +1297,7 @@
                 "symfony/dependency-injection": "2.1.*",
                 "symfony/finder": "2.1.*"
             },
-            "time": "1354471267",
+            "time": "2012-12-02 18:01:07",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1343,7 +1344,6 @@
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "1354185165",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1370,7 +1370,8 @@
                 }
             ],
             "description": "Symfony Process Component",
-            "homepage": "http://symfony.com"
+            "homepage": "http://symfony.com",
+            "time": "2012-11-29 10:32:45"
         },
         {
             "name": "symfony/routing",
@@ -1401,7 +1402,7 @@
                 "symfony/config": "2.2.*",
                 "symfony/yaml": "2.2.*"
             },
-            "time": "1354572697",
+            "time": "2012-12-03 22:11:37",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1448,7 +1449,6 @@
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "1352815684",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1475,7 +1475,8 @@
                 }
             ],
             "description": "Symfony Yaml Component",
-            "homepage": "http://symfony.com"
+            "homepage": "http://symfony.com",
+            "time": "2012-11-13 14:08:04"
         },
         {
             "name": "twig/twig",
@@ -1494,7 +1495,7 @@
             "require": {
                 "php": ">=5.2.4"
             },
-            "time": "1354387289",
+            "time": "2012-12-01 18:41:29",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1543,7 +1544,6 @@
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "1354633718",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -1562,10 +1562,13 @@
                 "queue",
                 "rabbitmq",
                 "message"
-            ]
+            ],
+            "time": "2012-12-04 15:08:38"
         }
     ],
-    "packages-dev": null,
+    "packages-dev": [
+
+    ],
     "aliases": [
 
     ],

@@ -47,7 +47,7 @@ class Application extends SilexApplication
                 return Logger::DEBUG;
             };
 
-        $this['monolog.name'] = 'myapp';
+        $this['monolog.name'] = 'Gloubster-Server';
 
         $this['configuration'] = $this->share(function(Application $app) {
             return new Configuration(file_get_contents(__DIR__ . '/../../../config/config.json'), array(

@@ -2,70 +2,65 @@
 
 namespace Gloubster\Server;
 
-use Silex\Application as SilexApplication;
-
-//use Assetic\Asset\AssetCache;
-//use Assetic\Asset\AssetCollection;
-//use Assetic\Asset\FileAsset;
-//use Assetic\Filter\LessFilter;
-//use Assetic\Filter\Yui\CssCompressorFilter;
-//use Assetic\Filter\Yui\JsCompressorFilter;
-//use Assetic\Cache\FilesystemCache;
+use Assetic\Asset\AssetCache;
+use Assetic\Asset\AssetCollection;
+use Assetic\Asset\FileAsset;
+use Assetic\Filter\Yui\CssCompressorFilter;
+use Assetic\Filter\Yui\JsCompressorFilter;
+use Assetic\Cache\FilesystemCache;
 use Doctrine\Common\Cache\ArrayCache;
+use Gloubster\Server\SessionHandler;
 use Monolog\Handler\NullHandler;
 use Monolog\Logger;
-//use Gloubster\Application as GloubsterApp;
-//use Gloubster\Client\Configuration as ClientConfiguration;
-//use Silex\Provider\FormServiceProvider;
-//use Silex\Provider\SessionServiceProvider;
+use Silex\Application as SilexApplication;
+use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\MonologServiceProvider;
-//use Silex\Provider\TranslationServiceProvider;
-//use Silex\Provider\TwigServiceProvider;
-//use Silex\Provider\UrlGeneratorServiceProvider;
-//use Silex\Provider\ValidatorServiceProvider;
-//use SilexExtension\AsseticExtension;
-//use Symfony\Component\Translation\Loader\YamlFileLoader;
+use Silex\Provider\TwigServiceProvider;
+use SilexAssetic\AsseticExtension;
 use Neutron\Silex\Provider\MongoDBODMServiceProvider;
-
+use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 
 class Application extends SilexApplication
 {
+
     public function __construct()
     {
+        parent::__construct();
         $this['debug'] = true;
 
-        //$this['configuration'] = $this->share(function() {
-        //    return new ClientConfiguration(file_get_contents(__DIR__ . '/../../config/config.json'));
-        //});
-        //
-        //$this->register(new TwigServiceProvider(), array(
-        //    'twig.path'    => __DIR__ . '/../../../views',
-        //    'twig.options' => array(
-        //        'cache'               => __DIR__ . '/../../../cache/',
-        //        'strict_variables'    => true,
-        //    ),
-        //    'twig.form.templates' => array(
-        //        'form_div_layout.html.twig',
-        //        'common/form_div_layout.html.twig',
-        //    ),
-        //));
-        //
+        $this->register(new TwigServiceProvider(), array(
+            'twig.path'    => __DIR__ . '/../../../views',
+            'twig.options' => array(
+                'cache'               => __DIR__ . '/../../../cache/',
+                'strict_variables'    => true,
+            )
+        ));
+
         $this->register(new MonologServiceProvider());
 
         $this['monolog.handler'] = function (Application $app) {
-            return new NullHandler();
-        };
+                return new NullHandler();
+            };
 
         $this['monolog.level'] = function () {
-            return Logger::DEBUG;
-        };
+                return Logger::DEBUG;
+            };
 
         $this['monolog.name'] = 'myapp';
 
-        //$this->register(new ValidatorServiceProvider());
-        //$this->register(new FormServiceProvider());
-        //$this->register(new UrlGeneratorServiceProvider());
-        //$this->register(new SessionServiceProvider());
+        $this['configuration'] = $this->share(function(Application $app) {
+            return new Configuration(file_get_contents(__DIR__ . '/../../../config/config.json'), array(
+                 file_get_contents(__DIR__ . '/../../../resources/configuration.schema.json')
+            ));
+        });
+
+        $memcache = new \Memcache;
+        $memcache->connect('localhost', 11211);
+
+        $this->register(new SessionServiceProvider(), array(
+            'session.storage' => new NativeSessionStorage(array(), SessionHandler::factory($this['configuration'])),
+            'session.storage.options' => 'PROUT',
+        ));
 
         $this->register(new MongoDBODMServiceProvider(), array(
             'doctrine.odm.mongodb.connection_options' => array(
@@ -84,97 +79,119 @@ class Application extends SilexApplication
             'doctrine.odm.mongodb.hydrators_dir'         => __DIR__ . '/../../../cache/doctrine/odm/mongodb/Hydrator',
             'doctrine.odm.mongodb.metadata_cache'        => new ArrayCache(),
         ));
-        //
-        //$this->register(new TranslationServiceProvider(), array(
-        //    'locale_fallback' => 'fr_FR',
-        //));
-        //
-        //$this['translator'] = $this->share($this->extend('translator', function($translator, $app) {
-        //    $translator->addLoader('yaml', new YamlFileLoader());
-        //
-        //    $translator->addResource('yaml', __DIR__ . '/../../locales/en_US.yml', 'en_US');
-        //    $translator->addResource('yaml', __DIR__ . '/../../locales/fr_FR.yml', 'fr_FR');
-        //
-        //    return $translator;
-        //}));
-        //
-        //$this['locale'] = 'fr';
-        //
-        //$this->register(new AsseticExtension(), array(
-        //    'assetic.path_to_web' => __DIR__ . '/../../../www/assets',
-        //    'assetic.options'     => array(
-        //        'debug'           => $this['debug'],
-        //    ),
-        //    'assetic.filters' => $this->protect(function($fm) {
-        //            $fm->set('yui_css', new CssCompressorFilter(
-        //                    '/usr/share/yui-compressor/yui-compressor.jar'
-        //            ));
-        //            $fm->set('yui_js', new JsCompressorFilter(
-        //                    '/usr/share/yui-compressor/yui-compressor.jar'
-        //            ));
-        //        }),
-        //    'assetic.assets' => $this->protect(function($am, $fm) {
-        //            $am->set('base_css', new AssetCache(
-        //                    new AssetCollection(array(
-        //                        new FileAsset(
-        //                            __DIR__ . '/../../../vendor/twitter/bootstrap/less/bootstrap.less',
-        //                            array(
-        //                                new LessFilter(
-        //                                    '/usr/local/bin/node', array('/usr/local/lib/node_modules')
-        //                                ),
-        //                                $fm->get('yui_css'))
-        //                        ),
-        //                        new FileAsset(__DIR__ . '/../../../views/application.css', array($fm->get('yui_css'))),)
-        //                    )
-        //                    ,
-        //                    new FilesystemCache(__DIR__ . '/../../../cache/assetic')
-        //            ));
-        //            $am->set('modernizr', new AssetCache(
-        //                    new FileAsset(
-        //                        __DIR__ . '/../../../resources/assets/modernizr.2.5.3.js'
-        //                        , array($fm->get('yui_js')))
-        //                    ,
-        //                    new FilesystemCache(__DIR__ . '/../../../cache/assetic')
-        //            ));
-        //            $am->set('jquery', new AssetCache(
-        //                    new FileAsset(
-        //                        __DIR__ . '/../../../resources/assets/jquery-1.7.2.js'
-        //                        , array($fm->get('yui_js')))
-        //                    ,
-        //                    new FilesystemCache(__DIR__ . '/../../../cache/assetic')
-        //            ));
-        //            $am->set('bootstrap_js', new AssetCache(
-        //                    new AssetCollection(array(
-        //                        new FileAsset(__DIR__ . '/../../../vendor/twitter/bootstrap/js/bootstrap-alert.js'),
-        //                        new FileAsset(__DIR__ . '/../../../vendor/twitter/bootstrap/js/bootstrap-button.js'),
-        //                        new FileAsset(__DIR__ . '/../../../vendor/twitter/bootstrap/js/bootstrap-collapse.js'),
-        //                        new FileAsset(__DIR__ . '/../../../vendor/twitter/bootstrap/js/bootstrap-dropdown.js'),
-        //                        new FileAsset(__DIR__ . '/../../../vendor/twitter/bootstrap/js/bootstrap-modal.js'),
-        //                        new FileAsset(__DIR__ . '/../../../vendor/twitter/bootstrap/js/bootstrap-tooltip.js'),
-        //                        new FileAsset(__DIR__ . '/../../../vendor/twitter/bootstrap/js/bootstrap-popover.js'),
-        //                        new FileAsset(__DIR__ . '/../../../vendor/twitter/bootstrap/js/bootstrap-scrollspy.js'),
-        //                        new FileAsset(__DIR__ . '/../../../vendor/twitter/bootstrap/js/bootstrap-tab.js'),
-        //                        new FileAsset(__DIR__ . '/../../../vendor/twitter/bootstrap/js/bootstrap-transition.js'),
-        //                        new FileAsset(__DIR__ . '/../../../vendor/twitter/bootstrap/js/bootstrap-typeahead.js'),
-        //                        ), array($fm->get('yui_js')))
-        //                    ,
-        //                    new FilesystemCache(__DIR__ . '/../../../cache/assetic')
-        //            ));
-        //            $am->set('bootstrap_img', new \Assetic\Asset\AssetCache(
-        //                    new FileAsset(__DIR__ . '/../../../vendor/twitter/bootstrap/img/glyphicons-halflings.png'),
-        //                    new FilesystemCache(__DIR__ . '/../../../cache/assetic')
-        //            ));
-        //            $am->get('base_css')->setTargetPath('css/styles.css');
-        //            $am->get('bootstrap_img')->setTargetPath('img/glyphicons-halflings.png');
-        //            $am->get('modernizr')->setTargetPath('js/modernizr.js');
-        //            $am->get('jquery')->setTargetPath('js/jquery.js');
-        //            $am->get('bootstrap_js')->setTargetPath('js/bootstrap.js');
-        //        })
-        //));
+
+        $this->register(new AsseticExtension(), array(
+            'assetic.path_to_web' => __DIR__ . '/../../../www/assets',
+            'assetic.options'     => array(
+                'debug'           => $this['debug'],
+            ),
+           'assetic.filters' => $this->protect(function($fm) {
+                    $fm->set('yui_css', new CssCompressorFilter(
+                            '/usr/local/bin/yuicompressor-2.4.7.jar'
+                    ));
+                    $fm->set('yui_js', new JsCompressorFilter(
+                            '/usr/local/bin/yuicompressor-2.4.7.jar'
+                    ));
+                }),
+            'assetic.assets' => $this->protect(function($am, $fm) {
+                    $am->set('base_css', new AssetCache(
+                            new AssetCollection(array(
+                                new FileAsset(
+                                    __DIR__ . '/../../../components/bootstrap.css/css/bootstrap.css',
+                                    array($fm->get('yui_css'))
+                                ),
+                                new FileAsset(__DIR__ . '/../../../views/application.css', array($fm->get('yui_css'))),)
+                            )
+                            ,
+                            new FilesystemCache(__DIR__ . '/../../../cache/assetic')
+                    ));
+                    $am->set('modernizr', new AssetCache(
+                            new FileAsset(
+                                __DIR__ . '/../../../components/modernizr/modernizr.js'
+                                , array($fm->get('yui_js')))
+                            ,
+                            new FilesystemCache(__DIR__ . '/../../../cache/assetic')
+                    ));
+                    $am->set('underscore', new AssetCache(
+                                         new FileAsset(
+                                             __DIR__ . '/../../../components/underscore/underscore.js'
+                                             , array($fm->get('yui_js')))
+                                         ,
+                                         new FilesystemCache(__DIR__ . '/../../../cache/assetic')
+                                     ));
+                    $am->set('backbone', new AssetCache(
+                                           new FileAsset(
+                                               __DIR__ . '/../../../components/backbone/backbone.js'
+                                               , array($fm->get('yui_js')))
+                                           ,
+                                           new FilesystemCache(__DIR__ . '/../../../cache/assetic')
+                                       ));
+                    $am->set('hogan', new AssetCache(
+                                        new FileAsset(
+                                            __DIR__ . '/../../../components/hogan/web/builds/2.0.0/hogan-2.0.0.js'
+                                            , array($fm->get('yui_js')))
+                                        ,
+                                        new FilesystemCache(__DIR__ . '/../../../cache/assetic')
+                                    ));
+                    $am->set('filesizejs', new AssetCache(
+                                              new FileAsset(
+                                                  __DIR__ . '/../../../components/filesize.js/lib/filesize.min.js'
+                                                  , array($fm->get('yui_js')))
+                                              ,
+                                              new FilesystemCache(__DIR__ . '/../../../cache/assetic')
+                                          ));
+                    $am->set('relativedate', new AssetCache(
+                                              new FileAsset(
+                                                  __DIR__ . '/../../../components/relative-date/lib/relative-date.js'
+                                                  , array($fm->get('yui_js')))
+                                              ,
+                                              new FilesystemCache(__DIR__ . '/../../../cache/assetic')
+                                          ));
+                    $am->set('when', new AssetCache(
+                                         new FileAsset(
+                                             __DIR__ . '/../../../components/when/when.js'
+                                             , array($fm->get('yui_js')))
+                                         ,
+                                         new FilesystemCache(__DIR__ . '/../../../cache/assetic')
+                                     ));
+                    $am->set('bootstrap_js', new AssetCache(
+                            new AssetCollection(array(
+                                new FileAsset(__DIR__ . '/../../../components/bootstrap.css/js/bootstrap.js'),
+                                ), array($fm->get('yui_js')))
+                            ,
+                            new FilesystemCache(__DIR__ . '/../../../cache/assetic')
+                    ));
+                    $am->set('bootstrap_img', new \Assetic\Asset\AssetCache(
+                            new FileAsset(__DIR__ . '/../../../components/bootstrap.css/img/glyphicons-halflings.png'),
+                            new FilesystemCache(__DIR__ . '/../../../cache/assetic')
+                    ));
+                    $am->get('base_css')->setTargetPath('css/styles.css');
+                    $am->get('bootstrap_img')->setTargetPath('img/glyphicons-halflings.png');
+                    $am->get('modernizr')->setTargetPath('js/modernizr.js');
+                    $am->get('hogan')->setTargetPath('js/hogan.js');
+                    $am->get('filesizejs')->setTargetPath('js/filesize.js');
+                    $am->get('relativedate')->setTargetPath('js/relative-date.js');
+                    $am->get('backbone')->setTargetPath('js/backbone.js');
+                    $am->get('underscore')->setTargetPath('js/underscore.js');
+                    $am->get('when')->setTargetPath('js/when.js');
+                    $am->get('bootstrap_js')->setTargetPath('js/bootstrap.js');
+                })
+        ));
+
+        $this['twig'] = $this->share(
+            $this->extend('twig', function ($twig, $app) {
+                    $twig->setLexer(new \Twig_Lexer($twig, array(
+                                                                'tag_comment'  => array('{#', '#}'),
+                                                                'tag_block'    => array('{%', '%}'),
+                                                                'tag_variable' => array('${', '}'),
+                                                           )));
+
+                    return $twig;
+                })
+        );
 
         $this['dm'] = $this->share(function (Application $app) {
             return $app['doctrine.odm.mongodb.dm'];
         });
-
     }
 }

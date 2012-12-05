@@ -7,12 +7,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/alchemy-fr/RabbitMQ-Management-API-Client",
-                "reference": "7f6c75a06ac4ce3ab889dbe62b1a84e1e30512d4"
+                "reference": "da7c3227bab532416bbf54f1f25f8c6559e76b61"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/alchemy-fr/RabbitMQ-Management-API-Client/archive/7f6c75a06ac4ce3ab889dbe62b1a84e1e30512d4.zip",
-                "reference": "7f6c75a06ac4ce3ab889dbe62b1a84e1e30512d4",
+                "url": "https://github.com/alchemy-fr/RabbitMQ-Management-API-Client/archive/da7c3227bab532416bbf54f1f25f8c6559e76b61.zip",
+                "reference": "da7c3227bab532416bbf54f1f25f8c6559e76b61",
                 "shasum": ""
             },
             "require": {
@@ -26,7 +26,7 @@
                 "videlalvaro/php-amqplib": "dev-master",
                 "sami/sami": "dev-master"
             },
-            "time": "2012-12-05 14:58:25",
+            "time": "2012-12-05 15:30:55",
             "type": "library",
             "extra": {
                 "branch-alias": {

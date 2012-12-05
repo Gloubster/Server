@@ -8,7 +8,6 @@ use Gloubster\Documents\Garbage;
 use Gloubster\Job\JobInterface;
 use Gloubster\Queue;
 use Monolog\Logger;
-use Neutron\TemporaryFilesystem\TemporaryFilesystem;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Message\AMQPMessage;
 
@@ -19,12 +18,6 @@ class LogWorker
      */
     private $channel;
     private $dm;
-    private $queue;
-
-    /**
-     * @var TemporaryFilesystem
-     */
-    protected $filesystem;
 
     /**
      * @var Logger
@@ -50,7 +43,7 @@ class LogWorker
                     $this->channel->wait();
                 }
             } catch (\Exception $e) {
-                $this->logger->addError(sprintf('Process failed : %s', $e->getMessage()));
+                $this->logger->addError(sprintf('Gloubster Log process failed : %s', $e->getMessage()));
             }
             $iterations--;
         }

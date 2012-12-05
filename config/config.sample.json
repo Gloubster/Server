@@ -1,7 +1,7 @@
 {
     "server": {
         "host": "localhost",
-        "port": 5672,
+        "port": 61613,
         "user": "guest",
         "password": "guest",
         "vhost": "/"
@@ -12,5 +12,14 @@
         "scheme": "http",
         "user": "guest",
         "password": "guest"
+    },
+    "session-server": {
+        "type": "memcache",
+        "host": "localhost",
+        "port": 11211
+    },
+    "websocket-server": {
+        "address": "local.gloubster",
+        "port": 9990
     }
 }

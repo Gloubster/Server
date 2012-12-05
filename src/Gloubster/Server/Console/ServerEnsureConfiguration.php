@@ -59,7 +59,6 @@ class ServerEnsureConfiguration extends AbstractCommand
             Queue::IMAGE_PROCESSING,
             Queue::LOGS,
             Queue::VIDEO_PROCESSING,
-            Queue::WORKERS,
         );
 
         $output->writeln("");

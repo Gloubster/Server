@@ -1,17 +1,17 @@
 {
     "server": {
         "host": "localhost",
-        "port": 61613,
+        "port": 5672,
         "user": "guest",
         "password": "guest",
         "vhost": "/"
     },
     "server-management": {
-        "url": "localhost",
         "port": 55672,
-        "scheme": "http",
-        "user": "guest",
-        "password": "guest"
+        "scheme": "http"
+    },
+    "stomp-gateway": {
+        "port": 61613
     },
     "session-server": {
         "type": "memcache",

@@ -47,7 +47,13 @@ class WebsocketServer extends AbstractCommand
         $loop->addPeriodicTimer(5000, Curry::bind(array($this, 'brodcastMQInformations'), $wsApplication));
 
         $factory = new StompFactory($loop);
+
         $client = $factory->createClient(array(
+            'host'     => $this->conf['server']['host'],
+            'port'     => $this->conf['stomp-gateway']['port'],
+            'user'     => $this->conf['server']['user'],
+            'passcode' => $this->conf['server']['password'],
+            'vhost'    => $this->conf['server']['vhost'],
         ));
 
         $client->connect()

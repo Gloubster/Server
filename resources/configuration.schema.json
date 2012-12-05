@@ -9,11 +9,6 @@
             "required": true,
             "additionalProperties": true,
             "properties": {
-                "url": {
-                    "type": "string",
-                    "description": "Management server url",
-                    "required": true
-                },
                 "port": {
                     "type": "number",
                     "description": "Management server port",
@@ -23,15 +18,18 @@
                     "type": "string",
                     "description": "Management server scheme",
                     "required": true
-                },
-                "user": {
-                    "type": "string",
-                    "description": "Management server user",
-                    "required": true
-                },
-                "password": {
-                    "type": "string",
-                    "description": "Management server password",
+                }
+            }
+        },
+        "stomp-gateway": {
+            "type": "object",
+            "description": "RabbtMQ Stomp Gateway",
+            "required": true,
+            "additionalProperties": true,
+            "properties": {
+                "port": {
+                    "type": "number",
+                    "description": "RabbtMQ Stomp Gateway port",
                     "required": true
                 }
             }

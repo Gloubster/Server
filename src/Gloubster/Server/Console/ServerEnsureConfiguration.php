@@ -28,15 +28,17 @@ class ServerEnsureConfiguration extends AbstractCommand
         parent::__construct('server:ensure-configuration');
 
         $this->conf = $conf;
-        $this->guaranteeManager = new Guarantee(APIClient::factory($conf['server-management']));
-        $this->setDescription('Ensure that queues and echanges are declared and bounds');
-        $this->addOption('dry-run', 'd', InputOption::VALUE_NONE, 'Dry run the command');
+
+        $this->setDescription('Ensure that queues and echanges are declared and bounds')
+             ->addOption('dry-run', 'd', InputOption::VALUE_NONE, 'Dry run the command');
 
         return $this;
     }
 
     public function doExecute(InputInterface $input, OutputInterface $output)
     {
+        $this->guaranteeManager = new Guarantee(APIClient::factory(array_merge($this->conf['server'], $this->conf['server-management'])));
+
         $output->getFormatter()->setStyle('error', new OutputFormatterStyle('red'));
         $output->getFormatter()->setStyle('alert', new OutputFormatterStyle('yellow'));
         $output->getFormatter()->setStyle('ok', new OutputFormatterStyle('green'));

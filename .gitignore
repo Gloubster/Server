@@ -4,3 +4,5 @@
 /vendor
 /tests/phpunit_report
 /composer.phar
+/www/assets
+

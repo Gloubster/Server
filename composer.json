@@ -1,5 +1,5 @@
 {
-    "name": "alchemy/rabbit-mq",
+    "name": "gloubster/server",
     "description": "RabbitMQ OO Library",
     "minimum-stability": "dev",
     "authors": [
@@ -19,6 +19,7 @@
         "react/curry": "1.0.*",
         "react/react": "0.2.*",
         "react/stomp": "0.1.*",
+        "react/zmq": "0.1.*",
         "silex/silex": "dev-master",
         "symfony/console" : ">=2.0,<=2.2",
         "twig/twig" : ">=1.9",

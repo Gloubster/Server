@@ -1,15 +1,14 @@
 <?php
 
-namespace Gloubster\Websocket;
+namespace Gloubster\Server;
 
-use Gloubster\Monitor\Worker\Presence;
+use Gloubster\Message\Presence\WorkerPresence;
 use Monolog\Logger;
 use Ratchet\ConnectionInterface as Conn;
 use Ratchet\Wamp\WampServerInterface;
 
-class Application implements WampServerInterface
+class WebsocketApplication implements WampServerInterface
 {
-    private $connections = 0;
     private $logger;
     private $subscribedTopics = array();
 
@@ -43,9 +42,9 @@ class Application implements WampServerInterface
 
     public function onOpen(Conn $conn)
     {
-        if (!$conn->Session->get('authenticated')) {
+        if (!property_exists($conn, 'Session') || !$conn->Session->get('authenticated')) {
             $conn->close(1008);
-            $this->logger->addInfo('Rejected unauthenticated connection');
+            $this->logger->addInfo('Reject unauthenticated connection');
 
             return;
         }
@@ -60,7 +59,7 @@ class Application implements WampServerInterface
         $this->logger->addError(sprintf('Websocket server error : %s', $e->getMessage()));
     }
 
-    public function onServerInformation($data)
+    public function onServerInformation(array $data)
     {
         if (! array_key_exists('http://phraseanet.com/gloubster/server-monitor', $this->subscribedTopics)) {
             return;
@@ -69,13 +68,31 @@ class Application implements WampServerInterface
         $this->subscribedTopics['http://phraseanet.com/gloubster/server-monitor']->broadcast(json_encode($data));
     }
 
-    public function onPresence(Presence $presence)
+    public function broadcastQueueInformation(array $data)
+    {
+        if (! array_key_exists('http://phraseanet.com/gloubster/queue-monitor', $this->subscribedTopics)) {
+            return;
+        }
+        
+        $this->subscribedTopics['http://phraseanet.com/gloubster/queue-monitor']->broadcast(json_encode($data));
+    }
+
+    public function broadcastExchangeInformation(array $data)
+    {
+        if (! array_key_exists('http://phraseanet.com/gloubster/exchange-monitor', $this->subscribedTopics)) {
+            return;
+        }
+
+        $this->subscribedTopics['http://phraseanet.com/gloubster/exchange-monitor']->broadcast(json_encode($data));
+    }
+
+    public function onPresence(WorkerPresence $presence)
     {
         if (! array_key_exists('http://phraseanet.com/gloubster/monitor', $this->subscribedTopics)) {
             return;
         }
 
         // re-send the serialized json to all the clients subscribed to that category
-        $this->subscribedTopics['http://phraseanet.com/gloubster/monitor']->broadcast($presence->toJSON());
+        $this->subscribedTopics['http://phraseanet.com/gloubster/monitor']->broadcast($presence->toJson());
     }
 }

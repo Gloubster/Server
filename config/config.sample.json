@@ -4,14 +4,14 @@
         "port": 5672,
         "user": "guest",
         "password": "guest",
-        "vhost": "/"
-    },
-    "server-management": {
-        "port": 55672,
-        "scheme": "http"
-    },
-    "stomp-gateway": {
-        "port": 61613
+        "vhost": "/",
+        "server-management": {
+            "port": 55672,
+            "scheme": "http"
+        },
+        "stomp-gateway": {
+            "port": 61613
+        }
     },
     "session-server": {
         "type": "memcache",
@@ -21,5 +21,22 @@
     "websocket-server": {
         "address": "local.gloubster",
         "port": 9990
-    }
+    },
+    "listeners": [
+        {
+            "type": "Gloubster\\Server\\Listener\\ZMQListener",
+            "options": {
+                "transport": "tcp",
+                "address": "0.0.0.0",
+                "port": 22345
+            }
+        },
+        {
+            "type": "Gloubster\\Server\\Listener\\HTTPListener",
+            "options": {
+                "host": "0.0.0.0",
+                "port": 22345
+            }
+        }
+    ]
 }

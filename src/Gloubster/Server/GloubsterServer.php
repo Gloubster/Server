@@ -11,6 +11,8 @@ use Gloubster\Server\Component\ComponentInterface;
 use Gloubster\Exception\RuntimeException;
 use Gloubster\Message\Factory as MessageFactory;
 use Monolog\Logger;
+use Predis\Async\Client as PredisClient;
+use Predis\Async\Connection\ConnectionInterface as PredisConnection;
 use Ratchet\Server\IoServer;
 use Ratchet\WebSocket\WsServer;
 use Ratchet\Wamp\WampServer;
@@ -32,6 +34,18 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
         $this['monolog'] = $logger;
         $this['websocket-application'] = $websocket;
         $this['stomp-client'] = $client;
+
+        $server = $this;
+        $redisErrorHandler = function(PredisClient $client, \Exception $e, ConnectionInterface $conn) use ($server) {
+            call_user_func(array($server, 'logError'), $e);
+        };
+
+        $redisOptions = array(
+            'on_error'  => $redisErrorHandler,
+            'eventloop' => $this['loop'],
+        );
+
+        $this['redis'] = new PredisClient(sprintf('tcp://%s:%s', $conf['redis-server']['host'], $conf['redis-server']['port']), $redisOptions);
     }
 
     /**
@@ -67,10 +81,22 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
                 Curry::bind(array($this, 'activateStompServices')),
                 Curry::bind(array($this, 'throwError'))
             );
-
+        $this['stomp-client']->on('error', array($this, 'logError'));
         $this['monolog']->addInfo('Connecting to STOMP Gateway...');
 
+        $this['redis']->connect(array($this, 'activateRedisServices'));
+        $this['monolog']->addInfo('Connecting to Redis server...');
+
         $this['loop']->run();
+    }
+
+    public function activateRedisServices(PredisClient $client, PredisConnection $conn)
+    {
+        $this['monolog']->addInfo('Connected to Redis Server !');
+
+        foreach ($this->components as $component) {
+            $component->registerRedis($this, $client, $conn);
+        }
     }
 
     public function activateStompServices(Client $stomp)

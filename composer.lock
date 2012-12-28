@@ -1,5 +1,5 @@
 {
-    "hash": "76af71988f374a087e10934563f1dd26",
+    "hash": "f371a62e42bb503c4fe52fa42ed0381b",
     "packages": [
         {
             "name": "alchemy/rabbitmq-management-client",
@@ -892,6 +892,101 @@
             ]
         },
         {
+            "name": "predis/predis",
+            "version": "0.8.x-dev",
+            "source": {
+                "type": "git",
+                "url": "git://github.com/nrk/predis.git",
+                "reference": "83720075f3ac285153ed82ef1fcaf1170fb8b383"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/nrk/predis/archive/83720075f3ac285153ed82ef1fcaf1170fb8b383.zip",
+                "reference": "83720075f3ac285153ed82ef1fcaf1170fb8b383",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "suggest": {
+                "ext-phpiredis": "Allows faster serialization and deserialization of the Redis protocol",
+                "ext-curl": "Allows access to Webdis when paired with phpiredis"
+            },
+            "time": "2012-12-27 09:50:25",
+            "type": "library",
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "Predis": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniele Alessandri",
+                    "email": "suppakilla@gmail.com",
+                    "homepage": "http://clorophilla.net"
+                }
+            ],
+            "description": "Flexible and feature-complete PHP client library for Redis",
+            "homepage": "http://github.com/nrk/predis",
+            "keywords": [
+                "nosql",
+                "redis",
+                "predis"
+            ]
+        },
+        {
+            "name": "predis/predis-async",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nrk/predis-async",
+                "reference": "7ca4e8444c424ae787afc512d9ed6351c2840e9b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/nrk/predis-async/archive/7ca4e8444c424ae787afc512d9ed6351c2840e9b.zip",
+                "reference": "7ca4e8444c424ae787afc512d9ed6351c2840e9b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0",
+                "ext-phpiredis": "*",
+                "react/event-loop": "0.2.*",
+                "predis/predis": "0.8.*"
+            },
+            "time": "2012-11-08 10:19:32",
+            "type": "library",
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "Predis\\Async": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniele Alessandri",
+                    "email": "suppakilla@gmail.com",
+                    "homepage": "http://clorophilla.net"
+                }
+            ],
+            "description": "Asynchronous version of Predis",
+            "homepage": "http://github.com/nrk/predis-async",
+            "keywords": [
+                "nosql",
+                "redis",
+                "predis"
+            ]
+        },
+        {
             "name": "react/curry",
             "version": "dev-master",
             "source": {
@@ -937,18 +1032,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/promise",
-                "reference": "8fe0e60dfbb7244d63c30bf8301f31d8efc9c0c4"
+                "reference": "419ae7ed9be2b1ca6286f0f5173f7ea88d7f63f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/reactphp/promise/archive/8fe0e60dfbb7244d63c30bf8301f31d8efc9c0c4.zip",
-                "reference": "8fe0e60dfbb7244d63c30bf8301f31d8efc9c0c4",
+                "url": "https://github.com/reactphp/promise/archive/419ae7ed9be2b1ca6286f0f5173f7ea88d7f63f0.zip",
+                "reference": "419ae7ed9be2b1ca6286f0f5173f7ea88d7f63f0",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "2012-12-03 08:22:46",
+            "time": "2012-12-28 17:07:05",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -961,6 +1056,7 @@
                     "React\\Promise": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1037,12 +1133,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/stomp",
-                "reference": "0575f399ef40f66da750e8a14f56d639d14e619d"
+                "reference": "ac4c847bd84581a6f37a3536e208c1a4d06e59e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/reactphp/stomp/archive/0575f399ef40f66da750e8a14f56d639d14e619d.zip",
-                "reference": "0575f399ef40f66da750e8a14f56d639d14e619d",
+                "url": "https://github.com/reactphp/stomp/archive/ac4c847bd84581a6f37a3536e208c1a4d06e59e0.zip",
+                "reference": "ac4c847bd84581a6f37a3536e208c1a4d06e59e0",
                 "shasum": ""
             },
             "require": {
@@ -1051,7 +1147,7 @@
                 "react/socket": "0.2.*",
                 "react/promise": "1.0.*"
             },
-            "time": "2012-12-27 15:03:10",
+            "time": "2012-12-28 02:31:09",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1498,12 +1594,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Routing",
-                "reference": "2e6bc3cd01852fc264f3dae36e58db574ca90df3"
+                "reference": "87a66890450658ccac99702ac5e4f002ece9e23e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/Routing/archive/2e6bc3cd01852fc264f3dae36e58db574ca90df3.zip",
-                "reference": "2e6bc3cd01852fc264f3dae36e58db574ca90df3",
+                "url": "https://github.com/symfony/Routing/archive/87a66890450658ccac99702ac5e4f002ece9e23e.zip",
+                "reference": "87a66890450658ccac99702ac5e4f002ece9e23e",
                 "shasum": ""
             },
             "require": {
@@ -1520,7 +1616,7 @@
                 "symfony/config": "2.2.*",
                 "symfony/yaml": "2.2.*"
             },
-            "time": "2012-12-25 11:02:30",
+            "time": "2012-12-28 13:21:48",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1556,18 +1652,18 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/fabpot/Twig.git",
-                "reference": "5b6647d3e2c31e85ab99dd1edcf2e34db0bba0ab"
+                "reference": "1b1a6e7de018d300e6eb67727f3717c24f4540ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/fabpot/Twig/archive/5b6647d3e2c31e85ab99dd1edcf2e34db0bba0ab.zip",
-                "reference": "5b6647d3e2c31e85ab99dd1edcf2e34db0bba0ab",
+                "url": "https://github.com/fabpot/Twig/archive/1b1a6e7de018d300e6eb67727f3717c24f4540ba.zip",
+                "reference": "1b1a6e7de018d300e6eb67727f3717c24f4540ba",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.4"
             },
-            "time": "2012-12-27 13:40:31",
+            "time": "2012-12-27 16:33:50",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1652,6 +1748,7 @@
         "gloubster/communications": 20,
         "neutron/mongo-odm-silex-provider": 20,
         "pimple/pimple": 20,
+        "predis/predis-async": 20,
         "silex/silex": 20,
         "videlalvaro/php-amqplib": 20
     }

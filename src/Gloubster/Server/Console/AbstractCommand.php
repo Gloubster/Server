@@ -2,7 +2,7 @@
 
 namespace Gloubster\Server\Console;
 
-use Gloubster\Server\Application;
+use Gloubster\WebApplication;
 use Monolog\Handler\StreamHandler;
 use Symfony\Component\Console\Command\Command as SymfoCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -38,7 +38,7 @@ abstract class AbstractCommand extends SymfoCommand
      *
      * @return void
      */
-    public function setContainer(Application $container)
+    public function setContainer(WebApplication $container)
     {
         $this->container = $container;
     }

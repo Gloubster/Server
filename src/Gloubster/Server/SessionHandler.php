@@ -2,9 +2,9 @@
 namespace  Gloubster\Server;
 
 use Gloubster\Configuration;
+use Gloubster\Exception\RuntimeException;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\MemcacheSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\MemcachedSessionHandler;
-use Gloubster\Exception\RuntimeException;
 
 class SessionHandler
 {
@@ -13,13 +13,23 @@ class SessionHandler
         switch (strtolower($conf['session-server']['type'])) {
             case 'memcache':
                 $memcache = new \Memcache();
-                $memcache->connect($conf['session-server']['host'], $conf['session-server']['port']);
+                if (!@$memcache->connect($conf['session-server']['host'], $conf['session-server']['port'])) {
+                    throw new RuntimeException(sprintf('Unable to connect to memcache server at %s:%s', $conf['session-server']['host'], $conf['session-server']['port']));
+                }
 
                 return new MemcacheSessionHandler($memcache);
                 break;
             case 'memcached':
                 $memcached = new \Memcached();
-                $memcached->addServer($conf['session-server']['host'], $conf['session-server']['port']);
+                if (!@$memcached->addServer($conf['session-server']['host'], $conf['session-server']['port'])) {
+                    throw new RuntimeException(sprintf('Unable to connect to memcached server at %s:%s', $conf['session-server']['host'], $conf['session-server']['port']));
+                }
+
+                $memcached->getVersion();
+
+                if (\Memcached::RES_SUCCESS !== $memcached->getResultCode()) {
+                    throw new RuntimeException(sprintf('Unable to connect to memcached server at %s:%s', $conf['session-server']['host'], $conf['session-server']['port']));
+                }
 
                 return new MemcachedSessionHandler($memcached);
                 break;

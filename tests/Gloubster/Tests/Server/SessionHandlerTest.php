@@ -68,6 +68,70 @@ class SessionHandlerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @expectedException Gloubster\Exception\RuntimeException
+     */
+    public function testFactoryMemcacheWithWrongPort()
+    {
+        $conf = new Configuration('
+    {
+        "server": {
+            "host": "localhost",
+            "port": 5672,
+            "user": "guest",
+            "password": "guest",
+            "vhost": "/",
+            "server-management": {
+                "port": 55672,
+                "scheme": "http"
+            },
+            "stomp-gateway": {
+                "port": 61613
+            }
+        },
+        "session-server": {
+            "type": "memcache",
+            "host": "localhosted",
+            "port": 800
+        }
+    }
+');
+
+        $sessionHandler = SessionHandler::factory($conf);
+    }
+
+    /**
+     * @expectedException Gloubster\Exception\RuntimeException
+     */
+    public function testFactoryMemcachedWithWrongPort()
+    {
+        $conf = new Configuration('
+    {
+        "server": {
+            "host": "localhost",
+            "port": 5672,
+            "user": "guest",
+            "password": "guest",
+            "vhost": "/",
+            "server-management": {
+                "port": 55672,
+                "scheme": "http"
+            },
+            "stomp-gateway": {
+                "port": 61613
+            }
+        },
+        "session-server": {
+            "type": "memcached",
+            "host": "localhosted",
+            "port": 800
+        }
+    }
+');
+
+        $sessionHandler = SessionHandler::factory($conf);
+    }
+
+    /**
      * @dataProvider getUnsupportedTypes
      * @expectedException Gloubster\Exception\RuntimeException
      */

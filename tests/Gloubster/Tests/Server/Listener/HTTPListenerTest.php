@@ -128,6 +128,24 @@ class HTTPListenerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @expectedException Gloubster\Exception\RuntimeException
+     */
+    public function createShouldFailIfPortIsAlreadyUsed()
+    {
+        $loop = $this->getMockBuilder('React\\EventLoop\\LoopInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $logger = $this->getMockBuilder('Monolog\\Logger')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $httpListener = HTTPListener::create($loop, $logger, array('host' => '127.0.0.1', 'port'=>12345));
+        $httpListener = HTTPListener::create($loop, $logger, array('host' => '127.0.0.1', 'port'=>12345));
+    }
+
+    /**
+     * @test
      * @expectedException Gloubster\Exception\InvalidArgumentException
      */
     public function createShouldFailWithoutPort()

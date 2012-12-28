@@ -4,6 +4,7 @@ namespace Gloubster\Server\Listener;
 
 use Gloubster\Server\GloubsterServerInterface;
 use Gloubster\Exception\InvalidArgumentException;
+use Gloubster\Exception\RuntimeException;
 use Monolog\Logger;
 use React\EventLoop\LoopInterface;
 use React\Http\Server;
@@ -57,8 +58,14 @@ class HTTPListener implements JobListenerInterface
             throw new InvalidArgumentException('Missing option key `host`');
         }
 
-        $socket = new Reactor($loop);
-        $socket->listen($options['port'], $options['host']);
+        try {
+            $socket = new Reactor($loop);
+            $socket->listen($options['port'], $options['host']);
+        } catch (\Exception $e) {
+            throw new RuntimeException(sprintf('Unable to listen to %s:%s', $options['host'], $options['port']), $e->getCode(), $e);
+        }
+
+        $logger->addInfo(sprintf('Listening for message on HTTP %s:%s', $options['host'], $options['port']));
 
         return new static(new Server($socket, $loop));
     }

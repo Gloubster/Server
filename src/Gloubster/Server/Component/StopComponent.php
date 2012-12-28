@@ -36,6 +36,7 @@ class StopComponent implements ComponentInterface
      */
     public function boot(GloubsterServer $server)
     {
+        $server['monolog']->addInfo('StopComponent is now stopping the server, shutting down...');
         $server['loop']->stop();
     }
 }

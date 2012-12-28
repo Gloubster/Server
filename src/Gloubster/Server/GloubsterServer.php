@@ -36,7 +36,7 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
         $this['stomp-client'] = $client;
 
         $server = $this;
-        $redisErrorHandler = function(PredisClient $client, \Exception $e, ConnectionInterface $conn) use ($server) {
+        $redisErrorHandler = function(PredisClient $client, \Exception $e, PredisConnection $conn) use ($server) {
             call_user_func(array($server, 'logError'), $e);
         };
 

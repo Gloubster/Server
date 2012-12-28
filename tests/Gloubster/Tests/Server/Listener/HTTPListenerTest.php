@@ -24,7 +24,11 @@ class HTTPListenerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $httpListener = HTTPListener::create($loop, array('host'=>'localhost', 'port'=>12345));
+        $logger = $this->getMockBuilder('Monolog\\Logger')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $httpListener = HTTPListener::create($loop, $logger, array('host'=>'localhost', 'port'=>12345));
     }
 
     /** @test */
@@ -115,7 +119,11 @@ class HTTPListenerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $httpListener = HTTPListener::create($loop, array('port'=>12345));
+        $logger = $this->getMockBuilder('Monolog\\Logger')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $httpListener = HTTPListener::create($loop, $logger, array('port'=>12345));
     }
 
     /**
@@ -128,6 +136,10 @@ class HTTPListenerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $httpListener = HTTPListener::create($loop, array('host'=>'localhost'));
+        $logger = $this->getMockBuilder('Monolog\\Logger')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $httpListener = HTTPListener::create($loop, $logger, array('host'=>'localhost'));
     }
 }

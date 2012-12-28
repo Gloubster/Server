@@ -4,6 +4,7 @@ namespace Gloubster\Server\Listener;
 
 use Gloubster\Server\GloubsterServerInterface;
 use Gloubster\Exception\InvalidArgumentException;
+use Monolog\Logger;
 use React\EventLoop\LoopInterface;
 use React\Http\Server;
 use React\Socket\Server as Reactor;
@@ -46,7 +47,7 @@ class HTTPListener implements JobListenerInterface
     /**
      * {@inheritdoc}
      */
-    public static function create(LoopInterface $loop, array $options)
+    public static function create(LoopInterface $loop, Logger $logger, array $options)
     {
         if (!isset($options['port'])) {
             throw new InvalidArgumentException('Missing option key `port`');

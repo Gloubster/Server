@@ -26,12 +26,13 @@ class GloubsterServerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($component->registered);
         $this->assertFalse($component->STOMPregistered);
+        $this->assertFalse($component->Redisregistered);
     }
 
     /**
      * @covers Gloubster\Server\GloubsterServer::activateStompServices
      */
-    public function testActivateStompComponent()
+    public function testActivateStompServices()
     {
         $component = new TestComponent();
 
@@ -44,7 +45,34 @@ class GloubsterServerTest extends \PHPUnit_Framework_TestCase
 
         $server->activateStompServices($client);
 
+        $this->assertTrue($component->registered);
+        $this->assertFalse($component->Redisregistered);
         $this->assertTrue($component->STOMPregistered);
+    }
+
+    /**
+     * @covers Gloubster\Server\GloubsterServer::activateRedisServices
+     */
+    public function testActivateRedisServices()
+    {
+        $component = new TestComponent();
+
+        $server = $this->getServer();
+        $server->register($component);
+
+        $client = $this->getMockBuilder('Predis\Async\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $conn = $this->getMockBuilder('Predis\Async\Connection\ConnectionInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $server->activateRedisServices($client, $conn);
+
+        $this->assertTrue($component->registered);
+        $this->assertFalse($component->STOMPregistered);
+        $this->assertTrue($component->Redisregistered);
     }
 
     /**
@@ -255,9 +283,7 @@ class GloubsterServerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $conf = $this->getMockBuilder('Gloubster\Configuration')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $conf = new Configuration(file_get_contents(__DIR__ . '/../../../resources/config.json'));
 
         $logger = $this->getMockBuilder('Monolog\Logger')
             ->disableOriginalConstructor()
@@ -271,11 +297,13 @@ class TestComponent implements ComponentInterface
 {
     public $registered;
     public $STOMPregistered;
+    public $Redisregistered;
 
     public function __construct()
     {
         $this->registered = false;
         $this->STOMPregistered = false;
+        $this->Redisregistered = false;
     }
 
     public function register(GloubsterServer $server)
@@ -287,6 +315,11 @@ class TestComponent implements ComponentInterface
     {
         $this->STOMPregistered = true;
     }
+
+    public function registerRedis(GloubsterServer $server, \Predis\Async\Client $client, \Predis\Async\Connection\ConnectionInterface $conn)
+    {
+        $this->Redisregistered = true;
+    }
 }
 
 class StopComponent implements ComponentInterface
@@ -294,11 +327,14 @@ class StopComponent implements ComponentInterface
 
     public function register(GloubsterServer $server)
     {
-
     }
 
     public function registerSTOMP(GloubsterServer $server, \React\Stomp\Client $stomp)
     {
         $server['loop']->stop();
+    }
+
+    public function registerRedis(GloubsterServer $server, \Predis\Async\Client $client, \Predis\Async\Connection\ConnectionInterface $conn)
+    {
     }
 }

@@ -22,7 +22,7 @@ class ListenersComponent implements ComponentInterface
     public function registerSTOMP(GloubsterServer $server, Client $stomp)
     {
         foreach ($server['configuration']['listeners'] as $listenerConf) {
-            $listener = $listenerConf['type']::create($server['loop'], $listenerConf['options']);
+            $listener = $listenerConf['type']::create($server['loop'], $server['monolog'], $listenerConf['options']);
             $listener->attach($server);
         }
     }

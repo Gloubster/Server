@@ -4,6 +4,7 @@ namespace Gloubster\Server\Listener;
 
 use Gloubster\Exception\InvalidArgumentException;
 use Gloubster\Server\GloubsterServerInterface;
+use Monolog\Logger;
 use React\EventLoop\LoopInterface;
 use React\ZMQ\Context;
 
@@ -44,7 +45,7 @@ class ZMQListener implements JobListenerInterface
     /**
      * {@inheritdoc}
      */
-    public static function create(LoopInterface $loop, array $options)
+    public static function create(LoopInterface $loop, Logger $logger, array $options)
     {
         return new static(new Context($loop), $options);
     }

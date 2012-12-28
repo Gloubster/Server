@@ -6,6 +6,7 @@ use Gloubster\Server\GloubsterServer;
 use Gloubster\Server\GloubsterServerInterface;
 use Gloubster\Server\Component\ListenersComponent;
 use Gloubster\Server\Listener\JobListenerInterface;
+use Monolog\Logger;
 use React\EventLoop\LoopInterface;
 
 class ListenersComponentTest extends \PHPUnit_Framework_TestCase
@@ -112,7 +113,7 @@ class ListenerTester implements JobListenerInterface
         $server['test-token'] = true;
     }
 
-    public static function create(LoopInterface $loop, array $options)
+    public static function create(LoopInterface $loop, Logger $logger, array $options)
     {
         $loop->created = $options;
         return new static();

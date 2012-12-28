@@ -26,6 +26,8 @@ use React\Stomp\Factory as StompFactory;
 class GloubsterServer extends \Pimple implements GloubsterServerInterface
 {
     private $components = array();
+    private $redisStarted = false;
+    private $stompStarted = false;
 
     public function __construct(WebsocketApplication $websocket, Client $client, LoopInterface $loop, Configuration $conf, Logger $logger)
     {
@@ -55,6 +57,8 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
     {
         $component->register($this);
         $this->components[] = $component;
+
+        $this['monolog']->addInfo(sprintf('Registering component %s', get_class($component)));
     }
 
     /**
@@ -62,6 +66,8 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
      */
     public function run()
     {
+        $this['monolog']->addInfo(sprintf('Starting server with %d components', count($this->components)));
+
         // Setup websocket server
         $socket = new Reactor($this['loop']);
         $socket->listen($this['configuration']['websocket-server']['port'], $this['configuration']['websocket-server']['address']);
@@ -97,6 +103,9 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
         foreach ($this->components as $component) {
             $component->registerRedis($this, $client, $conn);
         }
+
+        $this->redisStarted = true;
+        $this->probeAllSystems();
     }
 
     public function activateStompServices(Client $stomp)
@@ -105,6 +114,16 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
 
         foreach ($this->components as $component) {
             $component->registerSTOMP($this, $stomp);
+        }
+
+        $this->stompStarted = true;
+        $this->probeAllSystems();
+    }
+
+    private function probeAllSystems()
+    {
+        if ($this->stompStarted && $this->redisStarted) {
+            $this['monolog']->addInfo('All services loaded, server now running');
         }
     }
 

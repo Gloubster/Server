@@ -68,16 +68,16 @@ class WebsocketApplication implements WampServerInterface
         $this->subscribedTopics['http://phraseanet.com/gloubster/server-monitor']->broadcast(json_encode($data));
     }
 
-    public function broadcastQueueInformation(array $data)
+    public function broadcastQueueInformation($data)
     {
         if (! array_key_exists('http://phraseanet.com/gloubster/queue-monitor', $this->subscribedTopics)) {
             return;
         }
-        
+
         $this->subscribedTopics['http://phraseanet.com/gloubster/queue-monitor']->broadcast(json_encode($data));
     }
 
-    public function broadcastExchangeInformation(array $data)
+    public function broadcastExchangeInformation($data)
     {
         if (! array_key_exists('http://phraseanet.com/gloubster/exchange-monitor', $this->subscribedTopics)) {
             return;

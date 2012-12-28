@@ -4,9 +4,7 @@ namespace Gloubster\Server\Console;
 
 use Gloubster\Server\Console\AbstractCommand;
 use Gloubster\Configuration;
-use Gloubster\Exchange;
-use Gloubster\Queue;
-use Gloubster\RoutingKey;
+use Gloubster\RabbitMQ\Configuration as RabbitMQConf;
 use RabbitMQ\Management\APIClient;
 use RabbitMQ\Management\Guarantee;
 use RabbitMQ\Management\Entity\Binding as RabbitMQBinding;
@@ -37,7 +35,7 @@ class ServerEnsureConfiguration extends AbstractCommand
 
     public function doExecute(InputInterface $input, OutputInterface $output)
     {
-        $this->guaranteeManager = new Guarantee(APIClient::factory(array_merge($this->conf['server'], $this->conf['server-management'])));
+        $this->guaranteeManager = new Guarantee(APIClient::factory(array_merge($this->conf['server'], $this->conf['server']['server-management'])));
 
         $output->getFormatter()->setStyle('error', new OutputFormatterStyle('red'));
         $output->getFormatter()->setStyle('alert', new OutputFormatterStyle('yellow'));
@@ -57,10 +55,10 @@ class ServerEnsureConfiguration extends AbstractCommand
         }
 
         $queues = array(
-            Queue::ERRORS,
-            Queue::IMAGE_PROCESSING,
-            Queue::LOGS,
-            Queue::VIDEO_PROCESSING,
+            RabbitMQConf::QUEUE_ERRORS,
+            RabbitMQConf::QUEUE_IMAGE_PROCESSING,
+            RabbitMQConf::QUEUE_LOGS,
+            RabbitMQConf::QUEUE_VIDEO_PROCESSING,
         );
 
         $output->writeln("");
@@ -117,8 +115,8 @@ class ServerEnsureConfiguration extends AbstractCommand
         $output->writeln("<title> Exchanges configuration </title>");
 
         $exchanges = array(
-            Exchange::GLOUBSTER_DISPATCHER => 'direct',
-            Exchange::GLOUBSTER_MONITOR    => 'fanout',
+            RabbitMQConf::EXCHANGE_DISPATCHER => 'direct',
+            RabbitMQConf::EXCHANGE_MONITOR    => 'fanout',
         );
 
         foreach ($exchanges as $name => $type) {
@@ -172,10 +170,10 @@ class ServerEnsureConfiguration extends AbstractCommand
         $output->writeln("<title> Routing configuration </title>");
 
         $routing_keys = array(
-            RoutingKey::ERROR            => array(Exchange::GLOUBSTER_DISPATCHER, Queue::ERRORS),
-            RoutingKey::IMAGE_PROCESSING => array(Exchange::GLOUBSTER_DISPATCHER, Queue::IMAGE_PROCESSING),
-            RoutingKey::LOG              => array(Exchange::GLOUBSTER_DISPATCHER, Queue::LOGS),
-            RoutingKey::VIDEO_PROCESSING => array(Exchange::GLOUBSTER_DISPATCHER, Queue::VIDEO_PROCESSING),
+            RabbitMQConf::ROUTINGKEY_ERROR            => array(RabbitMQConf::EXCHANGE_DISPATCHER, RabbitMQConf::QUEUE_ERRORS),
+            RabbitMQConf::ROUTINGKEY_IMAGE_PROCESSING => array(RabbitMQConf::EXCHANGE_DISPATCHER, RabbitMQConf::QUEUE_IMAGE_PROCESSING),
+            RabbitMQConf::ROUTINGKEY_LOG              => array(RabbitMQConf::EXCHANGE_DISPATCHER, RabbitMQConf::QUEUE_LOGS),
+            RabbitMQConf::ROUTINGKEY_VIDEO_PROCESSING => array(RabbitMQConf::EXCHANGE_DISPATCHER, RabbitMQConf::QUEUE_VIDEO_PROCESSING),
         );
 
         foreach ($routing_keys as $routing => $queueData) {

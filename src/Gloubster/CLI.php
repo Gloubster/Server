@@ -1,6 +1,6 @@
 <?php
 
-namespace Gloubster\Server;
+namespace Gloubster;
 
 use Symfony\Component\HttpFoundation\Request;
 use Gloubster\Server\Console\AbstractCommand;
@@ -13,7 +13,7 @@ use Symfony\Component\Console\Application as ConsoleApplication;
  * Largely inspired by Cilex
  * @see https://github.com/Cilex/Cilex
  */
-class CLI extends Application
+class CLI extends WebApplication
 {
 
     /**

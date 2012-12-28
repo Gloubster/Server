@@ -4,6 +4,7 @@ namespace Gloubster\Server\Component;
 
 use Gloubster\Server\WebsocketApplication;
 use Gloubster\Server\GloubsterServer;
+use Monolog\Logger;
 use Predis\Async\Connection\ConnectionInterface as PredisConnection;
 use Predis\Async\Client as PredisClient;
 use React\Curry\Util as Curry;
@@ -17,7 +18,8 @@ class ServerMonitorComponent implements ComponentInterface
      */
     public function register(GloubsterServer $server)
     {
-        $server['loop']->addPeriodicTimer(0.1, Curry::bind(array($this, 'brodcastServerInformations'), $server['websocket-application']));;
+        $server['loop']->addPeriodicTimer(0.1, Curry::bind(array($this, 'brodcastServerInformations'), $server['websocket-application']));
+        $server['loop']->addPeriodicTimer(5, Curry::bind(array($this, 'displayServerMemory'), $server['monolog']));
     }
 
     /**
@@ -32,6 +34,11 @@ class ServerMonitorComponent implements ComponentInterface
      */
     public function registerRedis(GloubsterServer $server, PredisClient $client, PredisConnection $conn)
     {
+    }
+
+    public function displayServerMemory(Logger $logger)
+    {
+        $logger->addDebug(sprintf("Memory is using %d", memory_get_usage()));
     }
 
     public function brodcastServerInformations(WebsocketApplication $wsApplication)

@@ -6,7 +6,6 @@ use Gloubster\Configuration;
 use Gloubster\Server\WebsocketApplication;
 use Gloubster\RabbitMQ\Configuration as RabbitMQConf;
 use Gloubster\Server\GloubsterServer;
-use Monolog\Logger;
 use Predis\Async\Connection\ConnectionInterface as PredisConnection;
 use Predis\Async\Client as PredisClient;
 use RabbitMQ\Management\AsyncAPIClient;
@@ -45,7 +44,7 @@ class RabbitMQMonitorComponent implements ComponentInterface
     {
     }
 
-    public function fetchMQInformations(WebsocketApplication $wsApplication, Configuration $configuration, Logger $logger)
+    public function fetchMQInformations(WebsocketApplication $wsApplication, Configuration $configuration)
     {
         foreach ($this->queues as $name => $queue) {
 
@@ -71,7 +70,6 @@ class RabbitMQMonitorComponent implements ComponentInterface
         }
 
         gc_collect_cycles();
-        $logger->addDebug(sprintf("Memory is using %d", memory_get_usage()));
     }
 
     /**

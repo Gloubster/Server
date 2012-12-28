@@ -2,6 +2,8 @@
 
 namespace Gloubster\Server\Component;
 
+use Predis\Async\Connection\ConnectionInterface as PredisConnection;
+use Predis\Async\Client as PredisClient;
 use Gloubster\Server\GloubsterServer;
 use React\Stomp\Client;
 
@@ -13,7 +15,7 @@ class ListenersComponent implements ComponentInterface
     public function register(GloubsterServer $server)
     {
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -23,5 +25,12 @@ class ListenersComponent implements ComponentInterface
             $listener = $listenerConf['type']::create($server['loop'], $listenerConf['options']);
             $listener->attach($server);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function registerRedis(GloubsterServer $server, PredisClient $client, PredisConnection $conn)
+    {
     }
 }

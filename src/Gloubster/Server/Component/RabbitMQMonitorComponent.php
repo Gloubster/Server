@@ -6,6 +6,8 @@ use Gloubster\Configuration;
 use Gloubster\Server\WebsocketApplication;
 use Gloubster\RabbitMQ\Configuration as RabbitMQConf;
 use Gloubster\Server\GloubsterServer;
+use Predis\Async\Connection\ConnectionInterface as PredisConnection;
+use Predis\Async\Client as PredisClient;
 use RabbitMQ\Management\AsyncAPIClient;
 use React\Curry\Util as Curry;
 use React\Stomp\Client;
@@ -69,5 +71,12 @@ class RabbitMQMonitorComponent implements ComponentInterface
 
         gc_collect_cycles();
         echo "at " . time() . " memory is using " . memory_get_usage() . "\n";
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function registerRedis(GloubsterServer $server, PredisClient $client, PredisConnection $conn)
+    {
     }
 }

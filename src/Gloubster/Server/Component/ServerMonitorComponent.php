@@ -4,6 +4,8 @@ namespace Gloubster\Server\Component;
 
 use Gloubster\Server\WebsocketApplication;
 use Gloubster\Server\GloubsterServer;
+use Predis\Async\Connection\ConnectionInterface as PredisConnection;
+use Predis\Async\Client as PredisClient;
 use React\Curry\Util as Curry;
 use React\Stomp\Client;
 
@@ -22,6 +24,13 @@ class ServerMonitorComponent implements ComponentInterface
      * {@inheritdoc}
      */
     public function registerSTOMP(GloubsterServer $server, Client $stomp)
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function registerRedis(GloubsterServer $server, PredisClient $client, PredisConnection $conn)
     {
     }
 

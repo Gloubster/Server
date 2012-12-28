@@ -41,6 +41,10 @@ class WorkerMonitorBroadcastComponentTest extends \PHPUnit_Framework_TestCase
                     "port": 61613
                 }
             },
+            "redis-server": {
+                "host": "localhost",
+                "port": 6379
+            },
             "session-server": {
                 "type": "memcache",
                 "host": "localhost",
@@ -73,5 +77,37 @@ class WorkerMonitorBroadcastComponentTest extends \PHPUnit_Framework_TestCase
                 ->disableOriginalConstructor()
                 ->getMock()
         );
+    }
+
+    public function testThatRegisterRedisDoesNotThrowError()
+    {
+        $server = $this->getMockBuilder('Gloubster\\Server\\GloubsterServer')
+                    ->disableOriginalConstructor()
+                    ->getMock();
+
+        $client = $this->getMockBuilder('Predis\\Async\\Client')
+                    ->disableOriginalConstructor()
+                    ->getMock();
+
+        $conn = $this->getMockBuilder('Predis\Async\Connection\ConnectionInterface')
+                    ->disableOriginalConstructor()
+                    ->getMock();
+
+        $component = new WorkerMonitorBroadcastComponent();
+        $component->registerRedis($server, $client, $conn);
+    }
+
+    public function testThatRegisterSTOMPDoesNotThrowError()
+    {
+        $server = $this->getMockBuilder('Gloubster\\Server\\GloubsterServer')
+                    ->disableOriginalConstructor()
+                    ->getMock();
+
+        $stomp = $this->getMockBuilder('React\\Stomp\\Client')
+                    ->disableOriginalConstructor()
+                    ->getMock();
+
+        $component = new WorkerMonitorBroadcastComponent();
+        $component->registerSTOMP($server, $stomp);
     }
 }

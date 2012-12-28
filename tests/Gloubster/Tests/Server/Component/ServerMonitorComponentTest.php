@@ -41,6 +41,10 @@ class ServerMonitorComponentTest extends \PHPUnit_Framework_TestCase
                     "port": 61613
                 }
             },
+            "redis-server": {
+                "host": "localhost",
+                "port": 6379
+            },
             "session-server": {
                 "type": "memcache",
                 "host": "localhost",
@@ -64,5 +68,37 @@ class ServerMonitorComponentTest extends \PHPUnit_Framework_TestCase
         $server->register($component);
 
         $component->brodcastServerInformations($websocket);
+    }
+
+    public function testThatRegisterRedisDoesNotThrowError()
+    {
+        $server = $this->getMockBuilder('Gloubster\\Server\\GloubsterServer')
+                    ->disableOriginalConstructor()
+                    ->getMock();
+
+        $client = $this->getMockBuilder('Predis\\Async\\Client')
+                    ->disableOriginalConstructor()
+                    ->getMock();
+
+        $conn = $this->getMockBuilder('Predis\Async\Connection\ConnectionInterface')
+                    ->disableOriginalConstructor()
+                    ->getMock();
+
+        $component = new ServerMonitorComponent();
+        $component->registerRedis($server, $client, $conn);
+    }
+
+    public function testThatRegisterSTOMPDoesNotThrowError()
+    {
+        $server = $this->getMockBuilder('Gloubster\\Server\\GloubsterServer')
+                    ->disableOriginalConstructor()
+                    ->getMock();
+
+        $stomp = $this->getMockBuilder('React\\Stomp\\Client')
+                    ->disableOriginalConstructor()
+                    ->getMock();
+
+        $component = new ServerMonitorComponent();
+        $component->registerSTOMP($server, $stomp);
     }
 }

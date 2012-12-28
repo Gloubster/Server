@@ -3,33 +3,59 @@
     "type": "object",
     "additionalProperties": true,
     "properties": {
-        "server-management": {
+        "server":{
             "type": "object",
-            "description": "Gloubster Log configuration",
+            "description": "Gloubster session server",
             "required": true,
             "additionalProperties": true,
             "properties": {
-                "port": {
-                    "type": "number",
-                    "description": "Management server port",
-                    "required": true
+                "server-management": {
+                    "type": "object",
+                    "description": "Gloubster Log configuration",
+                    "required": true,
+                    "additionalProperties": true,
+                    "properties": {
+                        "port": {
+                            "type": "number",
+                            "description": "Management server port",
+                            "required": true
+                        },
+                        "scheme": {
+                            "type": "string",
+                            "description": "Management server scheme",
+                            "required": true
+                        }
+                    }
                 },
-                "scheme": {
-                    "type": "string",
-                    "description": "Management server scheme",
-                    "required": true
+                "stomp-gateway": {
+                    "type": "object",
+                    "description": "RabbtMQ Stomp Gateway",
+                    "required": true,
+                    "additionalProperties": true,
+                    "properties": {
+                        "port": {
+                            "type": "number",
+                            "description": "RabbtMQ Stomp Gateway port",
+                            "required": true
+                        }
+                    }
                 }
             }
         },
-        "stomp-gateway": {
+        "redis-server": {
             "type": "object",
-            "description": "RabbtMQ Stomp Gateway",
+            "description": "Gloubster redis server",
             "required": true,
             "additionalProperties": true,
             "properties": {
+                "host": {
+                    "type": "string",
+                    "description": "Redis server host",
+                    "required": true
+                },
                 "port": {
                     "type": "number",
-                    "description": "RabbtMQ Stomp Gateway port",
+                    "description": "Redis server port",
                     "required": true
                 }
             }
@@ -72,6 +98,28 @@
                     "type": "number",
                     "description": "The port number",
                     "required": true
+                }
+            }
+        },
+        "listeners": {
+            "type": "array",
+            "description": "An array of listeners",
+
+            "items": {
+                "type": "object",
+                "required": true,
+                "additionalProperties": true,
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "description": "The classname",
+                        "required": true
+                    },
+                    "options": {
+                        "type": "object",
+                        "description": "Options for the listener",
+                        "required": true
+                    }
                 }
             }
         }

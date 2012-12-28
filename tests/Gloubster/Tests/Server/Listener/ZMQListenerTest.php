@@ -30,7 +30,11 @@ class ZMQListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getSocket')
             ->will($this->returnvalue($socket));
 
-        new ZMQListener($context, $conf);
+        $logger = $this->getMockBuilder('Monolog\\Logger')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        new ZMQListener($context, $logger, $conf);
     }
 
     /** @test */
@@ -103,7 +107,11 @@ class ZMQListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getSocket')
             ->will($this->returnvalue($socket));
 
-        $listener = new ZMQListener($context, $conf);
+        $logger = $this->getMockBuilder('Monolog\\Logger')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $listener = new ZMQListener($context, $logger, $conf);
         $gloubster = $this->getMockBuilder('Gloubster\\Server\\GloubsterServerInterface')
             ->disableOriginalConstructor()
             ->getMock();
@@ -143,7 +151,11 @@ class ZMQListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getSocket')
             ->will($this->returnvalue($socket));
 
-        $listener = new ZMQListener($context, $conf);
+        $logger = $this->getMockBuilder('Monolog\\Logger')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $listener = new ZMQListener($context, $logger, $conf);
         $gloubster = $this->getMockBuilder('Gloubster\\Server\\GloubsterServerInterface')
             ->disableOriginalConstructor()
             ->getMock();
@@ -170,7 +182,11 @@ class ZMQListenerTest extends \PHPUnit_Framework_TestCase
             'port'      => 55672,
         );
 
-        new ZMQListener($context, $conf);
+        $logger = $this->getMockBuilder('Monolog\\Logger')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        new ZMQListener($context, $logger, $conf);
     }
 
     /**
@@ -186,7 +202,11 @@ class ZMQListenerTest extends \PHPUnit_Framework_TestCase
             'port'      => 55672,
         );
 
-        new ZMQListener($context, $conf);
+        $logger = $this->getMockBuilder('Monolog\\Logger')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        new ZMQListener($context, $logger, $conf);
     }
 
     /**
@@ -202,7 +222,11 @@ class ZMQListenerTest extends \PHPUnit_Framework_TestCase
             'address'   => 'localhost',
         );
 
-        new ZMQListener($context, $conf);
+        $logger = $this->getMockBuilder('Monolog\\Logger')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        new ZMQListener($context, $logger, $conf);
     }
 
     private function getContext()

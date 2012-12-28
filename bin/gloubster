@@ -2,10 +2,9 @@
 <?php
 
 use Gloubster\Configuration;
-use Gloubster\Server\CLI;
-use Gloubster\Server\Console\LogProcess;
+use Gloubster\CLI;
+use Gloubster\Server\Console\RunServer;
 use Gloubster\Server\Console\ServerEnsureConfiguration;
-use Gloubster\Server\Console\WebsocketServer;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -17,13 +16,12 @@ try {
 
     $gloubster = new CLI('Gloubster');
 
-    $gloubster->command(new LogProcess($conf));
     $gloubster->command(new ServerEnsureConfiguration($conf));
-    $gloubster->command(new WebsocketServer($conf));
+    $gloubster->command(new RunServer($conf));
 
     $gloubster->run();
 
 } catch (\Exception $e) {
-    echo sprintf("An error occured : %s", $e->getMessage());
+    echo sprintf("An error occured : %s\n", $e->getMessage());
     exit(1);
 }

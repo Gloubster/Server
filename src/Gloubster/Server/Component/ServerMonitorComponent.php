@@ -36,6 +36,13 @@ class ServerMonitorComponent implements ComponentInterface
     {
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function boot(GloubsterServer $server)
+    {
+    }
+
     public function displayServerMemory(Logger $logger)
     {
         $logger->addDebug(sprintf("Memory is using %d", memory_get_usage()));

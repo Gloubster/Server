@@ -244,6 +244,24 @@ class LogBuilderComponentTest extends \PHPUnit_Framework_TestCase
         $component->registerSTOMP($server, $stomp);
     }
 
+    public function testThatBootDoesNotThrowError()
+    {
+        $server = $this->getMockBuilder('Gloubster\\Server\\GloubsterServer')
+                    ->disableOriginalConstructor()
+                    ->getMock();
+
+        $client = $this->getMockBuilder('Predis\\Async\\Client')
+                    ->disableOriginalConstructor()
+                    ->getMock();
+
+        $conn = $this->getMockBuilder('Predis\Async\Connection\ConnectionInterface')
+                    ->disableOriginalConstructor()
+                    ->getMock();
+
+        $component = new LogBuilderComponent();
+        $component->boot($server);
+    }
+
     private function getLogger()
     {
         return $this->getMockBuilder('Monolog\\Logger')

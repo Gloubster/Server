@@ -124,6 +124,9 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
     {
         if ($this->stompStarted && $this->redisStarted) {
             $this['monolog']->addInfo('All services loaded, server now running');
+            foreach ($this->components as $component) {
+                $component->boot($this);
+            }
         }
     }
 

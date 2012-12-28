@@ -110,4 +110,22 @@ class WorkerMonitorBroadcastComponentTest extends \PHPUnit_Framework_TestCase
         $component = new WorkerMonitorBroadcastComponent();
         $component->registerSTOMP($server, $stomp);
     }
+
+    public function testThatBootDoesNotThrowError()
+    {
+        $server = $this->getMockBuilder('Gloubster\\Server\\GloubsterServer')
+                    ->disableOriginalConstructor()
+                    ->getMock();
+
+        $client = $this->getMockBuilder('Predis\\Async\\Client')
+                    ->disableOriginalConstructor()
+                    ->getMock();
+
+        $conn = $this->getMockBuilder('Predis\Async\Connection\ConnectionInterface')
+                    ->disableOriginalConstructor()
+                    ->getMock();
+
+        $component = new WorkerMonitorBroadcastComponent();
+        $component->boot($server);
+    }
 }

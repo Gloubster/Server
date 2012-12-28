@@ -101,4 +101,22 @@ class RabbitMQMonitorComponentTest extends \PHPUnit_Framework_TestCase
         $component = new RabbitMQMonitorComponent();
         $component->registerSTOMP($server, $stomp);
     }
+
+    public function testThatBootDoesNotThrowError()
+    {
+        $server = $this->getMockBuilder('Gloubster\\Server\\GloubsterServer')
+                    ->disableOriginalConstructor()
+                    ->getMock();
+
+        $client = $this->getMockBuilder('Predis\\Async\\Client')
+                    ->disableOriginalConstructor()
+                    ->getMock();
+
+        $conn = $this->getMockBuilder('Predis\Async\Connection\ConnectionInterface')
+                    ->disableOriginalConstructor()
+                    ->getMock();
+
+        $component = new RabbitMQMonitorComponent();
+        $component->boot($server);
+    }
 }

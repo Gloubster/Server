@@ -48,6 +48,13 @@ class LogBuilderComponent implements ComponentInterface
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function boot(GloubsterServer $server)
+    {
+    }
+
     public function handleLog(PredisClient $redis, Logger $logger, Frame $frame, AckResolver $resolver)
     {
         $logger->addInfo(sprintf('Processing job %s', $frame->getHeader('delivery_tag')));

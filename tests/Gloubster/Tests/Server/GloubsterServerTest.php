@@ -7,6 +7,7 @@ use Gloubster\Message\Job\ImageJob;
 use Gloubster\Message\Presence\WorkerPresence;
 use Gloubster\Server\GloubsterServer;
 use Gloubster\Server\Component\ComponentInterface;
+use Gloubster\Server\Component\StopComponent;
 
 require_once __DIR__ . '/../Mocks/DeliveryMock.php';
 
@@ -320,21 +321,8 @@ class TestComponent implements ComponentInterface
     {
         $this->Redisregistered = true;
     }
-}
 
-class StopComponent implements ComponentInterface
-{
-
-    public function register(GloubsterServer $server)
-    {
-    }
-
-    public function registerSTOMP(GloubsterServer $server, \React\Stomp\Client $stomp)
-    {
-        $server['loop']->stop();
-    }
-
-    public function registerRedis(GloubsterServer $server, \Predis\Async\Client $client, \Predis\Async\Connection\ConnectionInterface $conn)
+    public function boot(GloubsterServer $server)
     {
     }
 }

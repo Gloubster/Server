@@ -44,6 +44,13 @@ class RabbitMQMonitorComponent implements ComponentInterface
     {
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function boot(GloubsterServer $server)
+    {
+    }
+
     public function fetchMQInformations(WebsocketApplication $wsApplication, Configuration $configuration)
     {
         foreach ($this->queues as $name => $queue) {

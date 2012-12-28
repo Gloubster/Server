@@ -57,4 +57,11 @@ class ListenersComponent implements ComponentInterface
     public function registerRedis(GloubsterServer $server, PredisClient $client, PredisConnection $conn)
     {
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function boot(GloubsterServer $server)
+    {
+    }
 }

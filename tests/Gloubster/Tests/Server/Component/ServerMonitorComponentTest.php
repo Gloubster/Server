@@ -58,7 +58,7 @@ class ServerMonitorComponentTest extends \PHPUnit_Framework_TestCase
         }
         ');
 
-        $loop->expects($this->once())
+        $loop->expects($this->exactly(2))
             ->method('addPeriodicTimer')
             ->with($this->greaterThan(0), $this->anything());
 
@@ -100,5 +100,23 @@ class ServerMonitorComponentTest extends \PHPUnit_Framework_TestCase
 
         $component = new ServerMonitorComponent();
         $component->registerSTOMP($server, $stomp);
+    }
+
+    public function testThatBootDoesNotThrowError()
+    {
+        $server = $this->getMockBuilder('Gloubster\\Server\\GloubsterServer')
+                    ->disableOriginalConstructor()
+                    ->getMock();
+
+        $client = $this->getMockBuilder('Predis\\Async\\Client')
+                    ->disableOriginalConstructor()
+                    ->getMock();
+
+        $conn = $this->getMockBuilder('Predis\Async\Connection\ConnectionInterface')
+                    ->disableOriginalConstructor()
+                    ->getMock();
+
+        $component = new ServerMonitorComponent();
+        $component->boot($server);
     }
 }

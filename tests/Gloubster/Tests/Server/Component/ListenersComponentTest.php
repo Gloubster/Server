@@ -340,6 +340,24 @@ class ListenersComponentTest extends \PHPUnit_Framework_TestCase
         $component = new ListenersComponent();
         $component->registerRedis($server, $client, $conn);
     }
+
+    public function testThatBootDoesNotThrowError()
+    {
+        $server = $this->getMockBuilder('Gloubster\\Server\\GloubsterServer')
+                    ->disableOriginalConstructor()
+                    ->getMock();
+
+        $client = $this->getMockBuilder('Predis\\Async\\Client')
+                    ->disableOriginalConstructor()
+                    ->getMock();
+
+        $conn = $this->getMockBuilder('Predis\Async\Connection\ConnectionInterface')
+                    ->disableOriginalConstructor()
+                    ->getMock();
+
+        $component = new ListenersComponent();
+        $component->boot($server);
+    }
 }
 
 class ListenerTester implements JobListenerInterface

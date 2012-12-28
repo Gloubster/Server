@@ -6,6 +6,7 @@ use Gloubster\Configuration;
 use Gloubster\Server\WebsocketApplication;
 use Gloubster\RabbitMQ\Configuration as RabbitMQConf;
 use Gloubster\Server\GloubsterServer;
+use Monolog\Logger;
 use Predis\Async\Connection\ConnectionInterface as PredisConnection;
 use Predis\Async\Client as PredisClient;
 use RabbitMQ\Management\AsyncAPIClient;
@@ -34,7 +35,7 @@ class RabbitMQMonitorComponent implements ComponentInterface
     public function register(GloubsterServer $server)
     {
         $this->apiClient = AsyncAPIClient::factory($server['loop'], array_merge($server['configuration']['server'], $server['configuration']['server']['server-management']));
-        $server['loop']->addPeriodicTimer(5, Curry::bind(array($this, 'fetchMQInformations'), $server['websocket-application'], $server['configuration']));
+        $server['loop']->addPeriodicTimer(5, Curry::bind(array($this, 'fetchMQInformations'), $server['websocket-application'], $server['configuration'], $server['monolog']));
     }
 
     /**
@@ -44,7 +45,7 @@ class RabbitMQMonitorComponent implements ComponentInterface
     {
     }
 
-    public function fetchMQInformations(WebsocketApplication $wsApplication, Configuration $configuration)
+    public function fetchMQInformations(WebsocketApplication $wsApplication, Configuration $configuration, Logger $logger)
     {
         foreach ($this->queues as $name => $queue) {
 
@@ -70,7 +71,7 @@ class RabbitMQMonitorComponent implements ComponentInterface
         }
 
         gc_collect_cycles();
-        echo "at " . time() . " memory is using " . memory_get_usage() . "\n";
+        $logger->addDebug(sprintf("Memory is using %d", memory_get_usage()));
     }
 
     /**

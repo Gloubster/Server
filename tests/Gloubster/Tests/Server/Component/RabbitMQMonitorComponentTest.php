@@ -67,7 +67,7 @@ class RabbitMQMonitorComponentTest extends \PHPUnit_Framework_TestCase
         $server = new GloubsterServer($websocket, $client, $loop, $conf, $logger);
         $server->register($component);
 
-        $component->fetchMQInformations($websocket, $conf);
+        $component->fetchMQInformations($websocket, $conf, $logger);
     }
 
     public function testThatRegisterRedisDoesNotThrowError()

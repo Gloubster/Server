@@ -37,10 +37,11 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
     private $components = array();
     private $redisStarted = false;
     private $stompStarted = false;
-    private $wsSocket;
 
     public function __construct(WebsocketApplication $websocket, Client $client, LoopInterface $loop, Configuration $conf, Logger $logger)
     {
+        $server = $this;
+        
         $this['loop'] = $loop;
         $this['configuration'] = $conf;
         $this['monolog'] = $logger;
@@ -50,48 +51,48 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
 
         $this['stomp-client']->on('error', array($this, 'logError'));
 
-        $redisErrorHandler = function(PredisClient $client, \Exception $e, PredisConnection $conn) {
-            call_user_func(array($this, 'logError'), $e);
+        $redisErrorHandler = function (PredisClient $client, \Exception $e, PredisConnection $conn) use ($server) {
+            call_user_func(array($server, 'logError'), $e);
         };
 
         $redisOptions = array(
             'on_error'  => $redisErrorHandler,
-            'eventloop' => $this['loop'],
+            'eventloop' => $server['loop'],
         );
 
-        $this['dispatcher']->on('redis-connected', function () {
-            $this->redisStarted = true;
-            $this->probeAllSystems();
+        $this['dispatcher']->on('redis-connected', function () use ($server) {
+            $server->redisStarted = true;
+            $server->probeAllSystems();
         });
 
-        $this['dispatcher']->on('stomp-connected', function () {
-            $this->stompStarted = true;
-            $this->probeAllSystems();
+        $this['dispatcher']->on('stomp-connected', function () use ($server) {
+            $server->stompStarted = true;
+            $server->probeAllSystems();
         });
 
-        $this['dispatcher']->on('start', function () use ($redisOptions) {
-            $this['redis'] = new PredisClient(sprintf('tcp://%s:%s', $this['configuration']['redis-server']['host'], $this['configuration']['redis-server']['port']), $redisOptions);
-            $this['redis']->connect(array($this, 'activateRedisServices'));
-            $this['monolog']->addInfo('Connecting to Redis server...');
+        $this['dispatcher']->on('start', function () use ($server, $redisOptions) {
+            $server['redis'] = new PredisClient(sprintf('tcp://%s:%s', $server['configuration']['redis-server']['host'], $server['configuration']['redis-server']['port']), $redisOptions);
+            $server['redis']->connect(array($server, 'activateRedisServices'));
+            $server['monolog']->addInfo('Connecting to Redis server...');
         });
 
-        $this->wsSocket = new Reactor($this['loop']);
+        $this['websocket-application.socket'] = new Reactor($this['loop']);
 
-        $this['dispatcher']->on('start', function () {
+        $this['dispatcher']->on('start', function () use ($server) {
             // Setup websocket server
-            $this->wsSocket->listen($this['configuration']['websocket-server']['port'], $this['configuration']['websocket-server']['address']);
-            $this['monolog']->addInfo(sprintf('Websocket Server listening on %s:%d', $this['configuration']['websocket-server']['address'], $this['configuration']['websocket-server']['port']));
+            $server['websocket-application.socket']->listen($server['configuration']['websocket-server']['port'], $server['configuration']['websocket-server']['address']);
+            $server['monolog']->addInfo(sprintf('Websocket Server listening on %s:%d', $server['configuration']['websocket-server']['address'], $server['configuration']['websocket-server']['port']));
 
             $server = new IoServer(new WsServer(
                            new SessionProvider(
-                               new WampServer($this['websocket-application']),
-                               SessionHandler::factory($this['configuration'])
+                               new WampServer($server['websocket-application']),
+                               SessionHandler::factory($server['configuration'])
                            )
-                   ), $this->wsSocket, $this['loop']);
+                   ), $server['websocket-application.socket'], $server['loop']);
         });
 
-        $this['dispatcher']->on('stop', function () {
-            $this->wsSocket->shutdown();
+        $this['dispatcher']->on('stop', function () use ($server) {
+            $server['websocket-application.socket']->shutdown();
         });
     }
 

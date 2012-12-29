@@ -4,15 +4,10 @@ namespace Gloubster\Server\Component;
 
 use Gloubster\Server\GloubsterServer;
 use Gloubster\Exception\RuntimeException;
-use Gloubster\Server\Listener\JobListenerInterface;
-use Predis\Async\Connection\ConnectionInterface as PredisConnection;
-use Predis\Async\Client as PredisClient;
 use React\Stomp\Client;
 
 class ListenersComponent implements ComponentInterface
 {
-
-    private $listeners = array();
     /**
      * {@inheritdoc}
      */
@@ -45,9 +40,7 @@ class ListenersComponent implements ComponentInterface
                 $server['monolog']->addInfo(sprintf('Attaching listener %s', get_class($listener)));
 
                 $listener->attach($server);
-                $this->listeners[] = $listener;
             }
-
         });
     }
 }

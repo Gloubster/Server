@@ -5,9 +5,6 @@ namespace Gloubster\Server\Component;
 use Gloubster\RabbitMQ\Configuration as RabbitMQConf;
 use Gloubster\Server\GloubsterServer;
 use Gloubster\Message\Factory;
-use Gloubster\Documents\Job;
-use Gloubster\Documents\Garbage;
-use Doctrine\ODM\MongoDB\DocumentManager;
 use Gloubster\Exception\RuntimeException;
 use Gloubster\Message\Job\JobInterface;
 use Monolog\Logger;
@@ -15,14 +12,11 @@ use Predis\Async\Connection\ConnectionInterface as PredisConnection;
 use Predis\Async\Client as PredisClient;
 use React\Promise\Deferred;
 use React\Stomp\AckResolver;
-use React\Stomp\Client;
 use React\Stomp\Protocol\Frame;
 use React\Curry\Util as Curry;
 
-
 class LogBuilderComponent implements ComponentInterface
 {
-
     /**
      * {@inheritdoc}
      */
@@ -67,15 +61,16 @@ class LogBuilderComponent implements ComponentInterface
 
     private function saveJob(PredisClient $redis, JobInterface $job)
     {
+        $component = $this;
         $deferred = new Deferred();
 
         $tx = $redis->multiExec();
 
         $tx->incr('job-counter');
-        $tx->execute(function ($replies, $redis) use ($deferred, $job) {
+        $tx->execute(function ($replies, $redis) use ($component, $deferred, $job) {
             $hashId = 'job-' . $replies[0];
 
-            $hash = array_merge(array($hashId), $this->hashJob($job), array(function() use ($deferred, $hashId){
+            $hash = array_merge(array($hashId), $component->hashJob($job), array(function() use ($deferred, $hashId){
                 $deferred->resolve($hashId);
             }));
 
@@ -121,7 +116,7 @@ class LogBuilderComponent implements ComponentInterface
             });
     }
 
-    private function hashJob(JobInterface $job)
+    public function hashJob(JobInterface $job)
     {
         $hash = array();
 

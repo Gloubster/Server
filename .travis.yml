@@ -1,0 +1,21 @@
+language: php
+
+services:
+  - rabbitmq
+  - redis-server
+  - memcached
+
+before_script:
+  - git clone --quiet https://github.com/nrk/phpiredis.git
+  - sh -c "cd phpiredis && phpize && ./configure && make --silent && sudo make install"
+  - echo "extension=phpiredis.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
+  - composer install --dev
+
+php:
+  - 5.3.3
+  - 5.3
+  - 5.4
+  - 5.5
+
+script:
+  - phpunit --coverage-text

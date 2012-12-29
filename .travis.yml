@@ -6,6 +6,7 @@ services:
   - memcached
 
 before_script:
+  - sudo apt-get install libhiredis-dev
   - git clone --quiet https://github.com/nrk/phpiredis.git
   - sh -c "cd phpiredis && phpize && ./configure && make --silent && sudo make install"
   - echo "extension=phpiredis.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`

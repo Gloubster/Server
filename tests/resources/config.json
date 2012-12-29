@@ -1,6 +1,6 @@
 {
     "server": {
-        "host": "localhost",
+        "host": "127.0.0.1",
         "port": 5672,
         "user": "guest",
         "password": "guest",
@@ -19,7 +19,7 @@
     },
     "session-server": {
         "type": "memcache",
-        "host": "localhost",
+        "host": "127.0.0.1",
         "port": 11211
     },
     "websocket-server": {
@@ -38,7 +38,7 @@
         {
             "type": "Gloubster\\Server\\Listener\\HTTPListener",
             "options": {
-                "host": "localhost",
+                "host": "127.0.0.1",
                 "port": 8990
             }
         }

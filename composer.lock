@@ -1,5 +1,5 @@
 {
-    "hash": "f371a62e42bb503c4fe52fa42ed0381b",
+    "hash": "e264bac205849606aceb793b149ccffb",
     "packages": [
         {
             "name": "alchemy/rabbitmq-management-client",
@@ -140,6 +140,7 @@
                     "Ratchet": "src"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -231,141 +232,6 @@
             ]
         },
         {
-            "name": "doctrine/mongodb",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/doctrine/mongodb",
-                "reference": "1.0.0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/doctrine/mongodb/archive/1.0.0.zip",
-                "reference": "1.0.0",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.2",
-                "ext-mongo": ">=1.2.12,<1.4-dev",
-                "doctrine/common": ">=2.1.0,<2.5-dev"
-            },
-            "time": "2012-12-19 01:44:45",
-            "type": "library",
-            "installation-source": "source",
-            "autoload": {
-                "psr-0": {
-                    "Doctrine\\MongoDB": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Bulat Shakirzyanov",
-                    "email": "mallluhuct@gmail.com",
-                    "homepage": "http://avalanche123.com"
-                },
-                {
-                    "name": "Jonathan Wage",
-                    "email": "jonwage@gmail.com",
-                    "homepage": "http://www.jwage.com/"
-                },
-                {
-                    "name": "Kris Wallsmith",
-                    "email": "kris.wallsmith@gmail.com",
-                    "homepage": "http://kriswallsmith.net/"
-                },
-                {
-                    "name": "Jeremy Mikola",
-                    "email": "jmikola@gmail.com",
-                    "homepage": "http://jmikola.net"
-                }
-            ],
-            "description": "Doctrine MongoDB Abstraction Layer",
-            "homepage": "http://www.doctrine-project.org",
-            "keywords": [
-                "database",
-                "persistence",
-                "mongodb"
-            ]
-        },
-        {
-            "name": "doctrine/mongodb-odm",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/doctrine/mongodb-odm.git",
-                "reference": "1.0.0-BETA7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/doctrine/mongodb-odm/archive/1.0.0-BETA7.zip",
-                "reference": "1.0.0-BETA7",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.2",
-                "doctrine/common": ">=2.2.0,<2.5-dev",
-                "symfony/console": ">=2.0-dev,<2.3-dev",
-                "doctrine/mongodb": "1.0.*"
-            },
-            "require-dev": {
-                "symfony/yaml": ">=2.0-dev,<2.3-dev"
-            },
-            "suggest": {
-                "symfony/yaml": "Enables the YAML metadata mapping driver"
-            },
-            "time": "2012-12-19 02:24:49",
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "installation-source": "source",
-            "autoload": {
-                "psr-0": {
-                    "Doctrine\\ODM\\MongoDB": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Bulat Shakirzyanov",
-                    "email": "mallluhuct@gmail.com",
-                    "homepage": "http://avalanche123.com"
-                },
-                {
-                    "name": "Jonathan H. Wage",
-                    "email": "jonwage@gmail.com",
-                    "homepage": "http://www.jwage.com/"
-                },
-                {
-                    "name": "Kris Wallsmith",
-                    "email": "kris.wallsmith@gmail.com",
-                    "homepage": "http://kriswallsmith.net/"
-                },
-                {
-                    "name": "Jeremy Mikola",
-                    "email": "jmikola@gmail.com",
-                    "homepage": "http://jmikola.net"
-                }
-            ],
-            "description": "Doctrine MongoDB Object Document Mapper",
-            "homepage": "http://www.doctrine-project.org",
-            "keywords": [
-                "database",
-                "persistence",
-                "mongodb",
-                "odm"
-            ]
-        },
-        {
             "name": "evenement/evenement",
             "version": "1.0.x-dev",
             "source": {
@@ -382,6 +248,7 @@
             "require": {
                 "php": ">=5.3.0"
             },
+            "time": "2012-11-03 02:17:23",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -394,6 +261,7 @@
                     "Evenement": "src"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -407,8 +275,7 @@
             "description": "Événement is a very simple event dispatching library for PHP 5.3",
             "keywords": [
                 "event-dispatcher"
-            ],
-            "time": "2012-11-03 02:17:23"
+            ]
         },
         {
             "name": "gloubster/communications",
@@ -569,6 +436,7 @@
             "require": {
                 "php": ">=5.3.0"
             },
+            "time": "2012-11-29 16:11:18",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -576,6 +444,7 @@
                     "JsonSchema": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -604,8 +473,7 @@
             "keywords": [
                 "json",
                 "schema"
-            ],
-            "time": "2012-11-29 16:11:18"
+            ]
         },
         {
             "name": "kriswallsmith/assetic",
@@ -789,62 +657,6 @@
             ]
         },
         {
-            "name": "neutron/mongo-odm-silex-provider",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "git://github.com/romainneutron/MongoDB-ODM-Silex-Provider.git",
-                "reference": "992818214ef91261282c58c1eecd648eb021c5b9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/romainneutron/MongoDB-ODM-Silex-Provider/archive/992818214ef91261282c58c1eecd648eb021c5b9.zip",
-                "reference": "992818214ef91261282c58c1eecd648eb021c5b9",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.2",
-                "doctrine/mongodb-odm": ">=1.0.0-beta4"
-            },
-            "require-dev": {
-                "silex/silex": "dev-master"
-            },
-            "type": "library",
-            "installation-source": "source",
-            "autoload": {
-                "psr-0": {
-                    "Neutron": "src"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Romain Neutron",
-                    "email": "imprec@gmail.com",
-                    "homepage": "http://www.lickmychip.com/"
-                },
-                {
-                    "name": "Florian Klein",
-                    "email": "florian.klein@free.fr",
-                    "homepage": "https://github.com/docteurklein"
-                },
-                {
-                    "name": "Justin Hileman",
-                    "email": "justin@justinhileman.info",
-                    "homepage": "http://justinhileman.com"
-                }
-            ],
-            "description": "MongoODM Silex service provider",
-            "keywords": [
-                "silex",
-                "doctrine",
-                "odm"
-            ],
-            "time": "2012-11-12 14:54:50"
-        },
-        {
             "name": "pimple/pimple",
             "version": "dev-master",
             "source": {
@@ -897,12 +709,12 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/nrk/predis.git",
-                "reference": "83720075f3ac285153ed82ef1fcaf1170fb8b383"
+                "reference": "f8cbbc5b8f8322ea6ecbb4986c8f0060034f863d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/nrk/predis/archive/83720075f3ac285153ed82ef1fcaf1170fb8b383.zip",
-                "reference": "83720075f3ac285153ed82ef1fcaf1170fb8b383",
+                "url": "https://github.com/nrk/predis/archive/f8cbbc5b8f8322ea6ecbb4986c8f0060034f863d.zip",
+                "reference": "f8cbbc5b8f8322ea6ecbb4986c8f0060034f863d",
                 "shasum": ""
             },
             "require": {
@@ -912,7 +724,7 @@
                 "ext-phpiredis": "Allows faster serialization and deserialization of the Redis protocol",
                 "ext-curl": "Allows access to Webdis when paired with phpiredis"
             },
-            "time": "2012-12-27 09:50:25",
+            "time": "2012-12-28 19:51:34",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -945,12 +757,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nrk/predis-async",
-                "reference": "7ca4e8444c424ae787afc512d9ed6351c2840e9b"
+                "reference": "cc4a306697f1551299805271342ae0c409a82be9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/nrk/predis-async/archive/7ca4e8444c424ae787afc512d9ed6351c2840e9b.zip",
-                "reference": "7ca4e8444c424ae787afc512d9ed6351c2840e9b",
+                "url": "https://github.com/nrk/predis-async/archive/cc4a306697f1551299805271342ae0c409a82be9.zip",
+                "reference": "cc4a306697f1551299805271342ae0c409a82be9",
                 "shasum": ""
             },
             "require": {
@@ -959,7 +771,7 @@
                 "react/event-loop": "0.2.*",
                 "predis/predis": "0.8.*"
             },
-            "time": "2012-11-08 10:19:32",
+            "time": "2012-12-28 19:45:52",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -1003,6 +815,7 @@
             "require": {
                 "php": ">=5.3.2"
             },
+            "time": "2012-11-08 01:13:57",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1015,6 +828,7 @@
                     "React\\Curry": "src"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1023,8 +837,7 @@
                 "curry",
                 "currying",
                 "functional-programming"
-            ],
-            "time": "2012-11-08 01:13:57"
+            ]
         },
         {
             "name": "react/promise",
@@ -1713,6 +1526,7 @@
             "require": {
                 "php": ">=5.3.0"
             },
+            "time": "2012-12-04 15:08:38",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -1720,6 +1534,7 @@
                     "PhpAmqpLib": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "authors": [
                 {
                     "name": "Alvaro Videla"
@@ -1731,8 +1546,7 @@
                 "queue",
                 "rabbitmq",
                 "message"
-            ],
-            "time": "2012-12-04 15:08:38"
+            ]
         }
     ],
     "packages-dev": [
@@ -1744,9 +1558,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "alchemy/rabbitmq-management-client": 20,
-        "doctrine/mongodb-odm": 20,
         "gloubster/communications": 20,
-        "neutron/mongo-odm-silex-provider": 20,
         "pimple/pimple": 20,
         "predis/predis-async": 20,
         "silex/silex": 20,

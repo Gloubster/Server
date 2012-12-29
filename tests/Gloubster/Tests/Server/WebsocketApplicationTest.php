@@ -5,10 +5,10 @@ namespace Gloubster\Tests\Server;
 use Gloubster\Message\Presence\WorkerPresence;
 use Gloubster\Server\WebsocketApplication;
 use Ratchet\WebSocket\Version\RFC6455\Connection;
+use Gloubster\Tests\GloubsterTest;
 
-class WebsocketApplicationTest extends \PHPUnit_Framework_TestCase
+class WebsocketApplicationTest extends GloubsterTest
 {
-
     public function testOnPublish()
     {
         $conn = $this->getConn();
@@ -58,9 +58,7 @@ class WebsocketApplicationTest extends \PHPUnit_Framework_TestCase
 
     public function testOnOpenAuthorized()
     {
-        $session = $this->getMockBuilder('Symfony\Component\HttpFoundation\Session\SessionInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $session = $this->getSessionInterfaceMock();
 
         $session->expects($this->once())
             ->method('get')
@@ -81,9 +79,7 @@ class WebsocketApplicationTest extends \PHPUnit_Framework_TestCase
 
     public function testOnOpenNotAuthorized()
     {
-        $session = $this->getMockBuilder('Symfony\Component\HttpFoundation\Session\SessionInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $session = $this->getSessionInterfaceMock();
 
         $session->expects($this->once())
             ->method('get')
@@ -111,9 +107,7 @@ class WebsocketApplicationTest extends \PHPUnit_Framework_TestCase
     public function testOnError()
     {
         $data = '';
-        $logger = $this->getMockBuilder('Monolog\\Logger')
-                    ->disableOriginalConstructor()
-                    ->getMock();
+        $logger = $this->getLogger();
 
         $logger->expects($this->any())
             ->method('addError')
@@ -220,11 +214,14 @@ class WebsocketApplicationTest extends \PHPUnit_Framework_TestCase
 
     private function getApplication()
     {
-        return new WebsocketApplication(
-                    $this->getMockBuilder('Monolog\\Logger')
-                    ->disableOriginalConstructor()
-                    ->getMock()
-        );
+        return new WebsocketApplication($this->getLogger());
+    }
+
+    private function getSessionInterfaceMock()
+    {
+        return $this->getMockBuilder('Symfony\Component\HttpFoundation\Session\SessionInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 }
 

@@ -13,21 +13,22 @@ abstract class GloubsterTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $client = $this->getMockBuilder('React\\Stomp\\Client')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $loop = $this->getMockBuilder('React\\EventLoop\\LoopInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->getStompClient();
+        $loop = $this->getEventLoop();
+        $logger = $this->getLogger();
 
         $conf = $this->getMockBuilder('Gloubster\\Configuration')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $logger = $this->getLogger();
-
         return new GloubsterServer($ws, $client, $loop, $conf, $logger);
+    }
+
+    protected function getGloubsterServerMock()
+    {
+        return $this->getMockBuilder('Gloubster\\Server\\GloubsterServerInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     protected function getTestConfiguration()
@@ -49,9 +50,23 @@ abstract class GloubsterTest extends \PHPUnit_Framework_TestCase
                 ->getMock();
     }
 
+    protected function getStompClient()
+    {
+        return $this->getMockBuilder('React\\Stomp\\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
     protected function getLogger()
     {
         return $this->getMockBuilder('Monolog\\Logger')
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
+    protected function getEventLoop()
+    {
+        return $this->getMockBuilder('React\\EventLoop\\LoopInterface')
             ->disableOriginalConstructor()
             ->getMock();
     }

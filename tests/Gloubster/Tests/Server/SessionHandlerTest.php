@@ -3,35 +3,20 @@
 namespace Gloubster\Tests\Server;
 
 use Gloubster\Server\SessionHandler;
-use Gloubster\Configuration;
+use Gloubster\Tests\GloubsterTest;
 
-class SessionHandlerTest extends \PHPUnit_Framework_TestCase
+class SessionHandlerTest extends GloubsterTest
 {
     public function testFactoryMemcached()
     {
-        $conf = new Configuration('
-    {
-        "server": {
-            "host": "localhost",
-            "port": 5672,
-            "user": "guest",
-            "password": "guest",
-            "vhost": "/",
-            "server-management": {
-                "port": 55672,
-                "scheme": "http"
-            },
-            "stomp-gateway": {
-                "port": 61613
-            }
-        },
-        "session-server": {
-            "type": "memcached",
-            "host": "localhost",
-            "port": 11211
-        }
-    }
-');
+        $this->probeExtension('Memcached');
+
+        $conf = $this->getTestConfiguration();
+        $conf['session-server'] = array(
+            "type" => "memcached",
+            "host" => "localhost",
+            "port" => 11211,
+        );
 
         $sessionHandler = SessionHandler::factory($conf);
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Session\Storage\Handler\MemcachedSessionHandler', $sessionHandler);
@@ -39,29 +24,14 @@ class SessionHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testFactoryMemcache()
     {
-        $conf = new Configuration('
-    {
-        "server": {
-            "host": "localhost",
-            "port": 5672,
-            "user": "guest",
-            "password": "guest",
-            "vhost": "/",
-            "server-management": {
-                "port": 55672,
-                "scheme": "http"
-            },
-            "stomp-gateway": {
-                "port": 61613
-            }
-        },
-        "session-server": {
-            "type": "memcache",
-            "host": "localhost",
-            "port": 11211
-        }
-    }
-');
+        $this->probeExtension('Memcache');
+
+        $conf = $this->getTestConfiguration();
+        $conf['session-server'] = array(
+            "type" => "memcache",
+            "host" => "localhost",
+            "port" => 11211,
+        );
 
         $sessionHandler = SessionHandler::factory($conf);
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Session\Storage\Handler\MemcacheSessionHandler', $sessionHandler);
@@ -72,31 +42,16 @@ class SessionHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function testFactoryMemcacheWithWrongPort()
     {
-        $conf = new Configuration('
-    {
-        "server": {
-            "host": "localhost",
-            "port": 5672,
-            "user": "guest",
-            "password": "guest",
-            "vhost": "/",
-            "server-management": {
-                "port": 55672,
-                "scheme": "http"
-            },
-            "stomp-gateway": {
-                "port": 61613
-            }
-        },
-        "session-server": {
-            "type": "memcache",
-            "host": "localhosted",
-            "port": 800
-        }
-    }
-');
+        $this->probeExtension('Memcache');
 
-        $sessionHandler = SessionHandler::factory($conf);
+        $conf = $this->getTestConfiguration();
+        $conf['session-server'] = array(
+            "type" => "memcache",
+            "host" => "localhosted",
+            "port" => 800,
+        );
+
+        SessionHandler::factory($conf);
     }
 
     /**
@@ -104,31 +59,16 @@ class SessionHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function testFactoryMemcachedWithWrongPort()
     {
-        $conf = new Configuration('
-    {
-        "server": {
-            "host": "localhost",
-            "port": 5672,
-            "user": "guest",
-            "password": "guest",
-            "vhost": "/",
-            "server-management": {
-                "port": 55672,
-                "scheme": "http"
-            },
-            "stomp-gateway": {
-                "port": 61613
-            }
-        },
-        "session-server": {
-            "type": "memcached",
-            "host": "localhosted",
-            "port": 800
-        }
-    }
-');
+        $this->probeExtension('Memcached');
 
-        $sessionHandler = SessionHandler::factory($conf);
+        $conf = $this->getTestConfiguration();
+        $conf['session-server'] = array(
+            "type" => "memcached",
+            "host" => "localhosted",
+            "port" => 800,
+        );
+
+        SessionHandler::factory($conf);
     }
 
     /**
@@ -137,29 +77,12 @@ class SessionHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function testFactoryUnsupported($format)
     {
-        $conf = new Configuration('
-    {
-        "server": {
-            "host": "localhost",
-            "port": 5672,
-            "user": "guest",
-            "password": "guest",
-            "vhost": "/",
-            "server-management": {
-                "port": 55672,
-                "scheme": "http"
-            },
-            "stomp-gateway": {
-                "port": 61613
-            }
-        },
-        "session-server": {
-            "type": "'.$format.'",
-            "host": "localhost",
-            "port": 11211
-        }
-    }
-');
+        $conf = $this->getTestConfiguration();
+        $conf['session-server'] = array(
+            "type" => $format,
+            "host" => "localhost",
+            "port" => 11211,
+        );
 
         SessionHandler::factory($conf);
     }
@@ -171,5 +94,12 @@ class SessionHandlerTest extends \PHPUnit_Framework_TestCase
             array('pdo'),
             array('unknown'),
         );
+    }
+
+    private function probeExtension($extension)
+    {
+        if (!class_exists($extension)) {
+            $this->markTestSkipped(sprintf('%s extension not loaded', $extension));
+        }
     }
 }

@@ -58,7 +58,7 @@ class GloubsterServerTest extends GloubsterTest
         $server = $this->getServer();
         $server->register($component);
 
-        $server->activateRedisServices($server['redis'], $this->getPredisAsyncConnection());
+        $server->activateRedisServices($this->getPredisAsyncClient(), $this->getPredisAsyncConnection());
 
         $this->assertTrue($component->registered);
         $this->assertFalse($component->STOMPregistered);

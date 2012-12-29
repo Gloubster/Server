@@ -21,8 +21,11 @@ class LogBuilderComponentTest extends GloubsterTest
     {
         $server = $this->getServer();
 
+        $client = $this->getPredisAsyncClient();
+        $conn = $this->getPredisAsyncConnection();
+
         $server->register(new LogBuilderComponent());
-        $server['dispatcher']->emit('redis-connected', array($server, $this->getPredisAsyncClient(), $this->getPredisAsyncConnection()));
+        $server['dispatcher']->emit('redis-connected', array($server, $client, $conn));
     }
 
     public function testHandleLogWithJob()
@@ -169,7 +172,10 @@ class LogBuilderComponentTest extends GloubsterTest
         $component = new LogBuilderComponent();
         $component->register($server);
 
-        $server['dispatcher']->emit('redis-connected', array($server, $this->getPredisAsyncClient(), $this->getPredisAsyncConnection()));
+        $client = $this->getPredisAsyncClient();
+        $conn = $this->getPredisAsyncConnection();
+
+        $server['dispatcher']->emit('redis-connected', array($server, $client, $conn));
         $server['dispatcher']->emit('stomp-connected', array($server, $server['stomp-client']));
         $server['dispatcher']->emit('boot-connected', array($server));
     }

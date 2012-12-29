@@ -8,8 +8,6 @@ use Gloubster\Server\GloubsterServerInterface;
 use Gloubster\Server\Component\ListenersComponent;
 use Gloubster\Server\Listener\JobListenerInterface;
 use Gloubster\Tests\GloubsterTest;
-use Monolog\Logger;
-use React\EventLoop\LoopInterface;
 
 class ListenersComponentTest extends GloubsterTest
 {
@@ -21,59 +19,21 @@ class ListenersComponentTest extends GloubsterTest
         $server['monolog']->expects($this->never())
             ->method('addError');
 
-        $server['configuration'] = new \Gloubster\Configuration('{
-            "server": {
-                "host": "localhost",
-                "port": 5672,
-                "user": "guest",
-                "password": "guest",
-                "vhost": "/",
-                "server-management": {
-                    "port": 55672,
-                    "scheme": "http"
-                },
-                "stomp-gateway": {
-                    "port": 61613
-                }
-            },
-            "redis-server": {
-                "host": "127.0.0.1",
-                "port": 6379
-            },
-            "session-server": {
-                "type": "memcache",
-                "host": "localhost",
-                "port": 11211
-            },
-            "websocket-server": {
-                "address": "local.gloubster",
-                "port": 9990
-            },
-            "listeners": [
-                {
-                    "type": "' . str_replace('\\', '\\\\', __NAMESPACE__) . '\\\\ListenerTester",
-                    "options": {
-                        "transport": "tcp",
-                        "address": "0.0.0.0",
-                        "port": 22345
-                    }
-                }
-            ]
-        }');
+        $server['configuration'] = $this->getTestConfiguration();
+        $server['configuration']['listeners'] = array(
+            array(
+                'type'    => __NAMESPACE__ . '\\ListenerTester',
+                'options' => array(),
+            ),
+        );
 
         $server['test-token'] = false;
         $server->register(new ListenersComponent());
 
         $this->assertFalse($server['test-token']);
-        // this attach listeners to the stomp server
-        $server->activateStompServices(
-            $this->getMockBuilder('React\\Stomp\\Client')
-                ->disableOriginalConstructor()
-                ->getMock()
-        );
+        $server['dispatcher']->emit('stomp-connected', array($server, $server['stomp-client']));
         $this->assertTrue($server['test-token']);
     }
-
 
     /**
      * @test
@@ -82,245 +42,73 @@ class ListenersComponentTest extends GloubsterTest
     {
         $server = $this->getServer();
 
-        $server['monolog'] = $this->getMockBuilder('Monolog\\Logger')
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $server['monolog']->expects($this->once())
             ->method('addError');
 
-        $server['configuration'] = new \Gloubster\Configuration('{
-            "server": {
-                "host": "localhost",
-                "port": 5672,
-                "user": "guest",
-                "password": "guest",
-                "vhost": "/",
-                "server-management": {
-                    "port": 55672,
-                    "scheme": "http"
-                },
-                "stomp-gateway": {
-                    "port": 61613
-                }
-            },
-            "redis-server": {
-                "host": "localhost",
-                "port": 6379
-            },
-            "session-server": {
-                "type": "memcache",
-                "host": "localhost",
-                "port": 11211
-            },
-            "websocket-server": {
-                "address": "local.gloubster",
-                "port": 9990
-            },
-            "listeners": [
-                {
-                    "type": "InvalidNamespace\\\\Listener",
-                    "options": {
-                        "transport": "tcp",
-                        "address": "0.0.0.0",
-                        "port": 22345
-                    }
-                }
-            ]
-        }');
+        $server['configuration'] = $this->getTestConfiguration();
+        $server['configuration']['listeners'] = array(
+            array(
+                'type'    => 'InvalidNamespace\\Listener',
+                'options' => array(),
+            ),
+        );
 
         $server->register(new ListenersComponent());
-
-        // this attach listeners to the stomp server
-        $server->activateStompServices(
-            $this->getMockBuilder('React\\Stomp\\Client')
-                ->disableOriginalConstructor()
-                ->getMock()
-        );
+        $server['dispatcher']->emit('stomp-connected', array($server, $server['stomp-client']));
     }
 
-
-    /**
-     * @test
-     */
+    /** @test */
     public function itShouldFailWhenRegisteringInvalidListener()
     {
         $server = $this->getServer();
 
-        $server['monolog'] = $this->getMockBuilder('Monolog\\Logger')
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $server['monolog']->expects($this->once())
             ->method('addError');
 
-        $server['configuration'] = new \Gloubster\Configuration('{
-            "server": {
-                "host": "localhost",
-                "port": 5672,
-                "user": "guest",
-                "password": "guest",
-                "vhost": "/",
-                "server-management": {
-                    "port": 55672,
-                    "scheme": "http"
-                },
-                "stomp-gateway": {
-                    "port": 61613
-                }
-            },
-            "redis-server": {
-                "host": "localhost",
-                "port": 6379
-            },
-            "session-server": {
-                "type": "memcache",
-                "host": "localhost",
-                "port": 11211
-            },
-            "websocket-server": {
-                "address": "local.gloubster",
-                "port": 9990
-            },
-            "listeners": [
-                {
-                    "type": "Gloubster\\\\Communication",
-                    "options": {
-                        "transport": "tcp",
-                        "address": "0.0.0.0",
-                        "port": 22345
-                    }
-                }
-            ]
-        }');
+        $server['configuration'] = $this->getTestConfiguration();
+        $server['configuration']['listeners'] = array(
+            array(
+                'type'    => 'Gloubster\\Configuration',
+                'options' => array(),
+            ),
+        );
 
         $server->register(new ListenersComponent());
-
-        // this attach listeners to the stomp server
-        $server->activateStompServices(
-            $this->getMockBuilder('React\\Stomp\\Client')
-                ->disableOriginalConstructor()
-                ->getMock()
-        );
+        $server['dispatcher']->emit('stomp-connected', array($server, $server['stomp-client']));
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function itShouldLogErrorIfListenerBuildFails()
     {
         $server = $this->getServer();
 
-        $server['monolog'] = $this->getMockBuilder('Monolog\\Logger')
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $server['monolog']->expects($this->once())
             ->method('addError');
 
-        $server['configuration'] = new \Gloubster\Configuration('{
-            "server": {
-                "host": "localhost",
-                "port": 5672,
-                "user": "guest",
-                "password": "guest",
-                "vhost": "/",
-                "server-management": {
-                    "port": 55672,
-                    "scheme": "http"
-                },
-                "stomp-gateway": {
-                    "port": 61613
-                }
-            },
-            "redis-server": {
-                "host": "localhost",
-                "port": 6379
-            },
-            "session-server": {
-                "type": "memcache",
-                "host": "localhost",
-                "port": 11211
-            },
-            "websocket-server": {
-                "address": "local.gloubster",
-                "port": 9990
-            },
-            "listeners": [
-                {
-                    "type": "' . str_replace('\\', '\\\\', __NAMESPACE__) . '\\\\ListenerFailTester",
-                    "options": {
-                        "transport": "tcp",
-                        "address": "0.0.0.0",
-                        "port": 22345
-                    }
-                }
-            ]
-        }');
+        $server['configuration'] = $this->getTestConfiguration();
+        $server['configuration']['listeners'] = array(
+            array(
+                'type'    => __NAMESPACE__ . '\\ListenerFailTester',
+                'options' => array(),
+            ),
+        );
 
         $server->register(new ListenersComponent());
 
         // this attach listeners to the stomp server
-        $server->activateStompServices(
-            $this->getMockBuilder('React\\Stomp\\Client')
-                ->disableOriginalConstructor()
-                ->getMock()
-        );
+        $server['dispatcher']->emit('stomp-connected', array($server, $server['stomp-client']));
     }
 
-    protected function getServer()
-    {
-        $server = parent::getServer();
-        $server['configuration'] = new \Gloubster\Configuration('{
-            "server": {
-                "host": "localhost",
-                "port": 5672,
-                "user": "guest",
-                "password": "guest",
-                "vhost": "/",
-                "server-management": {
-                    "port": 55672,
-                    "scheme": "http"
-                },
-                "stomp-gateway": {
-                    "port": 61613
-                }
-            },
-            "redis-server": {
-                "host": "localhost",
-                "port": 6379
-            },
-            "session-server": {
-                "type": "memcache",
-                "host": "localhost",
-                "port": 11211
-            },
-            "websocket-server": {
-                "address": "local.gloubster",
-                "port": 9990
-            },
-            "listeners": []
-        }');
-
-        return $server;
-    }
-
-    public function testEvents()
+    /** @test */
+    public function aDefualtConfigShouldHandleAllEventsWithoutProblems()
     {
         $server = $this->getServer();
-
-        $client = $this->getMockBuilder('Predis\\Async\\Client')
-                    ->disableOriginalConstructor()
-                    ->getMock();
-
-        $conn = $this->getMockBuilder('Predis\Async\Connection\ConnectionInterface')
-                    ->disableOriginalConstructor()
-                    ->getMock();
+        $server['configuration'] = $this->getTestConfiguration();
 
         $component = new ListenersComponent();
         $component->register($server);
 
-        $server['dispatcher']->emit('redis-connected', array($server, $client, $conn));
+        $server['dispatcher']->emit('redis-connected', array($server, $this->getPredisAsyncClient(), $this->getPredisAsyncConnection()));
         $server['dispatcher']->emit('stomp-connected', array($server, $server['stomp-client']));
         $server['dispatcher']->emit('boot-connected', array($server));
     }
@@ -339,7 +127,6 @@ class ListenerTester implements JobListenerInterface
         return new static();
     }
 }
-
 
 class ListenerFailTester implements JobListenerInterface
 {

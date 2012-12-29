@@ -2,10 +2,8 @@
 
 namespace Gloubster\Tests\Server\Component;
 
-use Gloubster\Configuration;
 use Gloubster\Message\Job\ImageJob;
 use Gloubster\Message\Presence\WorkerPresence;
-use Gloubster\Server\GloubsterServer;
 use Gloubster\Server\Component\LogBuilderComponent;
 use Gloubster\Tests\GloubsterTest;
 use Predis\Client as PredisSync;
@@ -15,75 +13,13 @@ use React\EventLoop\Factory as LoopFactory;
 
 class LogBuilderComponentTest extends GloubsterTest
 {
-
     /** @test */
     public function itShouldRegister()
     {
-        $websocket = $this->getMockBuilder('Gloubster\Server\WebsocketApplication')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $server = $this->getServer();
 
-        $client = $this->getMockBuilder('React\Stomp\Client')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $loop = $this->getMockBuilder('React\EventLoop\LoopInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $conf = new Configuration('{
-            "server": {
-                "host": "localhost",
-                "port": 5672,
-                "user": "guest",
-                "password": "guest",
-                "vhost": "/",
-                "server-management": {
-                    "port": 55672,
-                    "scheme": "http"
-                },
-                "stomp-gateway": {
-                    "port": 61613
-                }
-            },
-            "redis-server": {
-                "host": "localhost",
-                "port": 6379
-            },
-            "session-server": {
-                "type": "memcache",
-                "host": "localhost",
-                "port": 11211
-            },
-            "websocket-server": {
-                "address": "local.gloubster",
-                "port": 9990
-            },
-            "listeners": [
-                {
-                    "type": "' . str_replace('\\', '\\\\', __NAMESPACE__) . '\\\\ListenerTester",
-                    "options": {
-                        "transport": "tcp",
-                        "address": "0.0.0.0",
-                        "port": 22345
-                    }
-                }
-            ]
-        }');
-
-        $loop->created = null;
-
-        $server = new GloubsterServer($websocket, $client, $loop, $conf, $this->getLogger());
         $server->register(new LogBuilderComponent());
-
-        // this attach listeners to the stomp server
-        $server->activateRedisServices(
-            $this->getMockBuilder('Predis\\Async\\Client')
-                ->disableOriginalConstructor()
-                ->getMock(), $this->getMockBuilder('Predis\Async\Connection\ConnectionInterface')
-                ->disableOriginalConstructor()
-                ->getMock()
-        );
+        $server['dispatcher']->emit('redis-connected', array($server, $this->getPredisAsyncClient(), $this->getPredisAsyncConnection()));
     }
 
     public function testHandleLogWithJob()
@@ -103,15 +39,15 @@ class LogBuilderComponentTest extends GloubsterTest
         $redisSync = new PredisSync('tcp://127.0.0.1:6379');
         $redisSync->connect();
 
+        $resolver = $this->getResolver();
+        $resolver->expects($this->once())
+            ->method('ack');
+
         $done = false;
 
         $redis = new PredisAsync('tcp://127.0.0.1:6379', $options);
-        $redis->connect(function() use ($redis, $frame, $redisSync, &$done) {
+        $redis->connect(function() use ($redis, $frame, $redisSync, &$done, $resolver) {
             $component = new LogBuilderComponent();
-
-            $resolver = $this->getResolver();
-            $resolver->expects($this->once())
-                ->method('ack');
 
             $component->handleLog($redis, $this->getLogger(), $frame, $resolver)
                 ->then(function ($hashId) use ($redis, $redisSync, &$done) {
@@ -221,34 +157,19 @@ class LogBuilderComponentTest extends GloubsterTest
     {
         $server = $this->getServer();
 
-        $client = $this->getMockBuilder('Predis\\Async\\Client')
-                    ->disableOriginalConstructor()
-                    ->getMock();
-
-        $conn = $this->getMockBuilder('Predis\Async\Connection\ConnectionInterface')
-                    ->disableOriginalConstructor()
-                    ->getMock();
-
         $component = new LogBuilderComponent();
         $component->register($server);
 
-        $server['dispatcher']->emit('redis-connected', array($server, $client, $conn));
+        $server['dispatcher']->emit('redis-connected', array($server, $this->getPredisAsyncClient(), $this->getPredisAsyncConnection()));
         $server['dispatcher']->emit('stomp-connected', array($server, $server['stomp-client']));
         $server['dispatcher']->emit('boot-connected', array($server));
-    }
-
-    private function getLogger()
-    {
-        return $this->getMockBuilder('Monolog\\Logger')
-            ->disableOriginalConstructor()
-            ->getMock();
     }
 
     private function getResolver()
     {
         return $this->getMockBuilder('React\\Stomp\\AckResolver')
-            ->disableOriginalConstructor()
-            ->getMock();
+                ->disableOriginalConstructor()
+                ->getMock();
     }
 
     public function throwRedisError($client, $exception, $conn)

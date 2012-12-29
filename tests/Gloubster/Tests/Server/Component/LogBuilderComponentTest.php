@@ -54,7 +54,7 @@ class LogBuilderComponentTest extends GloubsterTest
         $redis->connect(function() use ($phpunit, $redis, $frame, $redisSync, &$done, $resolver) {
             $component = new LogBuilderComponent();
 
-            $component->handleLog($redis, $this->getLogger(), $frame, $resolver)
+            $component->handleLog($redis, $phpunit->getLogger(), $frame, $resolver)
                 ->then(function ($hashId) use ($phpunit, $redis, $redisSync, &$done) {
 
                     $redis->disconnect();

@@ -75,6 +75,7 @@ class GloubsterServerTest extends GloubsterTest
     {
         $logger = $this->getLogger();
         $conf = $this->getTestConfiguration();
+        $this->getSessionServer($conf);
 
         $server = GloubsterServer::create(LoopFactory::create(), $conf, $logger);
 

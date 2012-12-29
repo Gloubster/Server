@@ -12,8 +12,11 @@ class RunServerTest extends GloubsterTest
 {
     public function testExecute()
     {
+        $conf = $this->getTestConfiguration();
+        $this->getSessionServer($conf);
+
         $application = new CLI('Gloubster');
-        $application->command(new RunServer($this->getTestConfiguration()));
+        $application->command(new RunServer($conf));
 
         $logger = $this->getLogger();
 

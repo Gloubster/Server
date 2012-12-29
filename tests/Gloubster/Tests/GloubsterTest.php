@@ -70,4 +70,32 @@ abstract class GloubsterTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
     }
+
+    protected function getSessionServer(Configuration $conf)
+    {
+        switch ($conf['session-server']['type']) {
+            case 'memcache':
+                if (class_exists('Memcache')) {
+                    return;
+                }
+                break;
+            case 'memcached':
+                if (class_exists('Memcached')) {
+                    return;
+                }
+                break;
+        }
+
+        if (class_exists('Memcache')) {
+            $conf['session-server']['type'] = 'memcache';
+            return;
+        }
+
+        if (class_exists('Memcached')) {
+            $conf['session-server']['type'] = 'memcached';
+            return;
+        }
+
+        $this->markTestSkipped('Neither memcache or memcached extension are present, unable to use the SessionHandler');
+    }
 }

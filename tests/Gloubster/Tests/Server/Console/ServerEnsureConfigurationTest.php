@@ -12,8 +12,11 @@ class ServerEnsureConfigurationTest extends GloubsterTest
 {
     public function testExecute()
     {
+        $conf = $this->getTestConfiguration();
+        $this->getSessionServer($conf);
+
         $application = new CLI('Gloubster');
-        $application->command(new ServerEnsureConfiguration($this->getTestConfiguration()));
+        $application->command(new ServerEnsureConfiguration($conf));
 
         $logger = $this->getLogger();
 

@@ -1,20 +1,18 @@
 <?php
 
-use Gloubster\Configuration;
 use Gloubster\Server\Console\ServerEnsureConfiguration;
 use Gloubster\CLI;
+use Gloubster\Tests\GloubsterTest;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class ServerEnsureConfigurationTest extends \PHPUnit_Framework_TestCase
+class ServerEnsureConfigurationTest extends GloubsterTest
 {
     public function testExecute()
     {
         $application = new CLI('Gloubster');
-        $application->command(new ServerEnsureConfiguration(new Configuration(file_get_contents(__DIR__ . '/../../../../resources/config.json'))));
+        $application->command(new ServerEnsureConfiguration($this->getTestConfiguration()));
 
-        $logger = $this->getMockBuilder('Monolog\\Logger')
-                    ->disableOriginalConstructor()
-                    ->getMock();
+        $logger = $this->getLogger();
 
         $logger->expects($this->never())
             ->method('addError');

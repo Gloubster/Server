@@ -4,6 +4,7 @@ namespace Gloubster\Server\Listener;
 
 use Gloubster\Exception\InvalidArgumentException;
 use Gloubster\Server\GloubsterServerInterface;
+use Gloubster\Server\GloubsterServer;
 use Monolog\Logger;
 use React\EventLoop\LoopInterface;
 use React\ZMQ\Context;
@@ -15,6 +16,7 @@ class ZMQListener implements JobListenerInterface
 
     public function __construct(Context $context, Logger $logger, array $configuration)
     {
+        $this->conf = $configuration;
         if (!isset($configuration['transport'])) {
             throw new InvalidArgumentException('Missing configuration key `transport`');
         }
@@ -47,8 +49,8 @@ class ZMQListener implements JobListenerInterface
     /**
      * {@inheritdoc}
      */
-    public static function create(LoopInterface $loop, Logger $logger, array $options)
+    public static function create(GloubsterServer $server, array $options)
     {
-        return new static(new Context($loop), $logger, $options);
+        return new static(new Context($server['loop']), $server['monolog'], $options);
     }
 }

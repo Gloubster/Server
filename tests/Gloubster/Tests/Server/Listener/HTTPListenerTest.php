@@ -3,14 +3,19 @@
 namespace Gloubster\Tests\Server\Listener;
 
 use Gloubster\Server\Listener\HTTPListener;
+use Gloubster\Tests\GloubsterTest;
 
-class HTTPListenerTest extends \PHPUnit_Framework_TestCase
+class HTTPListenerTest extends GloubsterTest
 {
 
     /** @test */
     public function itShouldConstruct()
     {
         $server = $this->getMockBuilder('React\\Http\\Server')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $loop = $this->getMockBuilder('React\\EventLoop\\LoopInterface')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -28,17 +33,19 @@ class HTTPListenerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $httpListener = HTTPListener::create($loop, $logger, array('host'=>'localhost', 'port'=>12345));
+        $httpListener = HTTPListener::create($this->getServer(), array('host'=>'localhost', 'port'=>12345));
     }
 
     /** @test */
     public function itShouldAttach()
     {
-        $gloubster = $this->getMockBuilder('Gloubster\\Server\\GloubsterServerInterface')
+        $gloubster = $this->getServer();
+
+        $server = $this->getMockBuilder('React\\Http\\Server')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $server = $this->getMockBuilder('React\\Http\\Server')
+        $loop = $this->getMockBuilder('React\\EventLoop\\LoopInterface')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -115,15 +122,7 @@ class HTTPListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function createShouldFailWithoutHost()
     {
-        $loop = $this->getMockBuilder('React\\EventLoop\\LoopInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $logger = $this->getMockBuilder('Monolog\\Logger')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $httpListener = HTTPListener::create($loop, $logger, array('port'=>12345));
+        $httpListener = HTTPListener::create($this->getServer(), array('port'=>12345));
     }
 
     /**
@@ -140,8 +139,8 @@ class HTTPListenerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $httpListener = HTTPListener::create($loop, $logger, array('host' => '127.0.0.1', 'port'=>12345));
-        $httpListener = HTTPListener::create($loop, $logger, array('host' => '127.0.0.1', 'port'=>12345));
+        $httpListener = HTTPListener::create($this->getServer(), array('host' => '127.0.0.1', 'port'=>12345));
+        $httpListener = HTTPListener::create($this->getServer(), array('host' => '127.0.0.1', 'port'=>12345));
     }
 
     /**
@@ -150,14 +149,6 @@ class HTTPListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function createShouldFailWithoutPort()
     {
-        $loop = $this->getMockBuilder('React\\EventLoop\\LoopInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $logger = $this->getMockBuilder('Monolog\\Logger')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $httpListener = HTTPListener::create($loop, $logger, array('host'=>'localhost'));
+        $httpListener = HTTPListener::create($this->getServer(), array('host'=>'localhost'));
     }
 }

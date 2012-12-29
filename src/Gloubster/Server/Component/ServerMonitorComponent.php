@@ -22,27 +22,6 @@ class ServerMonitorComponent implements ComponentInterface
         $server['loop']->addPeriodicTimer(5, Curry::bind(array($this, 'displayServerMemory'), $server['monolog']));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function registerSTOMP(GloubsterServer $server, Client $stomp)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function registerRedis(GloubsterServer $server, PredisClient $client, PredisConnection $conn)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function boot(GloubsterServer $server)
-    {
-    }
-
     public function displayServerMemory(Logger $logger)
     {
         $logger->addDebug(sprintf("Memory is using %d", memory_get_usage()));

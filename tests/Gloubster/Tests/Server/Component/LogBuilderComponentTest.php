@@ -7,12 +7,13 @@ use Gloubster\Message\Job\ImageJob;
 use Gloubster\Message\Presence\WorkerPresence;
 use Gloubster\Server\GloubsterServer;
 use Gloubster\Server\Component\LogBuilderComponent;
+use Gloubster\Tests\GloubsterTest;
 use Predis\Client as PredisSync;
 use Predis\Async\Client as PredisAsync;
 use React\Stomp\Protocol\Frame;
 use React\EventLoop\Factory as LoopFactory;
 
-class LogBuilderComponentTest extends \PHPUnit_Framework_TestCase
+class LogBuilderComponentTest extends GloubsterTest
 {
 
     /** @test */
@@ -216,39 +217,9 @@ class LogBuilderComponentTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($done);
     }
 
-    public function testRegisterSTOMPServicesProducesNoError()
+    public function testEvents()
     {
-        $server = $this->getMockBuilder('Gloubster\\Server\\GloubsterServer')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $stomp = $this->getMockBuilder('React\\Stomp\\Client')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $component = new LogBuilderComponent();
-        $component->registerSTOMP($server, $stomp);
-    }
-
-    public function testThatRegisterSTOMPDoesNotThrowError()
-    {
-        $server = $this->getMockBuilder('Gloubster\\Server\\GloubsterServer')
-                    ->disableOriginalConstructor()
-                    ->getMock();
-
-        $stomp = $this->getMockBuilder('React\\Stomp\\Client')
-                    ->disableOriginalConstructor()
-                    ->getMock();
-
-        $component = new LogBuilderComponent();
-        $component->registerSTOMP($server, $stomp);
-    }
-
-    public function testThatBootDoesNotThrowError()
-    {
-        $server = $this->getMockBuilder('Gloubster\\Server\\GloubsterServer')
-                    ->disableOriginalConstructor()
-                    ->getMock();
+        $server = $this->getServer();
 
         $client = $this->getMockBuilder('Predis\\Async\\Client')
                     ->disableOriginalConstructor()
@@ -259,7 +230,11 @@ class LogBuilderComponentTest extends \PHPUnit_Framework_TestCase
                     ->getMock();
 
         $component = new LogBuilderComponent();
-        $component->boot($server);
+        $component->register($server);
+
+        $server['dispatcher']->emit('redis-connected', array($server, $client, $conn));
+        $server['dispatcher']->emit('stomp-connected', array($server, $server['stomp-client']));
+        $server['dispatcher']->emit('boot-connected', array($server));
     }
 
     private function getLogger()

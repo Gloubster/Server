@@ -37,20 +37,6 @@ class RabbitMQMonitorComponent implements ComponentInterface
         $server['loop']->addPeriodicTimer(5, Curry::bind(array($this, 'fetchMQInformations'), $server['websocket-application'], $server['configuration'], $server['monolog']));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function registerSTOMP(GloubsterServer $server, Client $stomp)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function boot(GloubsterServer $server)
-    {
-    }
-
     public function fetchMQInformations(WebsocketApplication $wsApplication, Configuration $configuration)
     {
         foreach ($this->queues as $name => $queue) {
@@ -77,12 +63,5 @@ class RabbitMQMonitorComponent implements ComponentInterface
         }
 
         gc_collect_cycles();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function registerRedis(GloubsterServer $server, PredisClient $client, PredisConnection $conn)
-    {
     }
 }

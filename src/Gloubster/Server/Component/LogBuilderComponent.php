@@ -28,31 +28,13 @@ class LogBuilderComponent implements ComponentInterface
      */
     public function register(GloubsterServer $server)
     {
-    }
+        $server['dispatcher']->on('redis-connected', function (GloubsterServer $server, PredisClient $client, PredisConnection $conn) {
+            $server['stomp-client']->subscribeWithAck(
+                sprintf('/queue/%s', RabbitMQConf::QUEUE_LOGS), 'client',
+                Curry::bind(array($this, 'handleLog'), $client, $server['monolog'])
+            );
+        });
 
-    /**
-     * {@inheritdoc}
-     */
-    public function registerSTOMP(GloubsterServer $server, Client $stomp)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function registerRedis(GloubsterServer $server, PredisClient $client, PredisConnection $conn)
-    {
-        $server['stomp-client']->subscribeWithAck(
-            sprintf('/queue/%s', RabbitMQConf::QUEUE_LOGS), 'client',
-            Curry::bind(array($this, 'handleLog'), $server['redis'], $server['monolog'])
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function boot(GloubsterServer $server)
-    {
     }
 
     public function handleLog(PredisClient $redis, Logger $logger, Frame $frame, AckResolver $resolver)

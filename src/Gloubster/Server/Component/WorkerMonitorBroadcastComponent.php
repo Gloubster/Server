@@ -10,35 +10,15 @@ use React\Stomp\Client;
 
 class WorkerMonitorBroadcastComponent implements ComponentInterface
 {
-
     /**
      * {@inheritdoc}
      */
     public function register(GloubsterServer $server)
     {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function registerSTOMP(GloubsterServer $server, Client $stomp)
-    {
-        $stomp->subscribe(sprintf('/exchange/%s', RabbitMQConf::EXCHANGE_MONITOR), function (Frame $frame) {
-            $server['websocket-application']->onPresence(unserialize($frame->body));
+        $server['dispatcher']->on('stomp-connected', function (GloubsterServer $server, Client $stomp) {
+            $stomp->subscribe(sprintf('/exchange/%s', RabbitMQConf::EXCHANGE_MONITOR), function (Frame $frame) use ($server) {
+                $server['websocket-application']->onPresence(unserialize($frame->body));
+            });
         });
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function registerRedis(GloubsterServer $server, PredisClient $client, PredisConnection $conn)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function boot(GloubsterServer $server)
-    {
     }
 }

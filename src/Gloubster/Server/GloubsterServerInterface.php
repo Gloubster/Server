@@ -7,7 +7,7 @@ use Gloubster\Server\Component\ComponentInterface;
 use Monolog\Logger;
 use React\EventLoop\LoopInterface;
 
-interface GloubsterServerInterface
+interface GloubsterServerInterface extends \ArrayAccess
 {
     /**
      * Register a server component
@@ -20,6 +20,11 @@ interface GloubsterServerInterface
      * Runs the server
      */
     public function run();
+
+    /**
+     * Stops the server
+     */
+    public function stop();
 
     /**
      * One of the listeners had received a message

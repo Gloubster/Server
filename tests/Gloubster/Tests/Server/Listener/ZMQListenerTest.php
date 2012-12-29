@@ -3,8 +3,9 @@
 namespace Gloubster\Tests\Server\Listener;
 
 use Gloubster\Server\Listener\ZMQListener;
+use Gloubster\Tests\GloubsterTest;
 
-class ZMQListenerTest extends \PHPUnit_Framework_TestCase
+class ZMQListenerTest extends GloubsterTest
 {
 
     /** @test */
@@ -40,46 +41,27 @@ class ZMQListenerTest extends \PHPUnit_Framework_TestCase
     /** @test */
     public function itShouldCreate()
     {
-        $loop = $this->getMockBuilder('React\\EventLoop\\LoopInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $logger = $this->getMockBuilder('Monolog\\Logger')
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $options = array(
             'transport' => 'ipc',
             'address'   => 'localhost',
             'port'      => 15672,
         );
 
-        ZMQListener::create($loop, $logger, $options);
+        ZMQListener::create($this->getServer(), $options);
     }
 
     /** @test */
     public function itShouldAttach()
     {
-        $loop = $this->getMockBuilder('React\\EventLoop\\LoopInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $logger = $this->getMockBuilder('Monolog\\Logger')
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $options = array(
             'transport' => 'ipc',
             'address'   => 'localhost',
             'port'      => 15672,
         );
 
-        $listener = ZMQListener::create($loop, $logger, $options);
+        $gloubster = $this->getServer();
 
-        $gloubster = $this->getMockBuilder('Gloubster\\Server\\GloubsterServerInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-
+        $listener = ZMQListener::create($gloubster, $options);
         $listener->attach($gloubster);
     }
 

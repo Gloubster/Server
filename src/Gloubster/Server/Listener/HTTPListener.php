@@ -3,10 +3,9 @@
 namespace Gloubster\Server\Listener;
 
 use Gloubster\Server\GloubsterServerInterface;
+use Gloubster\Server\GloubsterServer;
 use Gloubster\Exception\InvalidArgumentException;
 use Gloubster\Exception\RuntimeException;
-use Monolog\Logger;
-use React\EventLoop\LoopInterface;
 use React\Http\Server;
 use React\Socket\Server as Reactor;
 
@@ -48,7 +47,7 @@ class HTTPListener implements JobListenerInterface
     /**
      * {@inheritdoc}
      */
-    public static function create(LoopInterface $loop, Logger $logger, array $options)
+    public static function create(GloubsterServer $server, array $options)
     {
         if (!isset($options['port'])) {
             throw new InvalidArgumentException('Missing option key `port`');
@@ -59,14 +58,18 @@ class HTTPListener implements JobListenerInterface
         }
 
         try {
-            $socket = new Reactor($loop);
+            $socket = new Reactor($server['loop']);
             $socket->listen($options['port'], $options['host']);
         } catch (\Exception $e) {
-            throw new RuntimeException(sprintf('Unable to listen to %s:%s', $options['host'], $options['port']), $e->getCode(), $e);
+            throw new RuntimeException(sprintf('Unable to listen to %s:%s', $options['host'], $options['port']));
         }
 
-        $logger->addInfo(sprintf('Listening for message on HTTP %s:%s', $options['host'], $options['port']));
+        $server['monolog']->addInfo(sprintf('Listening for message on HTTP %s:%s', $options['host'], $options['port']));
 
-        return new static(new Server($socket, $loop));
+        $server['dispatcher']->on('stop', function () use ($socket) {
+            $socket->shutdown();
+        });
+
+        return new static(new Server($socket, $server['loop']));
     }
 }

@@ -7,19 +7,16 @@ use Gloubster\Server\GloubsterServer;
 use Gloubster\Server\GloubsterServerInterface;
 use Gloubster\Server\Component\ListenersComponent;
 use Gloubster\Server\Listener\JobListenerInterface;
+use Gloubster\Tests\GloubsterTest;
 use Monolog\Logger;
 use React\EventLoop\LoopInterface;
 
-class ListenersComponentTest extends \PHPUnit_Framework_TestCase
+class ListenersComponentTest extends GloubsterTest
 {
     /** @test */
     public function itShouldRegister()
     {
         $server = $this->getServer();
-
-        $server['monolog'] = $this->getMockBuilder('Monolog\\Logger')
-            ->disableOriginalConstructor()
-            ->getMock();
 
         $server['monolog']->expects($this->never())
             ->method('addError');
@@ -40,7 +37,7 @@ class ListenersComponentTest extends \PHPUnit_Framework_TestCase
                 }
             },
             "redis-server": {
-                "host": "localhost",
+                "host": "127.0.0.1",
                 "port": 6379
             },
             "session-server": {
@@ -271,25 +268,10 @@ class ListenersComponentTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    private function getServer()
+    protected function getServer()
     {
-        $websocket = $this->getMockBuilder('Gloubster\Server\WebsocketApplication')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $client = $this->getMockBuilder('React\Stomp\Client')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $loop = $this->getMockBuilder('React\EventLoop\LoopInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $logger = $this->getMockBuilder('Monolog\Logger')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $conf = new \Gloubster\Configuration('{
+        $server = parent::getServer();
+        $server['configuration'] = new \Gloubster\Configuration('{
             "server": {
                 "host": "localhost",
                 "port": 5672,
@@ -320,14 +302,12 @@ class ListenersComponentTest extends \PHPUnit_Framework_TestCase
             "listeners": []
         }');
 
-        return new GloubsterServer($websocket, $client, $loop, $conf, $logger);
+        return $server;
     }
 
-    public function testThatRegisterRedisDoesNotThrowError()
+    public function testEvents()
     {
-        $server = $this->getMockBuilder('Gloubster\\Server\\GloubsterServer')
-                    ->disableOriginalConstructor()
-                    ->getMock();
+        $server = $this->getServer();
 
         $client = $this->getMockBuilder('Predis\\Async\\Client')
                     ->disableOriginalConstructor()
@@ -338,25 +318,11 @@ class ListenersComponentTest extends \PHPUnit_Framework_TestCase
                     ->getMock();
 
         $component = new ListenersComponent();
-        $component->registerRedis($server, $client, $conn);
-    }
+        $component->register($server);
 
-    public function testThatBootDoesNotThrowError()
-    {
-        $server = $this->getMockBuilder('Gloubster\\Server\\GloubsterServer')
-                    ->disableOriginalConstructor()
-                    ->getMock();
-
-        $client = $this->getMockBuilder('Predis\\Async\\Client')
-                    ->disableOriginalConstructor()
-                    ->getMock();
-
-        $conn = $this->getMockBuilder('Predis\Async\Connection\ConnectionInterface')
-                    ->disableOriginalConstructor()
-                    ->getMock();
-
-        $component = new ListenersComponent();
-        $component->boot($server);
+        $server['dispatcher']->emit('redis-connected', array($server, $client, $conn));
+        $server['dispatcher']->emit('stomp-connected', array($server, $server['stomp-client']));
+        $server['dispatcher']->emit('boot-connected', array($server));
     }
 }
 
@@ -367,9 +333,9 @@ class ListenerTester implements JobListenerInterface
         $server['test-token'] = true;
     }
 
-    public static function create(LoopInterface $loop, Logger $logger, array $options)
+    public static function create(GloubsterServer $server, array $options)
     {
-        $loop->created = $options;
+        $server['created'] = $options;
         return new static();
     }
 }
@@ -381,7 +347,7 @@ class ListenerFailTester implements JobListenerInterface
     {
     }
 
-    public static function create(LoopInterface $loop, Logger $logger, array $options)
+    public static function create(GloubsterServer $server, array $options)
     {
         throw new RuntimeException('fails for test');
     }

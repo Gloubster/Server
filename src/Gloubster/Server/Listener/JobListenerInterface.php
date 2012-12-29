@@ -3,8 +3,7 @@
 namespace Gloubster\Server\Listener;
 
 use Gloubster\Server\GloubsterServerInterface;
-use Monolog\Logger;
-use React\EventLoop\LoopInterface;
+use Gloubster\Server\GloubsterServer;
 
 /**
  * Gloubster Job listeners listen for Job is their on implementation.
@@ -24,11 +23,10 @@ interface JobListenerInterface
     /**
      * Public method to create the listener
      *
-     * @param LoopInterface  $loop    A Event LoopInterface
-     * @param Logger         $logger  A logger
-     * @param array          $options An array of options to build the listener
+     * @param GloubsterServer  $server  The gloubster server
+     * @param array            $options An array of options to build the listener
      *
      * @return JobListenerInterface The new listener
      */
-    public static function create(LoopInterface $loop, Logger $logger, array $options);
+    public static function create(GloubsterServer $server, array $options);
 }

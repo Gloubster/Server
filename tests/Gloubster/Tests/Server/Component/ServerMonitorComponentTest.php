@@ -4,8 +4,9 @@ namespace Gloubster\Tests\Server\Component;
 
 use Gloubster\Server\GloubsterServer;
 use Gloubster\Server\Component\ServerMonitorComponent;
+use Gloubster\Tests\GloubsterTest;
 
-class ServerMonitorComponentTest extends \PHPUnit_Framework_TestCase
+class ServerMonitorComponentTest extends GloubsterTest
 {
     /** @test */
     public function itShouldRegister()
@@ -70,11 +71,9 @@ class ServerMonitorComponentTest extends \PHPUnit_Framework_TestCase
         $component->brodcastServerInformations($websocket);
     }
 
-    public function testThatRegisterRedisDoesNotThrowError()
+    public function testEvents()
     {
-        $server = $this->getMockBuilder('Gloubster\\Server\\GloubsterServer')
-                    ->disableOriginalConstructor()
-                    ->getMock();
+        $server = $this->getServer();
 
         $client = $this->getMockBuilder('Predis\\Async\\Client')
                     ->disableOriginalConstructor()
@@ -85,38 +84,10 @@ class ServerMonitorComponentTest extends \PHPUnit_Framework_TestCase
                     ->getMock();
 
         $component = new ServerMonitorComponent();
-        $component->registerRedis($server, $client, $conn);
-    }
+        $component->register($server);
 
-    public function testThatRegisterSTOMPDoesNotThrowError()
-    {
-        $server = $this->getMockBuilder('Gloubster\\Server\\GloubsterServer')
-                    ->disableOriginalConstructor()
-                    ->getMock();
-
-        $stomp = $this->getMockBuilder('React\\Stomp\\Client')
-                    ->disableOriginalConstructor()
-                    ->getMock();
-
-        $component = new ServerMonitorComponent();
-        $component->registerSTOMP($server, $stomp);
-    }
-
-    public function testThatBootDoesNotThrowError()
-    {
-        $server = $this->getMockBuilder('Gloubster\\Server\\GloubsterServer')
-                    ->disableOriginalConstructor()
-                    ->getMock();
-
-        $client = $this->getMockBuilder('Predis\\Async\\Client')
-                    ->disableOriginalConstructor()
-                    ->getMock();
-
-        $conn = $this->getMockBuilder('Predis\Async\Connection\ConnectionInterface')
-                    ->disableOriginalConstructor()
-                    ->getMock();
-
-        $component = new ServerMonitorComponent();
-        $component->boot($server);
+        $server['dispatcher']->emit('redis-connected', array($server, $client, $conn));
+        $server['dispatcher']->emit('stomp-connected', array($server, $server['stomp-client']));
+        $server['dispatcher']->emit('boot-connected', array($server));
     }
 }

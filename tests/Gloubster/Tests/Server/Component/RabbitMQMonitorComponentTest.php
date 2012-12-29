@@ -4,8 +4,9 @@ namespace Gloubster\Tests\Server\Component;
 
 use Gloubster\Server\GloubsterServer;
 use Gloubster\Server\Component\RabbitMQMonitorComponent;
+use Gloubster\Tests\GloubsterTest;
 
-class RabbitMQMonitorComponentTest extends \PHPUnit_Framework_TestCase
+class RabbitMQMonitorComponentTest extends GloubsterTest
 {
     /** @test */
     public function itShouldRegister()
@@ -70,11 +71,9 @@ class RabbitMQMonitorComponentTest extends \PHPUnit_Framework_TestCase
         $component->fetchMQInformations($websocket, $conf);
     }
 
-    public function testThatRegisterRedisDoesNotThrowError()
+    public function testEvents()
     {
-        $server = $this->getMockBuilder('Gloubster\\Server\\GloubsterServer')
-                    ->disableOriginalConstructor()
-                    ->getMock();
+        $server = $this->getServer();
 
         $client = $this->getMockBuilder('Predis\\Async\\Client')
                     ->disableOriginalConstructor()
@@ -84,39 +83,43 @@ class RabbitMQMonitorComponentTest extends \PHPUnit_Framework_TestCase
                     ->disableOriginalConstructor()
                     ->getMock();
 
+        $server['configuration'] = new \Gloubster\Configuration('{
+            "server": {
+                "host": "localhost",
+                "port": 5672,
+                "user": "guest",
+                "password": "guest",
+                "vhost": "/",
+                "server-management": {
+                    "port": 55672,
+                    "scheme": "http"
+                },
+                "stomp-gateway": {
+                    "port": 61613
+                }
+            },
+            "redis-server": {
+                "host": "localhost",
+                "port": 6379
+            },
+            "session-server": {
+                "type": "memcache",
+                "host": "localhost",
+                "port": 11211
+            },
+            "websocket-server": {
+                "address": "local.gloubster",
+                "port": 9990
+            },
+            "listeners": []
+        }
+        ');
+
         $component = new RabbitMQMonitorComponent();
-        $component->registerRedis($server, $client, $conn);
-    }
+        $component->register($server);
 
-    public function testThatRegisterSTOMPDoesNotThrowError()
-    {
-        $server = $this->getMockBuilder('Gloubster\\Server\\GloubsterServer')
-                    ->disableOriginalConstructor()
-                    ->getMock();
-
-        $stomp = $this->getMockBuilder('React\\Stomp\\Client')
-                    ->disableOriginalConstructor()
-                    ->getMock();
-
-        $component = new RabbitMQMonitorComponent();
-        $component->registerSTOMP($server, $stomp);
-    }
-
-    public function testThatBootDoesNotThrowError()
-    {
-        $server = $this->getMockBuilder('Gloubster\\Server\\GloubsterServer')
-                    ->disableOriginalConstructor()
-                    ->getMock();
-
-        $client = $this->getMockBuilder('Predis\\Async\\Client')
-                    ->disableOriginalConstructor()
-                    ->getMock();
-
-        $conn = $this->getMockBuilder('Predis\Async\Connection\ConnectionInterface')
-                    ->disableOriginalConstructor()
-                    ->getMock();
-
-        $component = new RabbitMQMonitorComponent();
-        $component->boot($server);
+        $server['dispatcher']->emit('redis-connected', array($server, $client, $conn));
+        $server['dispatcher']->emit('stomp-connected', array($server, $server['stomp-client']));
+        $server['dispatcher']->emit('boot-connected', array($server));
     }
 }

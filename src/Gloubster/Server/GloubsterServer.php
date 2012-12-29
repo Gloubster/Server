@@ -35,13 +35,11 @@ use Evenement\EventEmitter;
 class GloubsterServer extends \Pimple implements GloubsterServerInterface
 {
     private $components = array();
-    private $redisStarted = false;
-    private $stompStarted = false;
 
     public function __construct(WebsocketApplication $websocket, Client $client, LoopInterface $loop, Configuration $conf, Logger $logger)
     {
         $server = $this;
-        
+
         $this['loop'] = $loop;
         $this['configuration'] = $conf;
         $this['monolog'] = $logger;
@@ -61,12 +59,12 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
         );
 
         $this['dispatcher']->on('redis-connected', function () use ($server) {
-            $server->redisStarted = true;
+            $server['redis.started'] = true;
             $server->probeAllSystems();
         });
 
         $this['dispatcher']->on('stomp-connected', function () use ($server) {
-            $server->stompStarted = true;
+            $server['stomp-client.started'] = true;
             $server->probeAllSystems();
         });
 
@@ -134,7 +132,7 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
         // remove stop listeners
 
         $this['loop']->stop();
-        $this->redisStarted = $this->stompStarted = false;
+        $this['redis.started'] = $this['stomp-client.started'] = false;
     }
 
     public function activateRedisServices(PredisClient $client, PredisConnection $conn)
@@ -143,7 +141,7 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
 
         $this['dispatcher']->emit('redis-connected', array($this, $client, $conn));
 
-        $this->redisStarted = true;
+        $this['redis.started'] = true;
         $this->probeAllSystems();
     }
 
@@ -153,13 +151,13 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
 
         $this['dispatcher']->emit('stomp-connected', array($this, $stomp));
 
-        $this->stompStarted = true;
+        $this['stomp-client.started'] = true;
         $this->probeAllSystems();
     }
 
-    private function probeAllSystems()
+    public function probeAllSystems()
     {
-        if ($this->stompStarted && $this->redisStarted) {
+        if ($this['stomp-client.started'] && $this['redis.started']) {
             $this['monolog']->addInfo('All services loaded, server now running');
             $this['dispatcher']->emit('booted', array($this));
         }

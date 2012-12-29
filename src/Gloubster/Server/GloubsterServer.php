@@ -40,6 +40,7 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
     {
         $server = $this;
 
+        $this['redis.started'] = $this['stomp-client.started'] = false;
         $this['loop'] = $loop;
         $this['configuration'] = $conf;
         $this['monolog'] = $logger;

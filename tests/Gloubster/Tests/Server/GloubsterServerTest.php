@@ -270,14 +270,15 @@ class TestComponent implements ComponentInterface
 
     public function register(GloubsterServer $server)
     {
+        $component = $this;
         $this->registered = true;
 
-        $server['dispatcher']->on('stomp-connected', function () {
-            $this->STOMPregistered = true;
+        $server['dispatcher']->on('stomp-connected', function () use ($component) {
+            $component->STOMPregistered = true;
         });
 
-        $server['dispatcher']->on('redis-connected', function () {
-            $this->Redisregistered = true;
+        $server['dispatcher']->on('redis-connected', function () use ($component) {
+            $component->Redisregistered = true;
         });
     }
 }

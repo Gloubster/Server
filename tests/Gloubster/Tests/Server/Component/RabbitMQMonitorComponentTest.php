@@ -5,6 +5,9 @@ namespace Gloubster\Tests\Server\Component;
 use Gloubster\Server\Component\RabbitMQMonitorComponent;
 use Gloubster\Tests\GloubsterTest;
 
+/**
+ * @covers Gloubster\Server\Component\RabbitMQMonitorComponent
+ */
 class RabbitMQMonitorComponentTest extends GloubsterTest
 {
     /** @test */

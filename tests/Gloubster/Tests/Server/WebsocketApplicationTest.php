@@ -7,6 +7,9 @@ use Gloubster\Server\WebsocketApplication;
 use Ratchet\WebSocket\Version\RFC6455\Connection;
 use Gloubster\Tests\GloubsterTest;
 
+/**
+ * @covers Gloubster\Server\WebsocketApplication
+ */
 class WebsocketApplicationTest extends GloubsterTest
 {
     public function testOnPublish()

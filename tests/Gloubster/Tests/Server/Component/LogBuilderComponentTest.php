@@ -11,6 +11,9 @@ use Predis\Async\Client as PredisAsync;
 use React\Stomp\Protocol\Frame;
 use React\EventLoop\Factory as LoopFactory;
 
+/**
+ * @covers Gloubster\Server\Component\LogBuilderComponent
+ */
 class LogBuilderComponentTest extends GloubsterTest
 {
     /** @test */

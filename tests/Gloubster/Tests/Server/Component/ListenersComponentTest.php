@@ -9,6 +9,9 @@ use Gloubster\Server\Component\ListenersComponent;
 use Gloubster\Server\Listener\JobListenerInterface;
 use Gloubster\Tests\GloubsterTest;
 
+/**
+ * @covers Gloubster\Server\Component\ListenersComponent
+ */
 class ListenersComponentTest extends GloubsterTest
 {
     /** @test */

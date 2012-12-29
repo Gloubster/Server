@@ -5,6 +5,9 @@ namespace Gloubster\Tests\Server\Component;
 use Gloubster\Server\Component\WorkerMonitorBroadcastComponent;
 use Gloubster\Tests\GloubsterTest;
 
+/**
+ * @covers Gloubster\Server\Component\WorkerMonitorBroadcastComponent
+ */
 class WorkerMonitorBroadcastComponentTest extends GloubsterTest
 {
     /** @test */

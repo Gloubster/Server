@@ -13,6 +13,9 @@ use React\EventLoop\Factory as LoopFactory;
 
 require_once __DIR__ . '/../Mocks/DeliveryMock.php';
 
+/**
+ * @covers Gloubster\Server\GloubsterServer
+ */
 class GloubsterServerTest extends GloubsterTest
 {
     /**

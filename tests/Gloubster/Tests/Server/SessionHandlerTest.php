@@ -5,6 +5,9 @@ namespace Gloubster\Tests\Server;
 use Gloubster\Server\SessionHandler;
 use Gloubster\Tests\GloubsterTest;
 
+/**
+ * @covers Gloubster\Server\SessionHandler
+ */
 class SessionHandlerTest extends GloubsterTest
 {
     public function testFactoryMemcached()

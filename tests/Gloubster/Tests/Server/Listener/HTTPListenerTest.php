@@ -7,6 +7,9 @@ use Gloubster\Tests\GloubsterTest;
 use React\Http\Server as HttpServer;
 use React\Http\Request as HttpRequest;
 
+/**
+ * @covers Gloubster\Server\Listener\HTTPListener
+ */
 class HTTPListenerTest extends GloubsterTest
 {
     /** @test */

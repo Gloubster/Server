@@ -5,6 +5,9 @@ use Gloubster\CLI;
 use Gloubster\Tests\GloubsterTest;
 use Symfony\Component\Console\Tester\CommandTester;
 
+/**
+ * @covers Gloubster\Server\Console\RunServer
+ */
 class RunServerTest extends GloubsterTest
 {
     public function testExecute()

@@ -5,6 +5,9 @@ namespace Gloubster\Tests\Server\Listener;
 use Gloubster\Server\Listener\ZMQListener;
 use Gloubster\Tests\GloubsterTest;
 
+/**
+ * @covers Gloubster\Server\Listener\ZMQListener
+ */
 class ZMQListenerTest extends GloubsterTest
 {
     /** @test */

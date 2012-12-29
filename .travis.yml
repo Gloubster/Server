@@ -6,6 +6,8 @@ services:
   - memcached
 
 before_script:
+  - sudo rabbitmq-plugins enable rabbitmq_stomp
+  - sudo rabbitmq-plugins enable rabbitmq_management
   - sudo pear channel-discover pear.zero.mq
   - sudo pecl install pear.zero.mq/zmq-beta
   - sudo apt-get install libhiredis-dev

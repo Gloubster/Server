@@ -9,6 +9,14 @@ before_script:
   - sudo rabbitmq-plugins enable rabbitmq_management
   - sudo service rabbitmq-server start
   - sleep 3
+  - wget http://pecl.php.net/get/memcache-2.2.7.tgz
+  - tar xzvf memcache-2.2.7.tgz
+  - sh -c "cd memcache-2.2.7 && phpize && ./configure && make --silent && sudo make install"
+  - echo "extension=memcache.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
+  - wget http://pecl.php.net/get/memcached-2.1.0.tgz
+  - tar xzvf memcached-2.1.0.tgz
+  - sh -c "cd memcached-2.1.0 && phpize && ./configure && make --silent && sudo make install"
+  - echo "extension=memcache.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
   - git clone https://github.com/mkoppanen/php-zmq.git
   - sh -c "cd php-zmq && phpize && ./configure && make --silent && sudo make install"
   - echo "extension=zmq.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`

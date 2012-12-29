@@ -59,24 +59,6 @@ class WebApplication extends SilexApplication
             'session.storage.options' => 'PROUT',
         ));
 
-        $this->register(new MongoDBODMServiceProvider(), array(
-            'doctrine.odm.mongodb.connection_options' => array(
-                'database'                       => 'gloubster',
-                'host'                           => 'localhost',
-            ),
-            'doctrine.odm.mongodb.documents' => array(
-                array(
-                    'type'                                       => 'yml',
-                    'path'                                       => __DIR__ . '/../../resources/doctrine/documents',
-                    'namespace'                                  => 'Gloubster\\Documents'
-                ),
-            ),
-            'doctrine.odm.mongodb.proxies_dir'           => __DIR__ . '/../../cache/doctrine/odm/mongodb/Proxy',
-            'doctrine.odm.mongodb.auto_generate_proxies' => true,
-            'doctrine.odm.mongodb.hydrators_dir'         => __DIR__ . '/../../cache/doctrine/odm/mongodb/Hydrator',
-            'doctrine.odm.mongodb.metadata_cache'        => new ArrayCache(),
-        ));
-
         $this->register(new AsseticExtension(), array(
             'assetic.path_to_web' => __DIR__ . '/../../www/assets',
             'assetic.options'     => array(
@@ -186,9 +168,5 @@ class WebApplication extends SilexApplication
                     return $twig;
                 })
         );
-
-        $this['dm'] = $this->share(function (WebApplication $app) {
-            return $app['doctrine.odm.mongodb.dm'];
-        });
     }
 }

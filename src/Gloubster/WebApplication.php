@@ -54,10 +54,11 @@ class WebApplication extends SilexApplication
             ));
         });
 
-        $this->register(new SessionServiceProvider(), array(
-            'session.storage' => new NativeSessionStorage(array(), SessionHandler::factory($this['configuration'])),
-            'session.storage.options' => 'PROUT',
-        ));
+        $this->register(new SessionServiceProvider());
+        
+        $this['session.storage'] = $this->share(function (WebApplication $app) {
+            return new NativeSessionStorage(array(), SessionHandler::factory($this['configuration']));
+        });
 
         $this->register(new AsseticExtension(), array(
             'assetic.path_to_web' => __DIR__ . '/../../www/assets',

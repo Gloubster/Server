@@ -2,19 +2,19 @@
 
 namespace Gloubster\Tests\Server;
 
-use Gloubster\Configuration;
 use Gloubster\Message\Job\ImageJob;
 use Gloubster\Message\Presence\WorkerPresence;
 use Gloubster\Server\GloubsterServer;
 use Gloubster\Server\Component\ComponentInterface;
 use Gloubster\Server\Component\StopComponent;
 use Gloubster\Tests\GloubsterTest;
+use Gloubster\Delivery\DeliveryMock;
+use React\EventLoop\Factory as LoopFactory;
 
 require_once __DIR__ . '/../Mocks/DeliveryMock.php';
 
 class GloubsterServerTest extends GloubsterTest
 {
-
     /**
      * @covers Gloubster\Server\GloubsterServer::__construct
      * @covers Gloubster\Server\GloubsterServer::register
@@ -41,11 +41,7 @@ class GloubsterServerTest extends GloubsterTest
         $server = $this->getServer();
         $server->register($component);
 
-        $client = $this->getMockBuilder('React\Stomp\Client')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $server->activateStompServices($client);
+        $server->activateStompServices($server['stomp-client']);
 
         $this->assertTrue($component->registered);
         $this->assertFalse($component->Redisregistered);
@@ -62,15 +58,7 @@ class GloubsterServerTest extends GloubsterTest
         $server = $this->getServer();
         $server->register($component);
 
-        $client = $this->getMockBuilder('Predis\Async\Client')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $conn = $this->getMockBuilder('Predis\Async\Connection\ConnectionInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $server->activateRedisServices($client, $conn);
+        $server->activateRedisServices($server['redis'], $this->getPredisAsyncConnection());
 
         $this->assertTrue($component->registered);
         $this->assertFalse($component->STOMPregistered);
@@ -82,13 +70,10 @@ class GloubsterServerTest extends GloubsterTest
      */
     public function testRun()
     {
-        $logger = $this->getMockBuilder('Monolog\Logger')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $logger = $this->getLogger();
+        $conf = $this->getTestConfiguration();
 
-        $conf = new Configuration(file_get_contents(__DIR__ . '/../../../resources/config.json'));
-
-        $server = GloubsterServer::create(\React\EventLoop\Factory::create(), $conf, $logger);
+        $server = GloubsterServer::create(LoopFactory::create(), $conf, $logger);
 
         $server->register(new StopComponent());
         $server->run();
@@ -101,7 +86,7 @@ class GloubsterServerTest extends GloubsterTest
     {
         $server = $this->getServer();
 
-        $message = ImageJob::create('/path/to/source', new \Gloubster\Delivery\DeliveryMock('cool-id'));
+        $message = ImageJob::create('/path/to/source', new DeliveryMock('cool-id'));
 
         $server['stomp-client']->expects($this->any())
             ->method('isConnected')
@@ -187,7 +172,7 @@ class GloubsterServerTest extends GloubsterTest
     {
         $server = $this->getServer();
 
-        $message = ImageJob::create('/path/to/source', new \Gloubster\Delivery\DeliveryMock('cool-id'));
+        $message = ImageJob::create('/path/to/source', new DeliveryMock('cool-id'));
 
         $server['stomp-client']->expects($this->any())
             ->method('isConnected')
@@ -258,15 +243,9 @@ class GloubsterServerTest extends GloubsterTest
      */
     public function testCreate()
     {
-        $loop = $this->getMockBuilder('React\EventLoop\LoopInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $conf = new Configuration(file_get_contents(__DIR__ . '/../../../resources/config.json'));
-
-        $logger = $this->getMockBuilder('Monolog\Logger')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $loop = $this->getEventLoop();
+        $conf = $this->getTestConfiguration();
+        $logger = $this->getLogger();
 
         GloubsterServer::create($loop, $conf, $logger);
     }

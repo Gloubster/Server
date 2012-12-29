@@ -7,7 +7,6 @@ use Gloubster\Tests\GloubsterTest;
 
 class ZMQListenerTest extends GloubsterTest
 {
-
     /** @test */
     public function itShouldConstruct()
     {
@@ -31,11 +30,7 @@ class ZMQListenerTest extends GloubsterTest
             ->method('getSocket')
             ->will($this->returnvalue($socket));
 
-        $logger = $this->getMockBuilder('Monolog\\Logger')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        new ZMQListener($context, $logger, $conf);
+        new ZMQListener($context, $this->getLogger(), $conf);
     }
 
     /** @test */
@@ -89,14 +84,8 @@ class ZMQListenerTest extends GloubsterTest
             ->method('getSocket')
             ->will($this->returnvalue($socket));
 
-        $logger = $this->getMockBuilder('Monolog\\Logger')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $listener = new ZMQListener($context, $logger, $conf);
-        $gloubster = $this->getMockBuilder('Gloubster\\Server\\GloubsterServerInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $listener = new ZMQListener($context, $this->getLogger(), $conf);
+        $gloubster = $this->getGloubsterServerMock();
 
         $listener->attach($gloubster);
 
@@ -133,14 +122,8 @@ class ZMQListenerTest extends GloubsterTest
             ->method('getSocket')
             ->will($this->returnvalue($socket));
 
-        $logger = $this->getMockBuilder('Monolog\\Logger')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $listener = new ZMQListener($context, $logger, $conf);
-        $gloubster = $this->getMockBuilder('Gloubster\\Server\\GloubsterServerInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $listener = new ZMQListener($context, $this->getLogger(), $conf);
+        $gloubster = $this->getGloubsterServerMock();
 
         $listener->attach($gloubster);
 
@@ -157,18 +140,12 @@ class ZMQListenerTest extends GloubsterTest
      */
     public function constructWithoutTransportMustFail()
     {
-        $context = $this->getContext();
-
         $conf = array(
-            'address'   => 'localhost',
-            'port'      => 55672,
+            'address' => 'localhost',
+            'port'    => 55672,
         );
 
-        $logger = $this->getMockBuilder('Monolog\\Logger')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        new ZMQListener($context, $logger, $conf);
+        new ZMQListener($this->getContext(), $this->getLogger(), $conf);
     }
 
     /**
@@ -177,18 +154,12 @@ class ZMQListenerTest extends GloubsterTest
      */
     public function constructWithoutHostMustFail()
     {
-        $context = $this->getContext();
-
         $conf = array(
             'transport' => 'tcp',
             'port'      => 55672,
         );
 
-        $logger = $this->getMockBuilder('Monolog\\Logger')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        new ZMQListener($context, $logger, $conf);
+        new ZMQListener($this->getContext(), $this->getLogger(), $conf);
     }
 
     /**
@@ -197,18 +168,12 @@ class ZMQListenerTest extends GloubsterTest
      */
     public function constructWithoutPortMustFail()
     {
-        $context = $this->getContext();
-
         $conf = array(
             'transport' => 'tcp',
             'address'   => 'localhost',
         );
 
-        $logger = $this->getMockBuilder('Monolog\\Logger')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        new ZMQListener($context, $logger, $conf);
+        new ZMQListener($this->getContext(), $this->getLogger(), $conf);
     }
 
     private function getContext()

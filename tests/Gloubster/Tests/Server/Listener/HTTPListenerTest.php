@@ -4,50 +4,28 @@ namespace Gloubster\Tests\Server\Listener;
 
 use Gloubster\Server\Listener\HTTPListener;
 use Gloubster\Tests\GloubsterTest;
+use React\Http\Server as HttpServer;
+use React\Http\Request as HttpRequest;
 
 class HTTPListenerTest extends GloubsterTest
 {
-
     /** @test */
     public function itShouldConstruct()
     {
-        $server = $this->getMockBuilder('React\\Http\\Server')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $loop = $this->getMockBuilder('React\\EventLoop\\LoopInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $httpListener = new HTTPListener($server);
+        new HTTPListener($this->getReactHttpServerMock());
     }
 
     /** @test */
     public function itShouldCreate()
     {
-        $loop = $this->getMockBuilder('React\\EventLoop\\LoopInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $logger = $this->getMockBuilder('Monolog\\Logger')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $httpListener = HTTPListener::create($this->getServer(), array('host'=>'localhost', 'port'=>12345));
+        HTTPListener::create($this->getServer(), array('host' => 'localhost', 'port' => 12345));
     }
 
     /** @test */
     public function itShouldAttach()
     {
         $gloubster = $this->getServer();
-
-        $server = $this->getMockBuilder('React\\Http\\Server')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $loop = $this->getMockBuilder('React\\EventLoop\\LoopInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $server = $this->getReactHttpServerMock();
 
         $httpListener = new HTTPListener($server);
         $httpListener->attach($gloubster);
@@ -56,26 +34,18 @@ class HTTPListenerTest extends GloubsterTest
     /** @test */
     public function requestsShouldTriggersGloubsterCallbacks()
     {
-        $gloubster = $this->getMockBuilder('Gloubster\\Server\\GloubsterServerInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-
+        $gloubster = $this->getGloubsterServerMock();
         $gloubster->expects($this->once())
             ->method('incomingMessage')
             ->with($this->equalTo('GOOD MESSAGE'));
 
-        $server = new \React\Http\Server($this->getMockBuilder('React\\Socket\\ServerInterface')
-            ->disableOriginalConstructor()
-            ->getMock());
+        $server = new HttpServer($this->getReactSocketServerMock());
 
         $httpListener = new HTTPListener($server);
         $httpListener->attach($gloubster);
 
-        $request = new \React\Http\Request('GET', '/');
-
-        $response = $this->getMockBuilder('React\\Http\\Response')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $request = new HttpRequest('GET', '/');
+        $response = $this->getReactHttpResponseMock();
 
         $server->emit('request', array($request, $response));
 
@@ -90,26 +60,18 @@ class HTTPListenerTest extends GloubsterTest
     {
         $exception = new \Exception('This is an exception');
 
-        $gloubster = $this->getMockBuilder('Gloubster\\Server\\GloubsterServerInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-
+        $gloubster = $this->getGloubsterServerMock();
         $gloubster->expects($this->once())
             ->method('incomingError')
             ->with($this->equalTo($exception));
 
-        $server = new \React\Http\Server($this->getMockBuilder('React\\Socket\\ServerInterface')
-            ->disableOriginalConstructor()
-            ->getMock());
+        $server = new HttpServer($this->getReactSocketServerMock());
 
         $httpListener = new HTTPListener($server);
         $httpListener->attach($gloubster);
 
         $request = new \React\Http\Request('GET', '/');
-
-        $response = $this->getMockBuilder('React\\Http\\Response')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $response = $this->getReactHttpResponseMock();
 
         $server->emit('request', array($request, $response));
 
@@ -122,7 +84,7 @@ class HTTPListenerTest extends GloubsterTest
      */
     public function createShouldFailWithoutHost()
     {
-        $httpListener = HTTPListener::create($this->getServer(), array('port'=>12345));
+        HTTPListener::create($this->getServer(), array('port' => 12345));
     }
 
     /**
@@ -131,16 +93,10 @@ class HTTPListenerTest extends GloubsterTest
      */
     public function createShouldFailIfPortIsAlreadyUsed()
     {
-        $loop = $this->getMockBuilder('React\\EventLoop\\LoopInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $options = array('host' => '127.0.0.1', 'port' => 12345);
 
-        $logger = $this->getMockBuilder('Monolog\\Logger')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $httpListener = HTTPListener::create($this->getServer(), array('host' => '127.0.0.1', 'port'=>12345));
-        $httpListener = HTTPListener::create($this->getServer(), array('host' => '127.0.0.1', 'port'=>12345));
+        HTTPListener::create($this->getServer(), $options);
+        HTTPListener::create($this->getServer(), $options);
     }
 
     /**
@@ -149,6 +105,27 @@ class HTTPListenerTest extends GloubsterTest
      */
     public function createShouldFailWithoutPort()
     {
-        $httpListener = HTTPListener::create($this->getServer(), array('host'=>'localhost'));
+        HTTPListener::create($this->getServer(), array('host' => 'localhost'));
+    }
+
+    private function getReactHttpResponseMock()
+    {
+        return $this->getMockBuilder('React\\Http\\Response')
+                ->disableOriginalConstructor()
+                ->getMock();
+    }
+
+    private function getReactSocketServerMock()
+    {
+        return $this->getMockBuilder('React\\Socket\\ServerInterface')
+                ->disableOriginalConstructor()
+                ->getMock();
+    }
+
+    private function getReactHttpServerMock()
+    {
+        return $this->getMockBuilder('React\\Http\\Server')
+                ->disableOriginalConstructor()
+                ->getMock();
     }
 }

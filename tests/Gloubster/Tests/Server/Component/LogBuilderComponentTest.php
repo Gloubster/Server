@@ -48,21 +48,23 @@ class LogBuilderComponentTest extends GloubsterTest
 
         $done = false;
 
+        $phpunit = $this;
+
         $redis = new PredisAsync('tcp://127.0.0.1:6379', $options);
-        $redis->connect(function() use ($redis, $frame, $redisSync, &$done, $resolver) {
+        $redis->connect(function() use ($phpunit, $redis, $frame, $redisSync, &$done, $resolver) {
             $component = new LogBuilderComponent();
 
             $component->handleLog($redis, $this->getLogger(), $frame, $resolver)
-                ->then(function ($hashId) use ($redis, $redisSync, &$done) {
+                ->then(function ($hashId) use ($phpunit, $redis, $redisSync, &$done) {
 
                     $redis->disconnect();
 
                     $data = $redisSync->hgetall($hashId);
 
-                    $this->assertGreaterThan(0, count($data));
-                    $this->assertEquals('Gloubster\Message\Job\ImageJob', $data['type']);
+                    $phpunit->assertGreaterThan(0, count($data));
+                    $phpunit->assertEquals('Gloubster\Message\Job\ImageJob', $data['type']);
 
-                    $this->assertTrue($redisSync->sismember('jobs', $hashId));
+                    $phpunit->assertTrue($redisSync->sismember('jobs', $hashId));
 
                     $done = true;
                 });
@@ -86,23 +88,25 @@ class LogBuilderComponentTest extends GloubsterTest
         $redisSync = new PredisSync('tcp://127.0.0.1:6379');
         $redisSync->connect();
 
+        $resolver = $this->getResolver();
+        $resolver->expects($this->once())
+            ->method('ack');
+
         $done = false;
 
+        $phpunit = $this;
+
         $redis = new PredisAsync('tcp://127.0.0.1:6379', $options);
-        $redis->connect(function() use ($redis, $frame, $redisSync, &$done) {
+        $redis->connect(function() use ($resolver, $phpunit, $redis, $frame, $redisSync, &$done) {
             $component = new LogBuilderComponent();
 
-            $resolver = $this->getResolver();
-            $resolver->expects($this->once())
-                ->method('ack');
-
-            $component->handleLog($redis, $this->getLogger(), $frame, $resolver)
-                ->then(function ($hashId) use ($redis, $redisSync, &$done) {
+            $component->handleLog($redis, $phpunit->getLogger(), $frame, $resolver)
+                ->then(function ($hashId) use ($phpunit, $redis, $redisSync, &$done) {
 
                     $redis->disconnect();
 
-                    $this->assertEquals('{"hello": "world !"}', $redisSync->get($hashId));
-                    $this->assertTrue($redisSync->sismember('garbages', $hashId));
+                    $phpunit->assertEquals('{"hello": "world !"}', $redisSync->get($hashId));
+                    $phpunit->assertTrue($redisSync->sismember('garbages', $hashId));
 
                     $done = true;
                 });
@@ -129,23 +133,25 @@ class LogBuilderComponentTest extends GloubsterTest
         $redisSync = new PredisSync('tcp://127.0.0.1:6379');
         $redisSync->connect();
 
+        $resolver = $this->getResolver();
+        $resolver->expects($this->once())
+            ->method('ack');
+
         $done = false;
 
+        $phpunit = $this;
+
         $redis = new PredisAsync('tcp://127.0.0.1:6379', $options);
-        $redis->connect(function() use ($redis, $frame, $redisSync, &$done, $worker) {
+        $redis->connect(function() use ($resolver, $phpunit, $redis, $frame, $redisSync, &$done, $worker) {
             $component = new LogBuilderComponent();
 
-            $resolver = $this->getResolver();
-            $resolver->expects($this->once())
-                ->method('ack');
-
-            $component->handleLog($redis, $this->getLogger(), $frame, $resolver)
-                ->then(function ($hashId) use ($redis, $redisSync, &$done, $worker) {
+            $component->handleLog($redis, $phpunit->getLogger(), $frame, $resolver)
+                ->then(function ($hashId) use ($phpunit, $redis, $redisSync, &$done, $worker) {
 
                     $redis->disconnect();
 
-                    $this->assertEquals($worker->toJson(), $redisSync->get($hashId));
-                    $this->assertTrue($redisSync->sismember('garbages', $hashId));
+                    $phpunit->assertEquals($worker->toJson(), $redisSync->get($hashId));
+                    $phpunit->assertTrue($redisSync->sismember('garbages', $hashId));
 
                     $done = true;
                 });

@@ -57,7 +57,7 @@ abstract class GloubsterTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
-    protected function getLogger()
+    public function getLogger()
     {
         return $this->getMockBuilder('Monolog\\Logger')
             ->disableOriginalConstructor()

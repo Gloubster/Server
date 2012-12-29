@@ -113,12 +113,12 @@ class GloubsterServerTest extends GloubsterTest
         $server['stomp-client']->expects($this->never())
             ->method('send');
 
-        $that = $this;
+        $phpunit = $this;
         $data = 'no-json data';
         $server['monolog']->expects($this->once())
             ->method('addError')
-            ->will($this->returnCallback(function ($message) use ($that, $data) {
-                        $that->assertGreaterThan(0, strpos($message, $data));
+            ->will($this->returnCallback(function ($message) use ($phpunit, $data) {
+                        $phpunit->assertGreaterThan(0, strpos($message, $data));
                     }));
 
         $server->incomingMessage($data);
@@ -134,12 +134,12 @@ class GloubsterServerTest extends GloubsterTest
         $server['stomp-client']->expects($this->never())
             ->method('send');
 
-        $that = $this;
+        $phpunit = $this;
         $data = '{"hello": "world !"}';
         $server['monolog']->expects($this->once())
             ->method('addError')
-            ->will($this->returnCallback(function ($message) use ($that, $data) {
-                        $that->assertGreaterThan(0, strpos($message, $data));
+            ->will($this->returnCallback(function ($message) use ($phpunit, $data) {
+                        $phpunit->assertGreaterThan(0, strpos($message, $data));
                     }));
 
         $server->incomingMessage($data);
@@ -155,15 +155,15 @@ class GloubsterServerTest extends GloubsterTest
         $server['stomp-client']->expects($this->never())
             ->method('send');
 
-        $that = $this;
+        $phpunit = $this;
 
         $worker = new WorkerPresence();
 
         $data = $worker->toJson();
         $server['monolog']->expects($this->once())
             ->method('addError')
-            ->will($this->returnCallback(function ($message) use ($that, $data) {
-                        $that->assertGreaterThan(0, strpos($message, $data));
+            ->will($this->returnCallback(function ($message) use ($phpunit, $data) {
+                        $phpunit->assertGreaterThan(0, strpos($message, $data));
                     }));
 
         $server->incomingMessage($data);

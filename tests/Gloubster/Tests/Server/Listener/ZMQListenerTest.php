@@ -78,9 +78,7 @@ class ZMQListenerTest extends GloubsterTest
             $this->getMockBuilder('ZMQSocket')
                 ->disableOriginalConstructor()
                 ->getMock(),
-            $this->getMockBuilder('React\\EventLoop\\LoopInterface')
-                ->disableOriginalConstructor()
-                ->getMock()
+            $this->getEventLoop()
         );
 
         $context->expects($this->any())
@@ -116,9 +114,7 @@ class ZMQListenerTest extends GloubsterTest
             $this->getMockBuilder('ZMQSocket')
                 ->disableOriginalConstructor()
                 ->getMock(),
-            $this->getMockBuilder('React\\EventLoop\\LoopInterface')
-                ->disableOriginalConstructor()
-                ->getMock()
+            $this->getEventLoop()
         );
 
         $context->expects($this->any())
@@ -181,9 +177,7 @@ class ZMQListenerTest extends GloubsterTest
 
     private function getContext()
     {
-        $loop = $this->getMockBuilder('React\\EventLoop\\LoopInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $loop = $this->getEventLoop();
 
         $context = $this->getMockBuilder('ZMQContext')
             ->disableOriginalConstructor()

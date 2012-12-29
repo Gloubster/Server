@@ -6,6 +6,8 @@ services:
   - memcached
 
 before_script:
+  - sudo pear channel-discover pear.zero.mq
+  - sudo pecl install pear.zero.mq/zmq-beta
   - sudo apt-get install libhiredis-dev
   - git clone --quiet https://github.com/nrk/phpiredis.git
   - sh -c "cd phpiredis && phpize && ./configure --enable-phpiredis --with-hiredis-dir=/usr/local && make --silent && sudo make install"

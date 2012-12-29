@@ -15,6 +15,7 @@ before_script:
   - git clone --quiet https://github.com/nrk/phpiredis.git
   - sh -c "cd phpiredis && phpize && ./configure --enable-phpiredis --with-hiredis-dir=/usr/local && make --silent && sudo make install"
   - echo "extension=phpiredis.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
+  - composer self-update
   - composer install --dev
 
 php:

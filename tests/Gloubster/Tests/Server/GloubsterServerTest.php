@@ -8,10 +8,11 @@ use Gloubster\Message\Presence\WorkerPresence;
 use Gloubster\Server\GloubsterServer;
 use Gloubster\Server\Component\ComponentInterface;
 use Gloubster\Server\Component\StopComponent;
+use Gloubster\Tests\GloubsterTest;
 
 require_once __DIR__ . '/../Mocks/DeliveryMock.php';
 
-class GloubsterServerTest extends \PHPUnit_Framework_TestCase
+class GloubsterServerTest extends GloubsterTest
 {
 
     /**
@@ -269,29 +270,6 @@ class GloubsterServerTest extends \PHPUnit_Framework_TestCase
 
         GloubsterServer::create($loop, $conf, $logger);
     }
-
-    private function getServer()
-    {
-        $ws = $this->getMockBuilder('Gloubster\Server\WebsocketApplication')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $client = $this->getMockBuilder('React\Stomp\Client')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $loop = $this->getMockBuilder('React\EventLoop\LoopInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $conf = new Configuration(file_get_contents(__DIR__ . '/../../../resources/config.json'));
-
-        $logger = $this->getMockBuilder('Monolog\Logger')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        return new GloubsterServer($ws, $client, $loop, $conf, $logger);
-    }
 }
 
 class TestComponent implements ComponentInterface
@@ -310,19 +288,13 @@ class TestComponent implements ComponentInterface
     public function register(GloubsterServer $server)
     {
         $this->registered = true;
-    }
 
-    public function registerSTOMP(GloubsterServer $server, \React\Stomp\Client $stomp)
-    {
-        $this->STOMPregistered = true;
-    }
+        $server['dispatcher']->on('stomp-connected', function () {
+            $this->STOMPregistered = true;
+        });
 
-    public function registerRedis(GloubsterServer $server, \Predis\Async\Client $client, \Predis\Async\Connection\ConnectionInterface $conn)
-    {
-        $this->Redisregistered = true;
-    }
-
-    public function boot(GloubsterServer $server)
-    {
+        $server['dispatcher']->on('redis-connected', function () {
+            $this->Redisregistered = true;
+        });
     }
 }

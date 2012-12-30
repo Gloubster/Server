@@ -237,18 +237,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/igorw/evenement",
-                "reference": "406a0bd40c4d934e020469b923fad6330512ed4c"
+                "reference": "8b0918f8374327dfed4408fe467980ab41d556dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/igorw/evenement/archive/406a0bd40c4d934e020469b923fad6330512ed4c.zip",
-                "reference": "406a0bd40c4d934e020469b923fad6330512ed4c",
+                "url": "https://github.com/igorw/evenement/archive/8b0918f8374327dfed4408fe467980ab41d556dd.zip",
+                "reference": "8b0918f8374327dfed4408fe467980ab41d556dd",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "2012-11-03 02:17:23",
+            "time": "2012-12-29 17:04:52",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -326,12 +326,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle",
-                "reference": "v3.0.7"
+                "reference": "4988475a013cf5468b305f0749128aeab74f1ba7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/guzzle/guzzle/archive/v3.0.7.zip",
-                "reference": "v3.0.7",
+                "url": "https://github.com/guzzle/guzzle/archive/4988475a013cf5468b305f0749128aeab74f1ba7.zip",
+                "reference": "4988475a013cf5468b305f0749128aeab74f1ba7",
                 "shasum": ""
             },
             "require": {
@@ -378,7 +378,7 @@
                 "zend/zend-cache": "2.0.0beta3",
                 "zend/zend-log": "2.0.0beta3"
             },
-            "time": "2012-12-19 23:06:35",
+            "time": "2012-12-30 17:10:36",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -804,18 +804,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/curry",
-                "reference": "d3b4a19f9e41ffcc24379c336f3c071589c1c3a6"
+                "reference": "c4576b5b4ea268f12f03082ffcaf1da1420b868e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/reactphp/curry/archive/d3b4a19f9e41ffcc24379c336f3c071589c1c3a6.zip",
-                "reference": "d3b4a19f9e41ffcc24379c336f3c071589c1c3a6",
+                "url": "https://github.com/reactphp/curry/archive/c4576b5b4ea268f12f03082ffcaf1da1420b868e.zip",
+                "reference": "c4576b5b4ea268f12f03082ffcaf1da1420b868e",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2"
             },
-            "time": "2012-11-08 01:13:57",
+            "time": "2012-12-29 17:02:18",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -845,18 +845,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/promise",
-                "reference": "419ae7ed9be2b1ca6286f0f5173f7ea88d7f63f0"
+                "reference": "edeeab38525f2398c53dba49444b8b384821c677"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/reactphp/promise/archive/419ae7ed9be2b1ca6286f0f5173f7ea88d7f63f0.zip",
-                "reference": "419ae7ed9be2b1ca6286f0f5173f7ea88d7f63f0",
+                "url": "https://github.com/reactphp/promise/archive/edeeab38525f2398c53dba49444b8b384821c677.zip",
+                "reference": "edeeab38525f2398c53dba49444b8b384821c677",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "2012-12-28 17:07:05",
+            "time": "2012-12-29 17:03:11",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -889,12 +889,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/react",
-                "reference": "25597b9cc2048eb9cc17bccb50aae57645a64820"
+                "reference": "d98d3f2cca6eda61df7329dfe55b6f95f53f7c70"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/reactphp/react/archive/25597b9cc2048eb9cc17bccb50aae57645a64820.zip",
-                "reference": "25597b9cc2048eb9cc17bccb50aae57645a64820",
+                "url": "https://github.com/reactphp/react/archive/d98d3f2cca6eda61df7329dfe55b6f95f53f7c70.zip",
+                "reference": "d98d3f2cca6eda61df7329dfe55b6f95f53f7c70",
                 "shasum": ""
             },
             "require": {
@@ -917,7 +917,7 @@
                 "ext-libevent": "*",
                 "ext-libev": "*"
             },
-            "time": "2012-12-26 19:30:08",
+            "time": "2012-12-29 17:25:49",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -946,12 +946,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/stomp",
-                "reference": "ac4c847bd84581a6f37a3536e208c1a4d06e59e0"
+                "reference": "cf205ba4c936e3a46e81f9fd95f5dfe71c356eaf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/reactphp/stomp/archive/ac4c847bd84581a6f37a3536e208c1a4d06e59e0.zip",
-                "reference": "ac4c847bd84581a6f37a3536e208c1a4d06e59e0",
+                "url": "https://github.com/reactphp/stomp/archive/cf205ba4c936e3a46e81f9fd95f5dfe71c356eaf.zip",
+                "reference": "cf205ba4c936e3a46e81f9fd95f5dfe71c356eaf",
                 "shasum": ""
             },
             "require": {
@@ -960,7 +960,7 @@
                 "react/socket": "0.2.*",
                 "react/promise": "1.0.*"
             },
-            "time": "2012-12-28 02:31:09",
+            "time": "2012-12-30 16:58:09",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -989,12 +989,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/zmq",
-                "reference": "ea54c59724f48252171603023249415903e8efd3"
+                "reference": "a1539efe64084204103626ec15bbc875e293ee41"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/reactphp/zmq/archive/ea54c59724f48252171603023249415903e8efd3.zip",
-                "reference": "ea54c59724f48252171603023249415903e8efd3",
+                "url": "https://github.com/reactphp/zmq/archive/a1539efe64084204103626ec15bbc875e293ee41.zip",
+                "reference": "a1539efe64084204103626ec15bbc875e293ee41",
                 "shasum": ""
             },
             "require": {
@@ -1006,7 +1006,7 @@
             "require-dev": {
                 "ext-pcntl": "*"
             },
-            "time": "2012-11-27 13:19:00",
+            "time": "2012-12-29 19:35:54",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1035,12 +1035,12 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/fabpot/Silex.git",
-                "reference": "bd523d5970bb093d1d2c709e91a7f72b70c39108"
+                "reference": "e12731955739fc1a27d424bd76523acc3fdd6a84"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/fabpot/Silex/archive/bd523d5970bb093d1d2c709e91a7f72b70c39108.zip",
-                "reference": "bd523d5970bb093d1d2c709e91a7f72b70c39108",
+                "url": "https://github.com/fabpot/Silex/archive/e12731955739fc1a27d424bd76523acc3fdd6a84.zip",
+                "reference": "e12731955739fc1a27d424bd76523acc3fdd6a84",
                 "shasum": ""
             },
             "require": {
@@ -1075,7 +1075,7 @@
                 "symfony/css-selector": ">=2.1,<2.3-dev",
                 "symfony/dom-crawler": ">=2.1,<2.3-dev"
             },
-            "time": "2012-12-18 11:32:45",
+            "time": "2012-12-30 15:36:44",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1465,18 +1465,18 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/fabpot/Twig.git",
-                "reference": "1b1a6e7de018d300e6eb67727f3717c24f4540ba"
+                "reference": "10cdd2f5928dd47a52f58b9b6774e214eb8e38a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/fabpot/Twig/archive/1b1a6e7de018d300e6eb67727f3717c24f4540ba.zip",
-                "reference": "1b1a6e7de018d300e6eb67727f3717c24f4540ba",
+                "url": "https://github.com/fabpot/Twig/archive/10cdd2f5928dd47a52f58b9b6774e214eb8e38a8.zip",
+                "reference": "10cdd2f5928dd47a52f58b9b6774e214eb8e38a8",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.4"
             },
-            "time": "2012-12-27 16:33:50",
+            "time": "2012-12-30 16:18:01",
             "type": "library",
             "extra": {
                 "branch-alias": {

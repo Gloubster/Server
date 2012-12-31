@@ -166,6 +166,8 @@ class LogBuilderComponentTest extends GloubsterTest
     {
         $server = $this->getServer();
 
+        $server['redis-client'] = $this->getPredisAsyncClient();
+
         $component = new LogBuilderComponent();
         $component->register($server);
 

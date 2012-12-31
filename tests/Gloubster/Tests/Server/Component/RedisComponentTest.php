@@ -16,7 +16,6 @@ class RedisComponentTest extends GloubsterTest
     {
         $server = $this->getServer();
         $server['configuration'] = $this->getTestConfiguration();
-        $server->register(new RedisComponent());
 
         $server['loop'] = LoopFactory::create();
 

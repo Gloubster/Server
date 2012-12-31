@@ -53,23 +53,6 @@ class GloubsterServerTest extends GloubsterTest
     }
 
     /**
-     * @covers Gloubster\Server\GloubsterServer::activateRedisServices
-     */
-    public function testActivateRedisServices()
-    {
-        $component = new TestComponent();
-
-        $server = $this->getServer();
-        $server->register($component);
-
-        $server->activateRedisServices($this->getPredisAsyncClient(), $this->getPredisAsyncConnection());
-
-        $this->assertTrue($component->registered);
-        $this->assertFalse($component->STOMPregistered);
-        $this->assertTrue($component->Redisregistered);
-    }
-
-    /**
      * @covers Gloubster\Server\GloubsterServer::run
      */
     public function testRun()

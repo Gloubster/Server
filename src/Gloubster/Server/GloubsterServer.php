@@ -4,15 +4,14 @@ namespace Gloubster\Server;
 
 use Evenement\EventEmitter;
 use Gloubster\Configuration;
+use Gloubster\Exception\RuntimeException;
 use Gloubster\Message\Job\JobInterface;
-use Gloubster\Server\SessionHandler;
+use Gloubster\Message\Factory as MessageFactory;
 use Gloubster\RabbitMQ\Configuration as RabbitMQConf;
 use Gloubster\Server\Component\ComponentInterface;
-use Gloubster\Exception\RuntimeException;
-use Gloubster\Message\Factory as MessageFactory;
+use Gloubster\Server\Component\RedisComponent;
+use Gloubster\Server\SessionHandler;
 use Monolog\Logger;
-use Predis\Async\Client as PredisClient;
-use Predis\Async\Connection\ConnectionInterface as PredisConnection;
 use Ratchet\Server\IoServer;
 use Ratchet\WebSocket\WsServer;
 use Ratchet\Wamp\WampServer;
@@ -43,7 +42,7 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
         pcntl_signal(SIGTERM, array($this, 'signalHandler'));
         pcntl_signal(SIGINT, array($this, 'signalHandler'));
 
-        $this['redis.started'] = $this['stomp-client.started'] = false;
+        $this['stomp-client.started'] = false;
         $this['loop'] = $loop;
         $this['configuration'] = $conf;
         $this['monolog'] = $logger;
@@ -51,22 +50,9 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
         $this['stomp-client'] = $client;
         $this['dispatcher'] = new EventEmitter();
 
+        $this->register(new RedisComponent());
+
         $this['stomp-client']->on('error', array($this, 'logError'));
-
-        $redisErrorHandler = function (PredisClient $client, \Exception $e, PredisConnection $conn) use ($server) {
-            call_user_func(array($server, 'logError'), $e);
-        };
-
-        $redisOptions = array(
-            'on_error'  => $redisErrorHandler,
-            'eventloop' => $server['loop'],
-        );
-
-        $this['dispatcher']->on('start', function ($server) use ($redisOptions) {
-            $server['redis'] = new PredisClient(sprintf('tcp://%s:%s', $server['configuration']['redis-server']['host'], $server['configuration']['redis-server']['port']), $redisOptions);
-            $server['redis']->connect(array($server, 'activateRedisServices'));
-            $server['monolog']->addInfo('Connecting to Redis server...');
-        });
 
         $this['websocket-application.socket'] = new Reactor($this['loop']);
 
@@ -88,8 +74,6 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
             $server['monolog']->addInfo('Websocket Server shutdown');
             $server['stomp-client']->disconnect();
             $server['monolog']->addInfo('STOMP Server shutdown');
-            $server['redis']->disconnect();
-            $server['monolog']->addInfo('Redis Server shutdown');
         });
     }
 
@@ -137,17 +121,7 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
         // remove stop listeners
 
         $this['loop']->stop();
-        $this['redis.started'] = $this['stomp-client.started'] = false;
-    }
-
-    public function activateRedisServices(PredisClient $client, PredisConnection $conn)
-    {
-        $this['monolog']->addInfo('Connected to Redis Server !');
-
-        $this['dispatcher']->emit('redis-connected', array($this, $client, $conn));
-
-        $this['redis.started'] = true;
-        $this->probeAllSystems();
+        $this['stomp-client.started'] = false;
     }
 
     public function activateStompServices(Client $stomp)
@@ -162,7 +136,7 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
 
     public function probeAllSystems()
     {
-        if ($this['stomp-client.started'] && $this['redis.started']) {
+        if ($this['stomp-client.started'] && $this['redis-client.started']) {
             $this['monolog']->addInfo('All services loaded, server now running');
             $this['dispatcher']->emit('booted', array($this));
         }

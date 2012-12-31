@@ -3,12 +3,9 @@
 namespace Gloubster\Server\Component;
 
 use Gloubster\Server\WebsocketApplication;
-use Gloubster\Server\GloubsterServer;
+use Gloubster\Server\GloubsterServerInterface;
 use Monolog\Logger;
-use Predis\Async\Connection\ConnectionInterface as PredisConnection;
-use Predis\Async\Client as PredisClient;
 use React\Curry\Util as Curry;
-use React\Stomp\Client;
 
 class ServerMonitorComponent implements ComponentInterface
 {
@@ -16,7 +13,7 @@ class ServerMonitorComponent implements ComponentInterface
     /**
      * {@inheritdoc}
      */
-    public function register(GloubsterServer $server)
+    public function register(GloubsterServerInterface $server)
     {
         $server['loop']->addPeriodicTimer(0.1, Curry::bind(array($this, 'brodcastServerInformations'), $server['websocket-application']));
         $server['loop']->addPeriodicTimer(5, Curry::bind(array($this, 'displayServerMemory'), $server['monolog']));

@@ -5,12 +5,9 @@ namespace Gloubster\Server\Component;
 use Gloubster\Configuration;
 use Gloubster\Server\WebsocketApplication;
 use Gloubster\RabbitMQ\Configuration as RabbitMQConf;
-use Gloubster\Server\GloubsterServer;
-use Predis\Async\Connection\ConnectionInterface as PredisConnection;
-use Predis\Async\Client as PredisClient;
+use Gloubster\Server\GloubsterServerInterface;
 use RabbitMQ\Management\AsyncAPIClient;
 use React\Curry\Util as Curry;
-use React\Stomp\Client;
 
 class RabbitMQMonitorComponent implements ComponentInterface
 {
@@ -31,7 +28,7 @@ class RabbitMQMonitorComponent implements ComponentInterface
     /**
      * {@inheritdoc}
      */
-    public function register(GloubsterServer $server)
+    public function register(GloubsterServerInterface $server)
     {
         $this->apiClient = AsyncAPIClient::factory($server['loop'], array_merge($server['configuration']['server'], $server['configuration']['server']['server-management']));
         $server['loop']->addPeriodicTimer(5, Curry::bind(array($this, 'fetchMQInformations'), $server['websocket-application'], $server['configuration'], $server['monolog']));

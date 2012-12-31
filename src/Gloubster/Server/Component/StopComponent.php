@@ -2,14 +2,14 @@
 
 namespace Gloubster\Server\Component;
 
-use Gloubster\Server\GloubsterServer;
+use Gloubster\Server\GloubsterServerInterface;
 
 class StopComponent implements ComponentInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function register(GloubsterServer $server)
+    public function register(GloubsterServerInterface $server)
     {
         $server['dispatcher']->on('booted', function ($server) {
             $server['monolog']->addInfo('StopComponent is now stopping the server, shutting down...');

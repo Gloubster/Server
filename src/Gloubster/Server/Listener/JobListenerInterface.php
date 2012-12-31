@@ -16,7 +16,7 @@ interface JobListenerInterface extends EventEmitterInterface
     /**
      * Public method to create the listener
      *
-     * @param GloubsterServer  $server  The gloubster server
+     * @param GloubsterServerInterface  $server  The gloubster server
      * @param array            $options An array of options to build the listener
      *
      * @return JobListenerInterface The new listener

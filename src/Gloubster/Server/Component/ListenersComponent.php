@@ -2,7 +2,7 @@
 
 namespace Gloubster\Server\Component;
 
-use Gloubster\Server\GloubsterServer;
+use Gloubster\Server\GloubsterServerInterface;
 use Gloubster\Exception\RuntimeException;
 use React\Stomp\Client;
 
@@ -12,7 +12,7 @@ class ListenersComponent implements ComponentInterface
     /**
      * {@inheritdoc}
      */
-    public function register(GloubsterServer $server)
+    public function register(GloubsterServerInterface $server)
     {
         foreach ($server['configuration']['listeners'] as $listenerConf) {
             $class_name = $listenerConf['type'];
@@ -50,7 +50,7 @@ class ListenersComponent implements ComponentInterface
 
         $component = $this;
 
-        $server['dispatcher']->on('stomp-connected', function (GloubsterServer $server, Client $stomp) use ($component) {
+        $server['dispatcher']->on('stomp-connected', function (GloubsterServerInterface $server, Client $stomp) use ($component) {
             foreach ($component->listeners as $listener) {
                 $listener->listen();
             }

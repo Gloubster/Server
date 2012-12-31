@@ -2,17 +2,14 @@
 
 namespace Gloubster\Server\Component;
 
-use Predis\Async\Connection\ConnectionInterface as PredisConnection;
-use Predis\Async\Client as PredisClient;
-use Gloubster\Server\GloubsterServer;
-use React\Stomp\Client;
+use Gloubster\Server\GloubsterServerInterface;
 
 interface ComponentInterface
 {
     /**
      * Register the component in the provided GloubsterServer
      *
-     * @param GloubsterServer $server
+     * @param GloubsterServerInterface $server
      */
-    public function register(GloubsterServer $server);
+    public function register(GloubsterServerInterface $server);
 }

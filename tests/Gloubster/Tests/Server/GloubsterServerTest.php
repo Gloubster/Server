@@ -5,6 +5,7 @@ namespace Gloubster\Tests\Server;
 use Gloubster\Message\Job\ImageJob;
 use Gloubster\Message\Presence\WorkerPresence;
 use Gloubster\Server\GloubsterServer;
+use Gloubster\Server\GloubsterServerInterface;
 use Gloubster\Server\Component\ComponentInterface;
 use Gloubster\Server\Component\StopComponent;
 use Gloubster\Tests\GloubsterTest;
@@ -268,7 +269,7 @@ class TestComponent implements ComponentInterface
         $this->Redisregistered = false;
     }
 
-    public function register(GloubsterServer $server)
+    public function register(GloubsterServerInterface $server)
     {
         $component = $this;
         $this->registered = true;

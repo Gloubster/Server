@@ -2,8 +2,8 @@
 
 namespace Gloubster\Server;
 
+use Evenement\EventEmitter;
 use Gloubster\Configuration;
-use Gloubster\Exchange;
 use Gloubster\Message\Job\JobInterface;
 use Gloubster\Server\SessionHandler;
 use Gloubster\RabbitMQ\Configuration as RabbitMQConf;
@@ -22,7 +22,6 @@ use React\Stomp\Client;
 use React\EventLoop\LoopInterface;
 use React\Socket\Server as Reactor;
 use React\Stomp\Factory as StompFactory;
-use Evenement\EventEmitter;
 
 /**
  * @event start

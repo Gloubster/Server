@@ -3,7 +3,7 @@
 namespace Gloubster\Server\Component;
 
 use Gloubster\RabbitMQ\Configuration as RabbitMQConf;
-use Gloubster\Server\GloubsterServer;
+use Gloubster\Server\GloubsterServerInterface;
 use Gloubster\Message\Factory;
 use Gloubster\Exception\RuntimeException;
 use Gloubster\Message\Job\JobInterface;
@@ -20,10 +20,10 @@ class LogBuilderComponent implements ComponentInterface
     /**
      * {@inheritdoc}
      */
-    public function register(GloubsterServer $server)
+    public function register(GloubsterServerInterface $server)
     {
         $component = $this;
-        $server['dispatcher']->on('redis-connected', function (GloubsterServer $server, PredisClient $client, PredisConnection $conn) use ($component) {
+        $server['dispatcher']->on('redis-connected', function (GloubsterServerInterface $server, PredisClient $client, PredisConnection $conn) use ($component) {
             $server['stomp-client']->subscribeWithAck(
                 sprintf('/queue/%s', RabbitMQConf::QUEUE_LOGS), 'client',
                 Curry::bind(array($component, 'handleLog'), $client, $server['monolog'])

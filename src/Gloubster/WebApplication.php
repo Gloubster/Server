@@ -18,7 +18,6 @@ use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\MonologServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 use SilexAssetic\AsseticExtension;
-use Neutron\Silex\Provider\MongoDBODMServiceProvider;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 
 class WebApplication extends SilexApplication
@@ -55,7 +54,7 @@ class WebApplication extends SilexApplication
         });
 
         $this->register(new SessionServiceProvider());
-        
+
         $this['session.storage'] = $this->share(function (WebApplication $app) {
             return new NativeSessionStorage(array(), SessionHandler::factory($this['configuration']));
         });

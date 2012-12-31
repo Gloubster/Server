@@ -10,6 +10,9 @@ before_script:
   - sudo rabbitmq-plugins enable rabbitmq_management
   - sudo service rabbitmq-server start
   - sleep 3
+  - wget http://download.zeromq.org/zeromq-3.2.2.tar.gz
+  - tar xzvf zeromq-3.2.2.tar.gz
+  - sh -c "cd zeromq-3.2.2 && ./configure && sudo make install"
   - wget http://pecl.php.net/get/memcache-2.2.6.tgz
   - tar xzvf memcache-2.2.6.tgz
   - sh -c "cd memcache-2.2.6 && phpize && ./configure && make && sudo make install"

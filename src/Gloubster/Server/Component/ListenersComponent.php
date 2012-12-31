@@ -50,7 +50,7 @@ class ListenersComponent implements ComponentInterface
 
         $component = $this;
 
-        $server['dispatcher']->on('stomp-connected', function (GloubsterServerInterface $server, Client $stomp) use ($component) {
+        $server['dispatcher']->on('booted', function (GloubsterServerInterface $server) use ($component) {
             foreach ($component->listeners as $listener) {
                 $listener->listen();
             }

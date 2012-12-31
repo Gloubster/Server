@@ -23,10 +23,10 @@ class LogBuilderComponent implements ComponentInterface
     public function register(GloubsterServerInterface $server)
     {
         $component = $this;
-        $server['dispatcher']->on('redis-connected', function (GloubsterServerInterface $server, PredisClient $client, PredisConnection $conn) use ($component) {
+        $server['dispatcher']->on('booted', function (GloubsterServerInterface $server) use ($component) {
             $server['stomp-client']->subscribeWithAck(
                 sprintf('/queue/%s', RabbitMQConf::QUEUE_LOGS), 'client',
-                Curry::bind(array($component, 'handleLog'), $client, $server['monolog'])
+                Curry::bind(array($component, 'handleLog'), $server['redis-client'], $server['monolog'])
             );
         });
 

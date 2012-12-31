@@ -35,7 +35,7 @@ class ListenersComponentTest extends GloubsterTest
         $server->register(new ListenersComponent());
 
         $this->assertFalse($server['test-token']);
-        $server['dispatcher']->emit('stomp-connected', array($server, $server['stomp-client']));
+        $server['dispatcher']->emit('booted', array($server, $server['stomp-client']));
         $this->assertTrue($server['test-token']);
     }
 

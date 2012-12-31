@@ -15,7 +15,6 @@ class RabbitMQMonitorComponentTest extends GloubsterTest
     {
         $server = $this->getServer();
 
-        $server['configuration'] = $this->getTestConfiguration();
         $server['loop']->expects($this->once())
             ->method('addPeriodicTimer')
             ->with($this->greaterThan(0), $this->anything());
@@ -29,7 +28,6 @@ class RabbitMQMonitorComponentTest extends GloubsterTest
     public function testEvents()
     {
         $server = $this->getServer();
-        $server['configuration'] = $this->getTestConfiguration();
 
         $component = new RabbitMQMonitorComponent();
         $component->register($server);

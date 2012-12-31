@@ -23,7 +23,6 @@ class ListenersComponentTest extends GloubsterTest
         $server['monolog']->expects($this->never())
             ->method('addError');
 
-        $server['configuration'] = $this->getTestConfiguration();
         $server['configuration']['listeners'] = array(
             array(
                 'type'    => __NAMESPACE__ . '\\ListenerTester',
@@ -49,7 +48,6 @@ class ListenersComponentTest extends GloubsterTest
         $server['monolog']->expects($this->once())
             ->method('addError');
 
-        $server['configuration'] = $this->getTestConfiguration();
         $server['configuration']['listeners'] = array(
             array(
                 'type'    => 'InvalidNamespace\\Listener',
@@ -69,7 +67,6 @@ class ListenersComponentTest extends GloubsterTest
         $server['monolog']->expects($this->once())
             ->method('addError');
 
-        $server['configuration'] = $this->getTestConfiguration();
         $server['configuration']['listeners'] = array(
             array(
                 'type'    => 'Gloubster\\Configuration',
@@ -89,7 +86,6 @@ class ListenersComponentTest extends GloubsterTest
         $server['monolog']->expects($this->once())
             ->method('addError');
 
-        $server['configuration'] = $this->getTestConfiguration();
         $server['configuration']['listeners'] = array(
             array(
                 'type'    => __NAMESPACE__ . '\\ListenerFailTester',
@@ -107,7 +103,6 @@ class ListenersComponentTest extends GloubsterTest
     public function aDefualtConfigShouldHandleAllEventsWithoutProblems()
     {
         $server = $this->getServer();
-        $server['configuration'] = $this->getTestConfiguration();
 
         $component = new ListenersComponent();
         $component->register($server);

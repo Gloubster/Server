@@ -14,7 +14,6 @@ class WorkerMonitorBroadcastComponentTest extends GloubsterTest
     public function itShouldRegister()
     {
         $server = $this->getServer();
-        $server['configuration'] = $this->getTestConfiguration();
         $server->register(new WorkerMonitorBroadcastComponent());
 
         $server['dispatcher']->emit('stomp-connected', array($server, $server['stomp-client']));

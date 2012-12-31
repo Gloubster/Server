@@ -15,7 +15,6 @@ class STOMPComponentTest extends GloubsterTest
     public function itShouldRegister()
     {
         $server = $this->getServer();
-        $server['configuration'] = $this->getTestConfiguration();
         $server['loop'] = LoopFactory::create();
         $server->register(new STOMPComponent());
 

@@ -2,44 +2,48 @@
 
 namespace Gloubster\Server\Listener;
 
+use Evenement\EventEmitter;
 use Gloubster\Server\GloubsterServerInterface;
-use Gloubster\Server\GloubsterServer;
 use Gloubster\Exception\InvalidArgumentException;
 use Gloubster\Exception\RuntimeException;
+use Monolog\Logger;
 use React\Http\Server;
 use React\Socket\Server as Reactor;
 
-class HTTPListener implements JobListenerInterface
+class HTTPListener extends EventEmitter implements JobListenerInterface
 {
+    private $host;
+    private $port;
+    private $logger;
     private $server;
+    private $socket;
 
-    public function __construct(Server $server)
+    public function __construct(Server $server, Reactor $socket, Logger $logger, $host = '0.0.0.0', $port = 80)
     {
+        $this->host = $host;
+        $this->port = $port;
+        $this->socket = $socket;
+        $this->logger = $logger;
         $this->server = $server;
-    }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function attach(GloubsterServerInterface $server)
-    {
-        $this->server->on('request', function ($request, $response) use ($server) {
+        $listener = $this;
+
+        $this->server->on('request', function ($request, $response) use ($listener) {
             $response->writeHead(200);
             $response->end();
 
-            $data = new \stdClass();
-            $data->message = '';
+            $data = (object) array('message' => '');
 
             $request->on('data', function ($chunk) use ($data) {
                 $data->message .= $chunk;
             });
 
-            $request->on('end', function() use ($data, $server) {
-                call_user_func(array($server, 'incomingMessage'), $data->message);
+            $request->on('end', function() use ($data, $listener) {
+                $listener->emit('message', array($data->message));
             });
 
-            $request->on('error', function ($error) use ($server) {
-                call_user_func(array($server, 'incomingError'), $error);
+            $request->on('error', function ($error) use ($listener) {
+                $listener->emit('error', array($error));
             });
         });
     }
@@ -47,7 +51,28 @@ class HTTPListener implements JobListenerInterface
     /**
      * {@inheritdoc}
      */
-    public static function create(GloubsterServer $server, array $options)
+    public function listen()
+    {
+        try {
+            $this->socket->listen($this->port, $this->host);
+        } catch (\Exception $e) {
+            throw new RuntimeException(sprintf('Unable to listen to %s:%s', $this->host, $this->port));
+        }
+        $this->logger->addInfo(sprintf('Listening for message on HTTP %s:%s', $this->host, $this->port));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function shutdown()
+    {
+        $this->socket->shutdown();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function create(GloubsterServerInterface $server, array $options)
     {
         if (!isset($options['port'])) {
             throw new InvalidArgumentException('Missing option key `port`');
@@ -57,19 +82,8 @@ class HTTPListener implements JobListenerInterface
             throw new InvalidArgumentException('Missing option key `host`');
         }
 
-        try {
-            $socket = new Reactor($server['loop']);
-            $socket->listen($options['port'], $options['host']);
-        } catch (\Exception $e) {
-            throw new RuntimeException(sprintf('Unable to listen to %s:%s', $options['host'], $options['port']));
-        }
+        $socket = new Reactor($server['loop']);
 
-        $server['monolog']->addInfo(sprintf('Listening for message on HTTP %s:%s', $options['host'], $options['port']));
-
-        $server['dispatcher']->on('stop', function () use ($socket) {
-            $socket->shutdown();
-        });
-
-        return new static(new Server($socket, $server['loop']));
+        return new static(new Server($socket, $server['loop']), $socket, $server['monolog'], $options['host'], $options['port']);
     }
 }

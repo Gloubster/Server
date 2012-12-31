@@ -15,7 +15,7 @@ class HTTPListenerTest extends GloubsterTest
     /** @test */
     public function itShouldConstruct()
     {
-        new HTTPListener($this->getReactHttpServerMock());
+        new HTTPListener($this->getReactHttpServerMock(), $this->getReactSocketServerMock(), $this->getLogger());
     }
 
     /** @test */
@@ -25,27 +25,51 @@ class HTTPListenerTest extends GloubsterTest
     }
 
     /** @test */
-    public function itShouldAttach()
+    public function itShouldNotListen()
     {
-        $gloubster = $this->getServer();
-        $server = $this->getReactHttpServerMock();
+        $reactor = $this->getReactSocketServerMock();
+        $server = new HttpServer($reactor);
 
-        $httpListener = new HTTPListener($server);
-        $httpListener->attach($gloubster);
+        $host = 'bel.host';
+        $port = '8080';
+
+        $httpListener = new HTTPListener($server, $reactor, $this->getLogger(), $host, $port);
+        $reactor->expects($this->never())
+            ->method('listen');
+    }
+
+    /** @test */
+    public function itShouldListen()
+    {
+        $reactor = $this->getReactSocketServerMock();
+        $server = new HttpServer($reactor);
+
+        $host = 'bel.host';
+        $port = '8080';
+
+        $httpListener = new HTTPListener($server, $reactor, $this->getLogger(), $host, $port);
+
+        $reactor->expects($this->once())
+            ->method('listen')
+            ->with($this->equalTo($port), $this->equalTo($host));
+
+        $httpListener->listen();
     }
 
     /** @test */
     public function requestsShouldTriggersGloubsterCallbacks()
     {
-        $gloubster = $this->getGloubsterServerMock();
-        $gloubster->expects($this->once())
-            ->method('incomingMessage')
-            ->with($this->equalTo('GOOD MESSAGE'));
+        $catchMessage = null;
 
-        $server = new HttpServer($this->getReactSocketServerMock());
+        $reactor = $this->getReactSocketServerMock();
+        $server = new HttpServer($reactor);
 
-        $httpListener = new HTTPListener($server);
-        $httpListener->attach($gloubster);
+        $httpListener = new HTTPListener($server, $reactor, $this->getLogger());
+        $httpListener->listen();
+
+        $httpListener->on('message', function ($message) use (&$catchMessage) {
+            $catchMessage = $message;
+        });
 
         $request = new HttpRequest('GET', '/');
         $response = $this->getReactHttpResponseMock();
@@ -56,22 +80,38 @@ class HTTPListenerTest extends GloubsterTest
         $request->emit('data', array('SSAGE'));
 
         $request->emit('end', array());
+
+        $this->assertEquals('GOOD MESSAGE', $catchMessage);
+    }
+
+    /** @test */
+    public function requestsShutdownShouldShutdownReactor()
+    {
+        $reactor = $this->getReactSocketServerMock();
+        $server = new HttpServer($reactor);
+
+        $reactor->expects($this->once())
+            ->method('shutdown');
+
+        $httpListener = new HTTPListener($server, $reactor, $this->getLogger());
+        $httpListener->shutdown();
     }
 
     /** @test */
     public function requestsShouldTriggersGloubsterErrorCallback()
     {
+        $catchError = null;
         $exception = new \Exception('This is an exception');
 
-        $gloubster = $this->getGloubsterServerMock();
-        $gloubster->expects($this->once())
-            ->method('incomingError')
-            ->with($this->equalTo($exception));
+        $reactor = $this->getReactSocketServerMock();
+        $server = new HttpServer($reactor);
 
-        $server = new HttpServer($this->getReactSocketServerMock());
+        $httpListener = new HTTPListener($server, $reactor, $this->getLogger());
+        $httpListener->listen();
 
-        $httpListener = new HTTPListener($server);
-        $httpListener->attach($gloubster);
+        $httpListener->on('error', function ($error) use (&$catchError) {
+            $catchError = $error;
+        });
 
         $request = new \React\Http\Request('GET', '/');
         $response = $this->getReactHttpResponseMock();
@@ -79,6 +119,8 @@ class HTTPListenerTest extends GloubsterTest
         $server->emit('request', array($request, $response));
 
         $request->emit('error', array($exception));
+
+        $this->assertEquals($exception, $catchError);
     }
 
     /**
@@ -98,8 +140,11 @@ class HTTPListenerTest extends GloubsterTest
     {
         $options = array('host' => '127.0.0.1', 'port' => 12345);
 
-        HTTPListener::create($this->getServer(), $options);
-        HTTPListener::create($this->getServer(), $options);
+        $listener = HTTPListener::create($this->getServer(), $options);
+        $listener->listen();
+
+        $listener = HTTPListener::create($this->getServer(), $options);
+        $listener->listen();
     }
 
     /**
@@ -120,7 +165,7 @@ class HTTPListenerTest extends GloubsterTest
 
     private function getReactSocketServerMock()
     {
-        return $this->getMockBuilder('React\\Socket\\ServerInterface')
+        return $this->getMockBuilder('React\\Socket\\Server')
                 ->disableOriginalConstructor()
                 ->getMock();
     }

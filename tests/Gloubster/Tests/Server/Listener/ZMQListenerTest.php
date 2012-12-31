@@ -25,10 +25,6 @@ class ZMQListenerTest extends GloubsterTest
             ->disableOriginalConstructor()
             ->getMock();
 
-        $socket->expects($this->once())
-            ->method('bind')
-            ->with($this->equalTo('tcp://localhost:55672'));
-
         $context->expects($this->any())
             ->method('getSocket')
             ->will($this->returnvalue($socket));
@@ -49,23 +45,36 @@ class ZMQListenerTest extends GloubsterTest
     }
 
     /** @test */
-    public function itShouldAttach()
+    public function itShouldListen()
     {
-        $options = array(
-            'transport' => 'ipc',
+        $context = $this->getContext();
+
+        $conf = array(
+            'transport' => 'tcp',
             'address'   => 'localhost',
-            'port'      => 15672,
+            'port'      => 55672,
         );
 
-        $gloubster = $this->getServer();
+        $socket = $this->getMockBuilder('ZMQSocket')
+            ->disableOriginalConstructor()
+            ->getMock();
 
-        $listener = ZMQListener::create($gloubster, $options);
-        $listener->attach($gloubster);
+        $socket->expects($this->once())
+            ->method('bind')
+            ->with($this->equalTo('tcp://localhost:55672'));
+
+        $context->expects($this->any())
+            ->method('getSocket')
+            ->will($this->returnvalue($socket));
+
+        $listener = new ZMQListener($context, $this->getLogger(), $conf);
+        $listener->listen();
     }
 
     /** @test */
-    public function requestsShouldTriggersGloubsterCallbacks()
+    public function requestsShouldEmitMessages()
     {
+        $catchMessage = null;
         $context = $this->getContext();
 
         $conf = array(
@@ -86,20 +95,48 @@ class ZMQListenerTest extends GloubsterTest
             ->will($this->returnvalue($socket));
 
         $listener = new ZMQListener($context, $this->getLogger(), $conf);
-        $gloubster = $this->getGloubsterServerMock();
+        $listener->listen();
 
-        $listener->attach($gloubster);
-
-        $gloubster->expects($this->once())
-            ->method('incomingMessage')
-            ->with($this->equalTo('GOOD MESSAGE'));
+        $listener->on('message', function ($message) use (&$catchMessage) {
+            $catchMessage = $message;
+        });
 
         $socket->emit('message', array('GOOD MESSAGE'));
+
+        $this->assertEquals('GOOD MESSAGE', $catchMessage);
+    }
+
+    /** @test */
+    public function requestsShutdownShouldUnbind()
+    {
+        $context = $this->getContext();
+
+        $conf = array(
+            'transport' => 'tcp',
+            'address'   => 'localhost',
+            'port'      => 55672,
+        );
+
+        $socket = $this->getMockBuilder('ZMQSocket')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $socket->expects($this->once())
+            ->method('unbind')
+            ->with($this->equalTo('tcp://localhost:55672'));
+
+        $context->expects($this->any())
+            ->method('getSocket')
+            ->will($this->returnvalue($socket));
+
+        $listener = new ZMQListener($context, $this->getLogger(), $conf);
+        $listener->shutdown();
     }
 
     /** @test */
     public function requestsShouldTriggersGloubsterErrorCallback()
     {
+        $catchError = null;
         $exception = new \Exception('A pretty cool exception');
 
         $context = $this->getContext();
@@ -122,15 +159,15 @@ class ZMQListenerTest extends GloubsterTest
             ->will($this->returnvalue($socket));
 
         $listener = new ZMQListener($context, $this->getLogger(), $conf);
-        $gloubster = $this->getGloubsterServerMock();
+        $listener->listen();
 
-        $listener->attach($gloubster);
-
-        $gloubster->expects($this->once())
-            ->method('incomingError')
-            ->with($this->equalTo($exception));
+        $listener->on('error', function ($error) use (&$catchError) {
+            $catchError = $error;
+        });
 
         $socket->emit('error', array($exception));
+
+        $this->assertEquals($exception, $catchError);
     }
 
     /**

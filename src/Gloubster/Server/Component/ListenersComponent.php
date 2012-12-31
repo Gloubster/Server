@@ -8,38 +8,57 @@ use React\Stomp\Client;
 
 class ListenersComponent implements ComponentInterface
 {
+    public $listeners = array();
     /**
      * {@inheritdoc}
      */
     public function register(GloubsterServer $server)
     {
-        $server['dispatcher']->on('stomp-connected', function (GloubsterServer $server, Client $stomp) {
+        foreach ($server['configuration']['listeners'] as $listenerConf) {
+            $class_name = $listenerConf['type'];
 
-            $server['monolog']->addInfo(sprintf('Going to attach %d listeners', count($server['configuration']['listeners'])));
+            if (!class_exists($class_name)) {
+                $server['monolog']->addError(sprintf('%s is not a valid classname', $class_name));
+                continue;
+            }
 
-            foreach ($server['configuration']['listeners'] as $listenerConf) {
-                $class_name = $listenerConf['type'];
+            if (!in_array('Gloubster\Server\Listener\JobListenerInterface', class_implements($class_name))) {
+                $server['monolog']->addError(sprintf('%s is not implementing JobListenerInterface', $class_name));
+                continue;
+            }
 
-                if (!class_exists($class_name)) {
-                    $server['monolog']->addError(sprintf('%s is not a valid classname', $class_name));
-                    continue;
-                }
+            try {
+                $listener = $class_name::create($server, $listenerConf['options']);
+            } catch (RuntimeException $e) {
+                $server['monolog']->addError(sprintf('Error while creating listener %s : %s', $listenerConf['type'], $e->getMessage()));
+                continue;
+            }
 
-                if (!in_array('Gloubster\Server\Listener\JobListenerInterface', class_implements($class_name))) {
-                    $server['monolog']->addError(sprintf('%s is not implementing JobListenerInterface', $class_name));
-                    continue;
-                }
+            $server['monolog']->addInfo(sprintf('Attaching listener %s', get_class($listener)));
 
-                try {
-                    $listener = $class_name::create($server, $listenerConf['options']);
-                } catch (RuntimeException $e) {
-                    $server['monolog']->addError(sprintf('Error while creating listener %s : %s', $listenerConf['type'], $e->getMessage()));
-                    continue;
-                }
+            $listener->on('message', function ($message) use ($server) {
+                $server['monolog']->addDebug(sprintf('Receiving message on %s', get_class($listener)));
+                $server->incomingMessage($message);
+            });
+            $listener->on('message', function ($error) use ($server) {
+                $server['monolog']->addError(sprintf('Receiving error message on %s', get_class($listener)));
+                $server->incomingError($error);
+            });
 
-                $server['monolog']->addInfo(sprintf('Attaching listener %s', get_class($listener)));
+            $this->listeners[] = $listener;
+        }
 
-                $listener->attach($server);
+        $component = $this;
+
+        $server['dispatcher']->on('stomp-connected', function (GloubsterServer $server, Client $stomp) use ($component) {
+            foreach ($component->listeners as $listener) {
+                $listener->listen();
+            }
+        });
+
+        $server['dispatcher']->on('stop', function ($server) use ($component) {
+            foreach ($component->listeners as $listener) {
+                $listener->shutdown();
             }
         });
     }

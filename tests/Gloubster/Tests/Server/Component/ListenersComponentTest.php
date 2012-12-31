@@ -2,6 +2,7 @@
 
 namespace Gloubster\Tests\Server\Component;
 
+use Evenement\EventEmitter;
 use Gloubster\Exception\RuntimeException;
 use Gloubster\Server\GloubsterServer;
 use Gloubster\Server\GloubsterServerInterface;
@@ -117,27 +118,41 @@ class ListenersComponentTest extends GloubsterTest
     }
 }
 
-class ListenerTester implements JobListenerInterface
+class ListenerTester extends EventEmitter implements JobListenerInterface
 {
-    public function attach(GloubsterServerInterface $server)
+    private $server;
+    public function __construct($server)
     {
-        $server['test-token'] = true;
+        $this->server = $server;
+    }
+    public function listen()
+    {
+        $this->server['test-token'] = true;
     }
 
-    public static function create(GloubsterServer $server, array $options)
+    public function shutdown()
+    {
+        $this->server['test-token'] = false;
+    }
+
+    public static function create(GloubsterServerInterface $server, array $options)
     {
         $server['created'] = $options;
-        return new static();
+        return new static($server);
     }
 }
 
-class ListenerFailTester implements JobListenerInterface
+class ListenerFailTester extends EventEmitter implements JobListenerInterface
 {
-    public function attach(GloubsterServerInterface $server)
+    public function listen()
     {
     }
 
-    public static function create(GloubsterServer $server, array $options)
+    public function shutdown()
+    {
+    }
+
+    public static function create(GloubsterServerInterface $server, array $options)
     {
         throw new RuntimeException('fails for test');
     }

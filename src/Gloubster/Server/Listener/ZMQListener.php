@@ -2,21 +2,25 @@
 
 namespace Gloubster\Server\Listener;
 
+use Evenement\EventEmitter;
 use Gloubster\Exception\InvalidArgumentException;
 use Gloubster\Server\GloubsterServerInterface;
-use Gloubster\Server\GloubsterServer;
 use Monolog\Logger;
-use React\EventLoop\LoopInterface;
 use React\ZMQ\Context;
 
-class ZMQListener implements JobListenerInterface
+class ZMQListener extends EventEmitter implements JobListenerInterface
 {
+    private $conf;
     private $context;
+    private $logger;
     private $pull;
+    private $bound = false;
 
     public function __construct(Context $context, Logger $logger, array $configuration)
     {
         $this->conf = $configuration;
+        $this->logger = $logger;
+
         if (!isset($configuration['transport'])) {
             throw new InvalidArgumentException('Missing configuration key `transport`');
         }
@@ -31,25 +35,48 @@ class ZMQListener implements JobListenerInterface
 
         $this->context = $context;
 
+        $listener = $this;
+
         $this->pull = $this->context->getSocket(\ZMQ::SOCKET_PULL, null);
-        $this->pull->bind(sprintf('%s://%s:%s', $configuration['transport'], $configuration['address'], $configuration['port']));
-
-        $logger->addInfo(sprintf('Listening for message on ZMQ protocol %s://%s:%s', $configuration['transport'], $configuration['address'], $configuration['port']));
+        $this->pull->on('error', function ($error) use ($listener) {
+            $listener->emit('error', array($error));
+        });
+        $this->pull->on('message', function ($message) use ($listener) {
+            $listener->emit('message', array($message));
+        });
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function attach(GloubsterServerInterface $server)
+    public function __destruct()
     {
-        $this->pull->on('error', array($server, 'incomingError'));
-        $this->pull->on('message', array($server, 'incomingMessage'));
+        if ($this->bound) {
+            $this->shutdown();
+        }
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function create(GloubsterServer $server, array $options)
+    public function listen()
+    {
+        $this->pull->bind(sprintf('%s://%s:%s', $this->conf['transport'], $this->conf['address'], $this->conf['port']));
+        $this->bound = true;
+        $this->logger->addInfo(sprintf('Listening for message on ZMQ protocol %s://%s:%s', $this->conf['transport'], $this->conf['address'], $this->conf['port']));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function shutdown()
+    {
+        $this->pull->unbind(sprintf('%s://%s:%s', $this->conf['transport'], $this->conf['address'], $this->conf['port']));
+        $this->bound = false;
+        $this->logger->addInfo(sprintf('Stops Listening on ZMQ protocol %s://%s:%s', $this->conf['transport'], $this->conf['address'], $this->conf['port']));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function create(GloubsterServerInterface $server, array $options)
     {
         return new static(new Context($server['loop']), $server['monolog'], $options);
     }

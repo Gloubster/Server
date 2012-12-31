@@ -2,23 +2,16 @@
 
 namespace Gloubster\Server\Listener;
 
+use Evenement\EventEmitterInterface;
 use Gloubster\Server\GloubsterServerInterface;
-use Gloubster\Server\GloubsterServer;
 
 /**
  * Gloubster Job listeners listen for Job is their on implementation.
  */
-interface JobListenerInterface
+interface JobListenerInterface extends EventEmitterInterface
 {
-    /**
-     * Attach the listener to a server. The listener can be bound to only one
-     * server at the same time.
-     *
-     * @param GloubsterServerInterface $server
-     *
-     * @return JobListenerInterface The listener
-     */
-    public function attach(GloubsterServerInterface $server);
+    public function listen();
+    public function shutdown();
 
     /**
      * Public method to create the listener
@@ -28,5 +21,5 @@ interface JobListenerInterface
      *
      * @return JobListenerInterface The new listener
      */
-    public static function create(GloubsterServer $server, array $options);
+    public static function create(GloubsterServerInterface $server, array $options);
 }

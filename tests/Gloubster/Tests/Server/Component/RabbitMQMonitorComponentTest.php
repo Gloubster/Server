@@ -36,6 +36,6 @@ class RabbitMQMonitorComponentTest extends GloubsterTest
 
         $server['dispatcher']->emit('redis-connected', array($server, $this->getPredisAsyncClient(), $this->getPredisAsyncConnection()));
         $server['dispatcher']->emit('stomp-connected', array($server, $server['stomp-client']));
-        $server['dispatcher']->emit('boot-connected', array($server));
+        $server['dispatcher']->emit('booted', array($server));
     }
 }

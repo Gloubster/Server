@@ -31,7 +31,7 @@
             "type": "Gloubster\\Server\\Listener\\ZMQListener",
             "options": {
                 "transport": "tcp",
-                "address": "0.0.0.0",
+                "address": "127.0.0.1",
                 "port": 22345
             }
         },
@@ -39,7 +39,7 @@
             "type": "Gloubster\\Server\\Listener\\HTTPListener",
             "options": {
                 "host": "0.0.0.0",
-                "port": 22345
+                "port": 8990
             }
         }
     ]

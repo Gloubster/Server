@@ -6,7 +6,7 @@
         "password": "guest",
         "vhost": "/",
         "server-management": {
-            "port": 55672,
+            "port": 15672,
             "scheme": "http"
         },
         "stomp-gateway": {
@@ -31,7 +31,7 @@
             "type": "Gloubster\\Server\\Listener\\ZMQListener",
             "options": {
                 "transport": "tcp",
-                "address": "0.0.0.0",
+                "address": "127.0.0.1",
                 "port": 22345
             }
         },

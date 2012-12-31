@@ -67,6 +67,7 @@ class HTTPListener extends EventEmitter implements JobListenerInterface
     public function shutdown()
     {
         $this->socket->shutdown();
+        $this->logger->addInfo(sprintf('Stop Listening on HTTP protocol %s:%s', $this->host, $this->port));
     }
 
     /**

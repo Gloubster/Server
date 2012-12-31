@@ -59,17 +59,7 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
             'eventloop' => $server['loop'],
         );
 
-        $this['dispatcher']->on('redis-connected', function () use ($server) {
-            $server['redis.started'] = true;
-            $server->probeAllSystems();
-        });
-
-        $this['dispatcher']->on('stomp-connected', function () use ($server) {
-            $server['stomp-client.started'] = true;
-            $server->probeAllSystems();
-        });
-
-        $this['dispatcher']->on('start', function () use ($server, $redisOptions) {
+        $this['dispatcher']->on('start', function ($server) use ($redisOptions) {
             $server['redis'] = new PredisClient(sprintf('tcp://%s:%s', $server['configuration']['redis-server']['host'], $server['configuration']['redis-server']['port']), $redisOptions);
             $server['redis']->connect(array($server, 'activateRedisServices'));
             $server['monolog']->addInfo('Connecting to Redis server...');
@@ -77,7 +67,7 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
 
         $this['websocket-application.socket'] = new Reactor($this['loop']);
 
-        $this['dispatcher']->on('start', function () use ($server) {
+        $this['dispatcher']->on('start', function ($server) {
             // Setup websocket server
             $server['websocket-application.socket']->listen($server['configuration']['websocket-server']['port'], $server['configuration']['websocket-server']['address']);
             $server['monolog']->addInfo(sprintf('Websocket Server listening on %s:%d', $server['configuration']['websocket-server']['address'], $server['configuration']['websocket-server']['port']));
@@ -90,7 +80,7 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
                    ), $server['websocket-application.socket'], $server['loop']);
         });
 
-        $this['dispatcher']->on('stop', function () use ($server) {
+        $this['dispatcher']->on('stop', function ($server) {
             $server['websocket-application.socket']->shutdown();
         });
     }

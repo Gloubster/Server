@@ -10,8 +10,20 @@ use Gloubster\Server\GloubsterServerInterface;
  */
 interface JobListenerInterface extends EventEmitterInterface
 {
+    /**
+     * Triggers the start of listening
+     */
     public function listen();
+
+    /**
+     * Triggers the end of listening
+     */
     public function shutdown();
+
+    /**
+     * Triggers the end of listening
+     */
+    public function acknowledge();
 
     /**
      * Public method to create the listener

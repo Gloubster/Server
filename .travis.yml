@@ -12,13 +12,13 @@ before_script:
   - sleep 3
   - wget http://download.zeromq.org/zeromq-3.2.2.tar.gz
   - tar xzvf zeromq-3.2.2.tar.gz
-  - sh -c "cd zeromq-3.2.2 && ./configure && sudo make install"
+  - sh -c "cd zeromq-3.2.2 && ./configure --prefix=/usr/local && sudo make install"
   - wget http://pecl.php.net/get/memcache-2.2.6.tgz
   - tar xzvf memcache-2.2.6.tgz
   - sh -c "cd memcache-2.2.6 && phpize && ./configure && make && sudo make install"
   - echo "extension=memcache.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
   - git clone https://github.com/mkoppanen/php-zmq.git
-  - sh -c "cd php-zmq && phpize && ./configure && make && sudo make install"
+  - sh -c "cd php-zmq && phpize && ./configure --with-zmq=/usr/local && make && sudo make install"
   - echo "extension=zmq.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
   - git clone --quiet https://github.com/nrk/phpiredis.git
   - sh -c "cd phpiredis && phpize && ./configure --enable-phpiredis --with-hiredis-dir=/usr/local && make --silent && sudo make install"

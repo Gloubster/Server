@@ -21,11 +21,6 @@ interface JobListenerInterface extends EventEmitterInterface
     public function shutdown();
 
     /**
-     * Triggers the end of listening
-     */
-    public function acknowledge();
-
-    /**
      * Public method to create the listener
      *
      * @param GloubsterServerInterface  $server  The gloubster server

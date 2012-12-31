@@ -92,7 +92,6 @@ Available events are :
  * Rewrite Redis / Stomp / Websocket as services
  * Event support for incoming message
  * Handle server stop correctly
- * Support for ctrl + c
 
 ## License
 

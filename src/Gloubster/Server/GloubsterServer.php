@@ -40,6 +40,10 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
     {
         $server = $this;
 
+        declare(ticks = 1);
+        pcntl_signal(SIGTERM, array($this, 'signalHandler'));
+        pcntl_signal(SIGINT, array($this, 'signalHandler'));
+
         $this['redis.started'] = $this['stomp-client.started'] = false;
         $this['loop'] = $loop;
         $this['configuration'] = $conf;
@@ -83,6 +87,12 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
         $this['dispatcher']->on('stop', function ($server) {
             $server['websocket-application.socket']->shutdown();
         });
+    }
+
+    public function signalHandler($signal)
+    {
+        $this['monolog']->addInfo('Caught Ctrl-C, stopping ...');
+        $this->stop();
     }
 
     /**

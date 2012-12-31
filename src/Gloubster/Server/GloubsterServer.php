@@ -86,6 +86,11 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
 
         $this['dispatcher']->on('stop', function ($server) {
             $server['websocket-application.socket']->shutdown();
+            $server['monolog']->addInfo('Websocket Server shutdown');
+            $server['stomp-client']->disconnect();
+            $server['monolog']->addInfo('STOMP Server shutdown');
+            $server['redis']->disconnect();
+            $server['monolog']->addInfo('Redis Server shutdown');
         });
     }
 

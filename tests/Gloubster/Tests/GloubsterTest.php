@@ -13,15 +13,12 @@ abstract class GloubsterTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $client = $this->getStompClient();
         $loop = $this->getEventLoop();
         $logger = $this->getLogger();
 
-        $conf = $this->getMockBuilder('Gloubster\\Configuration')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $conf = $this->getTestConfiguration();
 
-        return new GloubsterServer($ws, $client, $loop, $conf, $logger);
+        return new GloubsterServer($ws, $loop, $conf, $logger);
     }
 
     protected function getGloubsterServerMock()

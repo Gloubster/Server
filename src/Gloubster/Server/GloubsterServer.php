@@ -10,17 +10,15 @@ use Gloubster\Message\Factory as MessageFactory;
 use Gloubster\RabbitMQ\Configuration as RabbitMQConf;
 use Gloubster\Server\Component\ComponentInterface;
 use Gloubster\Server\Component\RedisComponent;
+use Gloubster\Server\Component\STOMPComponent;
 use Gloubster\Server\SessionHandler;
 use Monolog\Logger;
 use Ratchet\Server\IoServer;
 use Ratchet\WebSocket\WsServer;
 use Ratchet\Wamp\WampServer;
 use Ratchet\Session\SessionProvider;
-use React\Curry\Util as Curry;
-use React\Stomp\Client;
 use React\EventLoop\LoopInterface;
 use React\Socket\Server as Reactor;
-use React\Stomp\Factory as StompFactory;
 
 /**
  * @event start
@@ -34,7 +32,7 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
 {
     private $components = array();
 
-    public function __construct(WebsocketApplication $websocket, Client $client, LoopInterface $loop, Configuration $conf, Logger $logger)
+    public function __construct(WebsocketApplication $websocket, LoopInterface $loop, Configuration $conf, Logger $logger)
     {
         $server = $this;
 
@@ -42,17 +40,14 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
         pcntl_signal(SIGTERM, array($this, 'signalHandler'));
         pcntl_signal(SIGINT, array($this, 'signalHandler'));
 
-        $this['stomp-client.started'] = false;
         $this['loop'] = $loop;
         $this['configuration'] = $conf;
         $this['monolog'] = $logger;
         $this['websocket-application'] = $websocket;
-        $this['stomp-client'] = $client;
         $this['dispatcher'] = new EventEmitter();
 
         $this->register(new RedisComponent());
-
-        $this['stomp-client']->on('error', array($this, 'logError'));
+        $this->register(new STOMPComponent());
 
         $this['websocket-application.socket'] = new Reactor($this['loop']);
 
@@ -72,8 +67,6 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
         $this['dispatcher']->on('stop', function ($server) {
             $server['websocket-application.socket']->shutdown();
             $server['monolog']->addInfo('Websocket Server shutdown');
-            $server['stomp-client']->disconnect();
-            $server['monolog']->addInfo('STOMP Server shutdown');
         });
     }
 
@@ -103,35 +96,13 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
 
         $this['dispatcher']->emit('start', array($this));
 
-        $this['stomp-client']
-            ->connect()
-            ->then(
-                Curry::bind(array($this, 'activateStompServices')),
-                Curry::bind(array($this, 'throwError'))
-            );
-        $this['monolog']->addInfo('Connecting to STOMP Gateway...');
-
         $this['loop']->run();
     }
 
     public function stop()
     {
         $this['dispatcher']->emit('stop', array($this));
-
-        // remove stop listeners
-
         $this['loop']->stop();
-        $this['stomp-client.started'] = false;
-    }
-
-    public function activateStompServices(Client $stomp)
-    {
-        $this['monolog']->addInfo('Connected to STOMP Gateway !');
-
-        $this['dispatcher']->emit('stomp-connected', array($this, $stomp));
-
-        $this['stomp-client.started'] = true;
-        $this->probeAllSystems();
     }
 
     public function probeAllSystems()
@@ -193,17 +164,8 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
      */
     public static function create(LoopInterface $loop, Configuration $conf, Logger $logger)
     {
-        $factory = new StompFactory($loop);
-        $client = $factory->createClient(array(
-            'host'     => $conf['server']['host'],
-            'port'     => $conf['server']['stomp-gateway']['port'],
-            'user'     => $conf['server']['user'],
-            'passcode' => $conf['server']['password'],
-            'vhost'    => $conf['server']['vhost'],
-        ));
-
         $websocketApp = new WebsocketApplication($logger);
 
-        return new GloubsterServer($websocketApp, $client, $loop, $conf, $logger);
+        return new GloubsterServer($websocketApp, $loop, $conf, $logger);
     }
 }

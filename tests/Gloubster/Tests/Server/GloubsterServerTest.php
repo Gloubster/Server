@@ -36,23 +36,6 @@ class GloubsterServerTest extends GloubsterTest
     }
 
     /**
-     * @covers Gloubster\Server\GloubsterServer::activateStompServices
-     */
-    public function testActivateStompServices()
-    {
-        $component = new TestComponent();
-
-        $server = $this->getServer();
-        $server->register($component);
-
-        $server->activateStompServices($server['stomp-client']);
-
-        $this->assertTrue($component->registered);
-        $this->assertFalse($component->Redisregistered);
-        $this->assertTrue($component->STOMPregistered);
-    }
-
-    /**
      * @covers Gloubster\Server\GloubsterServer::run
      */
     public function testRun()
@@ -73,6 +56,7 @@ class GloubsterServerTest extends GloubsterTest
     public function testIncomingMessage()
     {
         $server = $this->getServer();
+        $server['stomp-client'] = $this->getStompClient();
 
         $message = ImageJob::create('/path/to/source', new DeliveryMock('cool-id'));
 
@@ -93,6 +77,7 @@ class GloubsterServerTest extends GloubsterTest
     public function testWrongIncomingMessage()
     {
         $server = $this->getServer();
+        $server['stomp-client'] = $this->getStompClient();
 
         $server['stomp-client']->expects($this->never())
             ->method('send');
@@ -114,6 +99,7 @@ class GloubsterServerTest extends GloubsterTest
     public function testWrongJsonMessage()
     {
         $server = $this->getServer();
+        $server['stomp-client'] = $this->getStompClient();
 
         $server['stomp-client']->expects($this->never())
             ->method('send');
@@ -135,6 +121,7 @@ class GloubsterServerTest extends GloubsterTest
     public function testNonJobMessage()
     {
         $server = $this->getServer();
+        $server['stomp-client'] = $this->getStompClient();
 
         $server['stomp-client']->expects($this->never())
             ->method('send');
@@ -159,6 +146,7 @@ class GloubsterServerTest extends GloubsterTest
     public function testIncomingMessageWithoutStompConnection()
     {
         $server = $this->getServer();
+        $server['stomp-client'] = $this->getStompClient();
 
         $message = ImageJob::create('/path/to/source', new DeliveryMock('cool-id'));
 

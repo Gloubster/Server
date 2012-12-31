@@ -43,6 +43,7 @@ class ZMQListener extends EventEmitter implements JobListenerInterface
         });
         $this->pull->on('message', function ($message) use ($listener, $pull) {
             $listener->emit('message', array($message));
+            $pull->send('{}');
         });
     }
 

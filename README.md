@@ -89,9 +89,6 @@ Available events are :
 ## Todo
 
  * Real web application
- * Rewrite Redis / Stomp / Websocket as services
- * Event support for incoming message
- * Handle server stop correctly
 
 ## License
 

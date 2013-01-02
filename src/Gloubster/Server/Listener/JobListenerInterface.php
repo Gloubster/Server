@@ -2,18 +2,25 @@
 
 namespace Gloubster\Server\Listener;
 
-use Evenement\EventEmitterInterface;
 use Gloubster\Server\GloubsterServerInterface;
+use Gloubster\Server\MessageHandler;
 
 /**
  * Gloubster Job listeners listen for Job is their on implementation.
  */
-interface JobListenerInterface extends EventEmitterInterface
+interface JobListenerInterface
 {
     /**
      * Triggers the start of listening
      */
     public function listen();
+
+    /**
+     * Attach the MessageHandler to the listener
+     *
+     * @param MessageHandler $handler
+     */
+    public function attach(MessageHandler $handler);
 
     /**
      * Triggers the end of listening

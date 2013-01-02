@@ -2,15 +2,17 @@
 
 namespace Gloubster\Server\Listener;
 
-use Evenement\EventEmitter;
 use Gloubster\Server\GloubsterServerInterface;
 use Gloubster\Exception\InvalidArgumentException;
 use Gloubster\Exception\RuntimeException;
+use Gloubster\Server\MessageHandler;
 use Monolog\Logger;
 use React\Http\Server;
 use React\Socket\Server as Reactor;
+use React\Http\Request;
+use React\Http\Response;
 
-class HTTPListener extends EventEmitter implements JobListenerInterface
+class HTTPListener implements JobListenerInterface
 {
     private $host;
     private $port;
@@ -25,25 +27,28 @@ class HTTPListener extends EventEmitter implements JobListenerInterface
         $this->socket = $socket;
         $this->logger = $logger;
         $this->server = $server;
+    }
 
-        $listener = $this;
-
-        $this->server->on('request', function ($request, $response) use ($listener) {
-            $response->writeHead(200);
-            $response->end();
-
+    /**
+     * {@inheritdoc}
+     */
+    public function attach(MessageHandler $handler)
+    {
+        $this->server->on('request', function (Request $request, Response $response) use ($handler) {
             $data = (object) array('message' => '');
 
             $request->on('data', function ($chunk) use ($data) {
                 $data->message .= $chunk;
             });
 
-            $request->on('end', function() use ($data, $listener) {
-                $listener->emit('message', array($data->message));
+            $request->on('end', function() use ($data, $handler, $response) {
+                $handler->receive($data->message);
+                $response->writeHead(200);
+                $response->end();
             });
 
-            $request->on('error', function ($error) use ($listener) {
-                $listener->emit('error', array($error));
+            $request->on('error', function ($error) use ($handler) {
+                $handler->error($error);
             });
         });
     }

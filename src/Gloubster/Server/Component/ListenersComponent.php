@@ -36,15 +36,7 @@ class ListenersComponent implements ComponentInterface
 
             $server['monolog']->addInfo(sprintf('Attaching listener %s', get_class($listener)));
 
-            $listener->on('message', function ($message) use ($server) {
-                $server['monolog']->addDebug(sprintf('Receiving message on %s', get_class($listener)));
-                $server['message-handler']->receive($message);
-            });
-            $listener->on('message', function ($error) use ($server) {
-                $server['monolog']->addError(sprintf('Receiving error message on %s', get_class($listener)));
-                $server['message-handler']->error($message);
-            });
-
+            $listener->attach($server['message-handler']);
             $this->listeners[] = $listener;
         }
 

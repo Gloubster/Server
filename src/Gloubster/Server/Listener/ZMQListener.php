@@ -2,13 +2,13 @@
 
 namespace Gloubster\Server\Listener;
 
-use Evenement\EventEmitter;
 use Gloubster\Exception\InvalidArgumentException;
 use Gloubster\Server\GloubsterServerInterface;
+use Gloubster\Server\MessageHandler;
 use Monolog\Logger;
 use React\ZMQ\Context;
 
-class ZMQListener extends EventEmitter implements JobListenerInterface
+class ZMQListener implements JobListenerInterface
 {
     private $conf;
     private $context;
@@ -34,15 +34,20 @@ class ZMQListener extends EventEmitter implements JobListenerInterface
         }
 
         $this->context = $context;
+        $this->pull = $this->context->getSocket(\ZMQ::SOCKET_REP, null);
+    }
 
-        $listener = $this;
-
-        $this->pull = $pull = $this->context->getSocket(\ZMQ::SOCKET_REP, null);
-        $this->pull->on('error', function ($error) use ($listener) {
-            $listener->emit('error', array($error));
+    /**
+     * {@inheritdoc}
+     */
+    public function attach(MessageHandler $handler)
+    {
+        $pull = $this->pull;
+        $this->pull->on('error', function ($error) use ($handler) {
+            $handler->error($error);
         });
-        $this->pull->on('message', function ($message) use ($listener, $pull) {
-            $listener->emit('message', array($message));
+        $this->pull->on('message', function ($message) use ($pull, $handler) {
+            $handler->receive($message);
             $pull->send('{}');
         });
     }

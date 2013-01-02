@@ -5,6 +5,7 @@ namespace Gloubster\Server;
 use Evenement\EventEmitter;
 use Gloubster\Configuration;
 use Gloubster\Server\Component\ComponentInterface;
+use Gloubster\Server\Component\MessageHandlerComponent;
 use Gloubster\Server\Component\RedisComponent;
 use Gloubster\Server\Component\STOMPComponent;
 use Gloubster\Server\Component\WebsocketServerComponent;
@@ -36,6 +37,7 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
 
         $this->register(new RedisComponent());
         $this->register(new STOMPComponent());
+        $this->register(new MessageHandlerComponent());
         $this->register(new WebsocketServerComponent());
     }
 

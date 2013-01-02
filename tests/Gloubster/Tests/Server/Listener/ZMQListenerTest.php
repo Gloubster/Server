@@ -94,16 +94,16 @@ class ZMQListenerTest extends GloubsterTest
             ->method('getSocket')
             ->will($this->returnvalue($socket));
 
+        $handler = $this->getMessageHandlerMock();
+        $handler->expects($this->once())
+            ->method('receive')
+            ->with($this->equalTo('GOOD MESSAGE'));
+
         $listener = new ZMQListener($context, $this->getLogger(), $conf);
+        $listener->attach($handler);
         $listener->listen();
 
-        $listener->on('message', function ($message) use (&$catchMessage) {
-            $catchMessage = $message;
-        });
-
         $socket->emit('message', array('GOOD MESSAGE'));
-
-        $this->assertEquals('GOOD MESSAGE', $catchMessage);
     }
 
     /** @test */
@@ -130,6 +130,7 @@ class ZMQListenerTest extends GloubsterTest
             ->will($this->returnvalue($socket));
 
         $listener = new ZMQListener($context, $this->getLogger(), $conf);
+        $listener->attach($this->getMessageHandlerMock());
         $listener->shutdown();
     }
 
@@ -158,16 +159,16 @@ class ZMQListenerTest extends GloubsterTest
             ->method('getSocket')
             ->will($this->returnvalue($socket));
 
+        $handler = $this->getMessageHandlerMock();
+        $handler->expects($this->once())
+            ->method('error')
+            ->with($this->equalTo($exception));
+
         $listener = new ZMQListener($context, $this->getLogger(), $conf);
+        $listener->attach($handler);
         $listener->listen();
 
-        $listener->on('error', function ($error) use (&$catchError) {
-            $catchError = $error;
-        });
-
         $socket->emit('error', array($exception));
-
-        $this->assertEquals($exception, $catchError);
     }
 
     /**

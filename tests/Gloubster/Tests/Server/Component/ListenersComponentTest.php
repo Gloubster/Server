@@ -4,7 +4,7 @@ namespace Gloubster\Tests\Server\Component;
 
 use Evenement\EventEmitter;
 use Gloubster\Exception\RuntimeException;
-use Gloubster\Server\GloubsterServer;
+use Gloubster\Server\MessageHandler;
 use Gloubster\Server\GloubsterServerInterface;
 use Gloubster\Server\Component\ListenersComponent;
 use Gloubster\Server\Listener\JobListenerInterface;
@@ -125,6 +125,10 @@ class ListenerTester extends EventEmitter implements JobListenerInterface
         $this->server['test-token'] = true;
     }
 
+    public function attach(MessageHandler $handler)
+    {
+    }
+
     public function shutdown()
     {
         $this->server['test-token'] = false;
@@ -144,6 +148,10 @@ class ListenerFailTester extends EventEmitter implements JobListenerInterface
     }
 
     public function shutdown()
+    {
+    }
+
+    public function attach(MessageHandler $handler)
     {
     }
 

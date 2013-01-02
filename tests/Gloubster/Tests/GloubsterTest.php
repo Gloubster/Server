@@ -91,4 +91,11 @@ abstract class GloubsterTest extends \PHPUnit_Framework_TestCase
 
         $this->markTestSkipped('Neither memcache or memcached extension are present, unable to use the SessionHandler');
     }
+
+    protected function getMessageHandlerMock()
+    {
+        return $this->getMockBuilder('Gloubster\\Server\\MessageHandler')
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
 }

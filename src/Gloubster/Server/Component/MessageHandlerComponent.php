@@ -10,8 +10,8 @@ class MessageHandlerComponent implements ComponentInterface
 {
     public function register(GloubsterServerInterface $server)
     {
-        $server['dispatcher']->on('stomp-connected', function (GloubsterServerInterface $server, Client $stomp) {
-            $server['message-handler'] = new MessageHandler($stomp, $server['monolog']);
+        $server['message-handler'] = $server->share(function ($server) {
+            return new MessageHandler($server['stomp-client'], $server['monolog']);
         });
     }
 }

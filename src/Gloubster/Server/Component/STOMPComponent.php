@@ -2,6 +2,7 @@
 
 namespace Gloubster\Server\Component;
 
+use Gloubster\Server\GloubsterServer;
 use Gloubster\Server\GloubsterServerInterface;
 use React\Stomp\Client;
 use React\Curry\Util as Curry;
@@ -16,14 +17,18 @@ class STOMPComponent implements ComponentInterface
     {
         $server['stomp-client.started'] = false;
 
-        $factory = new StompFactory($server['loop']);
-        $server['stomp-client'] = $factory->createClient(array(
-            'host'     => $server['configuration']['server']['host'],
-            'port'     => $server['configuration']['server']['stomp-gateway']['port'],
-            'user'     => $server['configuration']['server']['user'],
-            'passcode' => $server['configuration']['server']['password'],
-            'vhost'    => $server['configuration']['server']['vhost'],
-        ));
+        $server['stomp-client'] = $server->share(function (GloubsterServer $server) {
+            $factory = new StompFactory($server['loop']);
+
+            return $factory->createClient(array(
+                'host'     => $server['configuration']['server']['host'],
+                'port'     => $server['configuration']['server']['stomp-gateway']['port'],
+                'user'     => $server['configuration']['server']['user'],
+                'passcode' => $server['configuration']['server']['password'],
+                'vhost'    => $server['configuration']['server']['vhost'],
+            ));
+        });
+
 
         $server['dispatcher']->on('stop', function ($server) {
             $server['stomp-client']->disconnect();

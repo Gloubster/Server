@@ -16,13 +16,8 @@ class STOMPComponentTest extends GloubsterTest
     {
         $server = $this->getServer();
         $server['loop'] = LoopFactory::create();
-        $server->register(new STOMPComponent());
 
         $server['dispatcher']->on('stomp-connected', function () use ($server) {
-            $server->stop();
-        });
-
-        $server['loop']->addTimer(15, function () use ($server) {
             $server->stop();
         });
 

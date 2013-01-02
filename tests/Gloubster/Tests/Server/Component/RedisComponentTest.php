@@ -17,9 +17,14 @@ class RedisComponentTest extends GloubsterTest
         $server = $this->getServer();
 
         $server['loop'] = LoopFactory::create();
+        $phpunit = $this;
 
-        $server['dispatcher']->on('redis-connected', function () use ($server) {
+        $server['dispatcher']->on('redis-connected', function ($server, $client, $conn) use ($phpunit) {
             $server->stop();
+
+            $phpunit->assertInstanceOf('Gloubster\\Server\\GloubsterServerInterface', $server);
+            $phpunit->assertInstanceOf('Predis\\Async\\Client', $client);
+            $phpunit->assertInstanceOf('Predis\\Async\\Connection\\ConnectionInterface', $conn);
         });
 
         $server->run();

@@ -17,8 +17,13 @@ class STOMPComponentTest extends GloubsterTest
         $server = $this->getServer();
         $server['loop'] = LoopFactory::create();
 
-        $server['dispatcher']->on('stomp-connected', function () use ($server) {
+        $phpunit = $this;
+
+        $server['dispatcher']->on('stomp-connected', function ($server, $client) use ($phpunit) {
             $server->stop();
+
+            $phpunit->assertInstanceOf('Gloubster\\Server\\GloubsterServerInterface', $server);
+            $phpunit->assertInstanceOf('React\\Stomp\\Client', $client);
         });
 
         $server->run();

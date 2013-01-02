@@ -27,20 +27,6 @@ interface GloubsterServerInterface extends \ArrayAccess
     public function stop();
 
     /**
-     * One of the listeners had received a message
-     *
-     * @param type $message
-     */
-    public function incomingMessage($message);
-
-    /**
-     * One of the listeners had received a wrong message
-     *
-     * @param \Exception $error
-     */
-    public function incomingError(\Exception $error);
-
-    /**
      * GloubsterServer builder
      *
      * @param LoopInterface $loop The event loop object

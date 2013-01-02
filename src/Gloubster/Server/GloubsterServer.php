@@ -4,10 +4,6 @@ namespace Gloubster\Server;
 
 use Evenement\EventEmitter;
 use Gloubster\Configuration;
-use Gloubster\Exception\RuntimeException;
-use Gloubster\Message\Job\JobInterface;
-use Gloubster\Message\Factory as MessageFactory;
-use Gloubster\RabbitMQ\Configuration as RabbitMQConf;
 use Gloubster\Server\Component\ComponentInterface;
 use Gloubster\Server\Component\RedisComponent;
 use Gloubster\Server\Component\STOMPComponent;
@@ -84,41 +80,6 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
             $this['monolog']->addInfo('All services loaded, server now running');
             $this['dispatcher']->emit('booted', array($this));
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function incomingMessage($message)
-    {
-        $data = null;
-
-        try {
-            $data = MessageFactory::fromJson($message);
-        } catch (RuntimeException $e) {
-            $this['monolog']->addError(sprintf('Trying to sumbit a non-job message, got error %s with message %s', $e->getMessage(), $message));
-            return;
-        }
-
-        if (!$data instanceof JobInterface) {
-            $this['monolog']->addError(sprintf('Trying to sumbit a non-job message : %s', $message));
-            return;
-        }
-
-        if (!$this['stomp-client']->isConnected()) {
-            $this['monolog']->addError(sprintf('STOMP server not yet connected'));
-            return;
-        }
-
-        $this['stomp-client']->send(sprintf('/exchange/%s', RabbitMQConf::EXCHANGE_DISPATCHER), $data->toJson());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function incomingError(\Exception $error)
-    {
-        $this->logError($error);
     }
 
     public function logError(\Exception $error)

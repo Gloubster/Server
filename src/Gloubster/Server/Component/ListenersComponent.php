@@ -38,11 +38,11 @@ class ListenersComponent implements ComponentInterface
 
             $listener->on('message', function ($message) use ($server) {
                 $server['monolog']->addDebug(sprintf('Receiving message on %s', get_class($listener)));
-                $server->incomingMessage($message);
+                $server['message-handler']->receive($message);
             });
             $listener->on('message', function ($error) use ($server) {
                 $server['monolog']->addError(sprintf('Receiving error message on %s', get_class($listener)));
-                $server->incomingError($error);
+                $server['message-handler']->error($message);
             });
 
             $this->listeners[] = $listener;

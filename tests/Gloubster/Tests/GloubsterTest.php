@@ -9,16 +9,12 @@ abstract class GloubsterTest extends \PHPUnit_Framework_TestCase
 {
     protected function getServer()
     {
-        $ws = $this->getMockBuilder('Gloubster\\Server\\WebsocketApplication')
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $loop = $this->getEventLoop();
         $logger = $this->getLogger();
 
         $conf = $this->getTestConfiguration();
 
-        return new GloubsterServer($ws, $loop, $conf, $logger);
+        return new GloubsterServer($loop, $conf, $logger);
     }
 
     protected function getGloubsterServerMock()

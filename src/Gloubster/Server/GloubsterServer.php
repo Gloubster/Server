@@ -11,14 +11,9 @@ use Gloubster\RabbitMQ\Configuration as RabbitMQConf;
 use Gloubster\Server\Component\ComponentInterface;
 use Gloubster\Server\Component\RedisComponent;
 use Gloubster\Server\Component\STOMPComponent;
-use Gloubster\Server\SessionHandler;
+use Gloubster\Server\Component\WebsocketServerComponent;
 use Monolog\Logger;
-use Ratchet\Server\IoServer;
-use Ratchet\WebSocket\WsServer;
-use Ratchet\Wamp\WampServer;
-use Ratchet\Session\SessionProvider;
 use React\EventLoop\LoopInterface;
-use React\Socket\Server as Reactor;
 
 /**
  * @event start
@@ -32,10 +27,8 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
 {
     private $components = array();
 
-    public function __construct(WebsocketApplication $websocket, LoopInterface $loop, Configuration $conf, Logger $logger)
+    public function __construct(LoopInterface $loop, Configuration $conf, Logger $logger)
     {
-        $server = $this;
-
         declare(ticks = 1);
         pcntl_signal(SIGTERM, array($this, 'signalHandler'));
         pcntl_signal(SIGINT, array($this, 'signalHandler'));
@@ -43,31 +36,11 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
         $this['loop'] = $loop;
         $this['configuration'] = $conf;
         $this['monolog'] = $logger;
-        $this['websocket-application'] = $websocket;
         $this['dispatcher'] = new EventEmitter();
 
         $this->register(new RedisComponent());
         $this->register(new STOMPComponent());
-
-        $this['websocket-application.socket'] = new Reactor($this['loop']);
-
-        $this['dispatcher']->on('start', function ($server) {
-            // Setup websocket server
-            $server['websocket-application.socket']->listen($server['configuration']['websocket-server']['port'], $server['configuration']['websocket-server']['address']);
-            $server['monolog']->addInfo(sprintf('Websocket Server listening on %s:%d', $server['configuration']['websocket-server']['address'], $server['configuration']['websocket-server']['port']));
-
-            $server = new IoServer(new WsServer(
-                           new SessionProvider(
-                               new WampServer($server['websocket-application']),
-                               SessionHandler::factory($server['configuration'])
-                           )
-                   ), $server['websocket-application.socket'], $server['loop']);
-        });
-
-        $this['dispatcher']->on('stop', function ($server) {
-            $server['websocket-application.socket']->shutdown();
-            $server['monolog']->addInfo('Websocket Server shutdown');
-        });
+        $this->register(new WebsocketServerComponent());
     }
 
     public function signalHandler($signal)
@@ -164,8 +137,6 @@ class GloubsterServer extends \Pimple implements GloubsterServerInterface
      */
     public static function create(LoopInterface $loop, Configuration $conf, Logger $logger)
     {
-        $websocketApp = new WebsocketApplication($logger);
-
-        return new GloubsterServer($websocketApp, $loop, $conf, $logger);
+        return new GloubsterServer($loop, $conf, $logger);
     }
 }

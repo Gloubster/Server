@@ -2,6 +2,7 @@
 
 namespace Gloubster\Tests\Server\Listener;
 
+use Gloubster\Message\Factory as MessageFactory;
 use Gloubster\Server\Listener\HTTPListener;
 use Gloubster\Tests\GloubsterTest;
 use React\Http\Server as HttpServer;
@@ -65,7 +66,8 @@ class HTTPListenerTest extends GloubsterTest
         $handler = $this->getMessageHandlerMock();
         $handler->expects($this->once())
             ->method('receive')
-            ->with($this->equalTo('GOOD MESSAGE'));
+            ->with($this->equalTo('WRONG MESSAGE'))
+            ->will($this->returnValue(false));
 
         $httpListener = new HTTPListener($server, $reactor, $this->getLogger());
         $httpListener->attach($handler);
@@ -73,6 +75,55 @@ class HTTPListenerTest extends GloubsterTest
 
         $request = new HttpRequest('GET', '/');
         $response = $this->getReactHttpResponseMock();
+
+        $phpunit = $this;
+        $catch = false;
+
+        $response->expects($this->once())
+            ->method('write')
+            ->will($this->returnCallback(function($json) use ($phpunit, &$catch){
+                $catch = true;
+                $ack = MessageFactory::fromJson($json);
+                $phpunit->assertInstanceOf('Gloubster\\Message\\Acknowledgement\\JobNotAcknowledgement', $ack);
+            }));
+
+        $server->emit('request', array($request, $response));
+
+        $request->emit('data', array('WRONG ME'));
+        $request->emit('data', array('SSAGE'));
+
+        $request->emit('end', array());
+    }
+
+    /** @test */
+    public function requestsShouldTriggersGloubsterCallbacksWithAGoodJob()
+    {
+        $reactor = $this->getReactSocketServerMock();
+        $server = new HttpServer($reactor);
+
+        $handler = $this->getMessageHandlerMock();
+        $handler->expects($this->once())
+            ->method('receive')
+            ->with($this->equalTo('GOOD MESSAGE'))
+            ->will($this->returnValue(true));
+
+        $httpListener = new HTTPListener($server, $reactor, $this->getLogger());
+        $httpListener->attach($handler);
+        $httpListener->listen();
+
+        $request = new HttpRequest('GET', '/');
+        $response = $this->getReactHttpResponseMock();
+
+        $phpunit = $this;
+        $catch = false;
+
+        $response->expects($this->once())
+            ->method('write')
+            ->will($this->returnCallback(function($json) use ($phpunit, &$catch){
+                $catch = true;
+                $ack = MessageFactory::fromJson($json);
+                $phpunit->assertInstanceOf('Gloubster\\Message\\Acknowledgement\\JobAcknowledgement', $ack);
+            }));
 
         $server->emit('request', array($request, $response));
 

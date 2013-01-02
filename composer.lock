@@ -283,12 +283,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Gloubster/Communications",
-                "reference": "b48dd7462e891d3725de26a9e1ebe69c1063ab78"
+                "reference": "eb2c0b1b8934cd4c8e38193e9e70fe51bd83f812"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/Gloubster/Communications/archive/b48dd7462e891d3725de26a9e1ebe69c1063ab78.zip",
-                "reference": "b48dd7462e891d3725de26a9e1ebe69c1063ab78",
+                "url": "https://github.com/Gloubster/Communications/archive/eb2c0b1b8934cd4c8e38193e9e70fe51bd83f812.zip",
+                "reference": "eb2c0b1b8934cd4c8e38193e9e70fe51bd83f812",
                 "shasum": ""
             },
             "require": {
@@ -300,7 +300,7 @@
                 "symfony/finder": ">=2.0,<=2.2.x-dev",
                 "symfony/filesystem": ">=2.0,<=2.2.x-dev"
             },
-            "time": "2012-12-27 15:22:40",
+            "time": "2013-01-02 17:39:03",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -326,12 +326,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle",
-                "reference": "4988475a013cf5468b305f0749128aeab74f1ba7"
+                "reference": "a2e051ce52ae527cc352c324fe220390460166fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/guzzle/guzzle/archive/4988475a013cf5468b305f0749128aeab74f1ba7.zip",
-                "reference": "4988475a013cf5468b305f0749128aeab74f1ba7",
+                "url": "https://github.com/guzzle/guzzle/archive/a2e051ce52ae527cc352c324fe220390460166fd.zip",
+                "reference": "a2e051ce52ae527cc352c324fe220390460166fd",
                 "shasum": ""
             },
             "require": {
@@ -378,7 +378,7 @@
                 "zend/zend-cache": "2.0.0beta3",
                 "zend/zend-log": "2.0.0beta3"
             },
-            "time": "2012-12-30 17:10:36",
+            "time": "2012-12-31 05:22:54",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -481,12 +481,12 @@
             "source": {
                 "type": "git",
                 "url": "http://github.com/kriswallsmith/assetic.git",
-                "reference": "8ca1861fbed58e2c6ffcca5c0a1726c40a10a77c"
+                "reference": "054ff76c4cc812c5a5d7e36af6d076ee8294ab7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/kriswallsmith/assetic/archive/8ca1861fbed58e2c6ffcca5c0a1726c40a10a77c.zip",
-                "reference": "8ca1861fbed58e2c6ffcca5c0a1726c40a10a77c",
+                "url": "https://github.com/kriswallsmith/assetic/archive/054ff76c4cc812c5a5d7e36af6d076ee8294ab7e.zip",
+                "reference": "054ff76c4cc812c5a5d7e36af6d076ee8294ab7e",
                 "shasum": ""
             },
             "require": {
@@ -507,7 +507,7 @@
                 "ptachoire/cssembed": "Assetic provides the integration with phpcssembed to embed data uris",
                 "leafo/scssphp-compass": "Assetic provides the integration with the SCSS compass plugin"
             },
-            "time": "2012-12-14 18:31:26",
+            "time": "2013-01-02 10:14:46",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -709,12 +709,12 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/nrk/predis.git",
-                "reference": "f8cbbc5b8f8322ea6ecbb4986c8f0060034f863d"
+                "reference": "70b279bbdc2136d82357f17cb6605a57bd1c259a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/nrk/predis/archive/f8cbbc5b8f8322ea6ecbb4986c8f0060034f863d.zip",
-                "reference": "f8cbbc5b8f8322ea6ecbb4986c8f0060034f863d",
+                "url": "https://github.com/nrk/predis/archive/70b279bbdc2136d82357f17cb6605a57bd1c259a.zip",
+                "reference": "70b279bbdc2136d82357f17cb6605a57bd1c259a",
                 "shasum": ""
             },
             "require": {
@@ -724,7 +724,7 @@
                 "ext-phpiredis": "Allows faster serialization and deserialization of the Redis protocol",
                 "ext-curl": "Allows access to Webdis when paired with phpiredis"
             },
-            "time": "2012-12-28 19:51:34",
+            "time": "2013-01-01 12:58:18",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -757,12 +757,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nrk/predis-async",
-                "reference": "cc4a306697f1551299805271342ae0c409a82be9"
+                "reference": "3babb025d26bddc3863f58df8c9f487b82b5fedd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/nrk/predis-async/archive/cc4a306697f1551299805271342ae0c409a82be9.zip",
-                "reference": "cc4a306697f1551299805271342ae0c409a82be9",
+                "url": "https://github.com/nrk/predis-async/archive/3babb025d26bddc3863f58df8c9f487b82b5fedd.zip",
+                "reference": "3babb025d26bddc3863f58df8c9f487b82b5fedd",
                 "shasum": ""
             },
             "require": {
@@ -771,7 +771,7 @@
                 "react/event-loop": "0.2.*",
                 "predis/predis": "0.8.*"
             },
-            "time": "2012-12-28 19:45:52",
+            "time": "2013-01-01 13:00:49",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -804,18 +804,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/curry",
-                "reference": "c4576b5b4ea268f12f03082ffcaf1da1420b868e"
+                "reference": "4ccca5d46a09a9c5c80825f4f5baff18a7a6c176"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/reactphp/curry/archive/c4576b5b4ea268f12f03082ffcaf1da1420b868e.zip",
-                "reference": "c4576b5b4ea268f12f03082ffcaf1da1420b868e",
+                "url": "https://github.com/reactphp/curry/archive/4ccca5d46a09a9c5c80825f4f5baff18a7a6c176.zip",
+                "reference": "4ccca5d46a09a9c5c80825f4f5baff18a7a6c176",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2"
             },
-            "time": "2012-12-29 17:02:18",
+            "time": "2013-01-02 17:07:33",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1035,12 +1035,12 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/fabpot/Silex.git",
-                "reference": "e12731955739fc1a27d424bd76523acc3fdd6a84"
+                "reference": "a3a2bb63bb742123a0f57797566e6259443fd53e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/fabpot/Silex/archive/e12731955739fc1a27d424bd76523acc3fdd6a84.zip",
-                "reference": "e12731955739fc1a27d424bd76523acc3fdd6a84",
+                "url": "https://github.com/fabpot/Silex/archive/a3a2bb63bb742123a0f57797566e6259443fd53e.zip",
+                "reference": "a3a2bb63bb742123a0f57797566e6259443fd53e",
                 "shasum": ""
             },
             "require": {
@@ -1075,7 +1075,7 @@
                 "symfony/css-selector": ">=2.1,<2.3-dev",
                 "symfony/dom-crawler": ">=2.1,<2.3-dev"
             },
-            "time": "2012-12-30 15:36:44",
+            "time": "2013-01-02 15:49:55",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1252,18 +1252,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpFoundation",
-                "reference": "v2.1.6"
+                "reference": "4dca2c4e4dfca50126ab8099a1db2a76bd48569e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/HttpFoundation/archive/v2.1.6.zip",
-                "reference": "v2.1.6",
+                "url": "https://github.com/symfony/HttpFoundation/archive/4dca2c4e4dfca50126ab8099a1db2a76bd48569e.zip",
+                "reference": "4dca2c4e4dfca50126ab8099a1db2a76bd48569e",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "2012-12-14 21:03:29",
+            "time": "2013-01-02 13:34:47",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -1465,18 +1465,18 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/fabpot/Twig.git",
-                "reference": "10cdd2f5928dd47a52f58b9b6774e214eb8e38a8"
+                "reference": "037b5be972bd64900a6a287ee56661782090ca00"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/fabpot/Twig/archive/10cdd2f5928dd47a52f58b9b6774e214eb8e38a8.zip",
-                "reference": "10cdd2f5928dd47a52f58b9b6774e214eb8e38a8",
+                "url": "https://github.com/fabpot/Twig/archive/037b5be972bd64900a6a287ee56661782090ca00.zip",
+                "reference": "037b5be972bd64900a6a287ee56661782090ca00",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.4"
             },
-            "time": "2012-12-30 16:18:01",
+            "time": "2013-01-02 16:15:41",
             "type": "library",
             "extra": {
                 "branch-alias": {

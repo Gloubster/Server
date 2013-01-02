@@ -2,9 +2,11 @@
 
 namespace Gloubster\Server\Listener;
 
-use Gloubster\Server\GloubsterServerInterface;
+use Gloubster\Message\Acknowledgement\JobAcknowledgement;
+use Gloubster\Message\Acknowledgement\JobNotAcknowledgement;
 use Gloubster\Exception\InvalidArgumentException;
 use Gloubster\Exception\RuntimeException;
+use Gloubster\Server\GloubsterServerInterface;
 use Gloubster\Server\MessageHandler;
 use Monolog\Logger;
 use React\Http\Server;
@@ -42,8 +44,22 @@ class HTTPListener implements JobListenerInterface
             });
 
             $request->on('end', function() use ($data, $handler, $response) {
-                $handler->receive($data->message);
-                $response->writeHead(200);
+
+                if ($handler->receive($data->message)) {
+                    $ack = new JobAcknowledgement();
+                    $ack->setCreatedOn(new \DateTime());
+                } else {
+                    $ack = new JobNotAcknowledgement();
+                    $ack->setCreatedOn(new \DateTime());
+                    $ack->setReason('Job as been refused');
+                }
+
+                $json = $ack->toJson();
+                $response->writeHead(200, array(
+                    'Content-type'   => 'application/json; charset=utf-8',
+                    'Content-length' => strlen($json),
+                ));
+                $response->write($json);
                 $response->end();
             });
 

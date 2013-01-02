@@ -2,6 +2,8 @@
 
 namespace Gloubster\Server\Listener;
 
+use Gloubster\Message\Acknowledgement\JobAcknowledgement;
+use Gloubster\Message\Acknowledgement\JobNotAcknowledgement;
 use Gloubster\Exception\InvalidArgumentException;
 use Gloubster\Server\GloubsterServerInterface;
 use Gloubster\Server\MessageHandler;
@@ -47,8 +49,16 @@ class ZMQListener implements JobListenerInterface
             $handler->error($error);
         });
         $this->pull->on('message', function ($message) use ($pull, $handler) {
-            $handler->receive($message);
-            $pull->send('{}');
+            if ($handler->receive($message)) {
+                $ack = new JobAcknowledgement();
+                $ack->setCreatedOn(new \DateTime());
+            } else {
+                $ack = new JobNotAcknowledgement();
+                $ack->setCreatedOn(new \DateTime());
+                $ack->setReason('Job as been refused');
+            }
+
+            $pull->send($ack->toJson());
         });
     }
 

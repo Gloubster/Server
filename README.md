@@ -88,6 +88,7 @@ Available events are :
 
 ## Todo
 
+ * Add priority
  * Real web application
 
 ## License

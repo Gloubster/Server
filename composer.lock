@@ -1,5 +1,5 @@
 {
-    "hash": "e264bac205849606aceb793b149ccffb",
+    "hash": "494bb4101853550775a4a9975ec02988",
     "packages": [
         {
             "name": "alchemy/rabbitmq-management-client",
@@ -55,60 +55,6 @@
                 "api",
                 "rabbitmq",
                 "management"
-            ]
-        },
-        {
-            "name": "aws/aws-sdk-php",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/aws/aws-sdk-php",
-                "reference": "7c5977b6cb93e52bb5cbc98b205c0793a9308bd7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/aws/aws-sdk-php/archive/7c5977b6cb93e52bb5cbc98b205c0793a9308bd7.zip",
-                "reference": "7c5977b6cb93e52bb5cbc98b205c0793a9308bd7",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.2",
-                "guzzle/guzzle": "3.0.*"
-            },
-            "require-dev": {
-                "symfony/class-loader": "2.*",
-                "doctrine/common": "2.3.*",
-                "monolog/monolog": "1.2.*",
-                "ext-apc": "*",
-                "phpunit/phpunit": "3.7.*"
-            },
-            "time": "2012-12-26 16:49:08",
-            "type": "library",
-            "installation-source": "source",
-            "autoload": {
-                "psr-0": {
-                    "Aws": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Amazon Web Services",
-                    "homepage": "http://aws.amazon.com"
-                }
-            ],
-            "description": "AWS SDK for PHP",
-            "homepage": "http://aws.amazon.com/sdkforphp2",
-            "keywords": [
-                "amazon",
-                "s3",
-                "sdk",
-                "aws",
-                "dynamodb",
-                "ec2"
             ]
         },
         {
@@ -283,24 +229,26 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Gloubster/Communications",
-                "reference": "eb2c0b1b8934cd4c8e38193e9e70fe51bd83f812"
+                "reference": "db2812d144ebaa0970918de099d1e795e7d70fa5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/Gloubster/Communications/archive/eb2c0b1b8934cd4c8e38193e9e70fe51bd83f812.zip",
-                "reference": "eb2c0b1b8934cd4c8e38193e9e70fe51bd83f812",
+                "url": "https://github.com/Gloubster/Communications/archive/db2812d144ebaa0970918de099d1e795e7d70fa5.zip",
+                "reference": "db2812d144ebaa0970918de099d1e795e7d70fa5",
                 "shasum": ""
             },
             "require": {
-                "justinrainbow/json-schema": "*",
-                "videlalvaro/php-amqplib": "dev-master",
-                "aws/aws-sdk-php": "dev-master"
+                "justinrainbow/json-schema": "*"
             },
             "require-dev": {
                 "symfony/finder": ">=2.0,<=2.2.x-dev",
-                "symfony/filesystem": ">=2.0,<=2.2.x-dev"
+                "symfony/filesystem": ">=2.0,<=2.2.x-dev",
+                "aws/aws-sdk-php": "2.0.*"
             },
-            "time": "2013-01-02 17:39:03",
+            "suggest": {
+                "aws/aws-sdk-php": "Amazon SDK library to enable AmazonS3 delivery"
+            },
+            "time": "2013-01-04 14:02:20",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -804,18 +752,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/curry",
-                "reference": "4ccca5d46a09a9c5c80825f4f5baff18a7a6c176"
+                "reference": "v1.1.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/reactphp/curry/archive/4ccca5d46a09a9c5c80825f4f5baff18a7a6c176.zip",
-                "reference": "4ccca5d46a09a9c5c80825f4f5baff18a7a6c176",
+                "url": "https://github.com/reactphp/curry/archive/v1.1.0.zip",
+                "reference": "v1.1.0",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2"
             },
-            "time": "2013-01-02 17:07:33",
+            "time": "2013-01-03 21:21:54",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -826,7 +774,10 @@
             "autoload": {
                 "psr-0": {
                     "React\\Curry": "src"
-                }
+                },
+                "files": [
+                    "src/React/Curry/functions.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -1035,12 +986,12 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/fabpot/Silex.git",
-                "reference": "a3a2bb63bb742123a0f57797566e6259443fd53e"
+                "reference": "6c442081a2a0dbebb5cc04d1bf6404da8dca1897"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/fabpot/Silex/archive/a3a2bb63bb742123a0f57797566e6259443fd53e.zip",
-                "reference": "a3a2bb63bb742123a0f57797566e6259443fd53e",
+                "url": "https://github.com/fabpot/Silex/archive/6c442081a2a0dbebb5cc04d1bf6404da8dca1897.zip",
+                "reference": "6c442081a2a0dbebb5cc04d1bf6404da8dca1897",
                 "shasum": ""
             },
             "require": {
@@ -1075,7 +1026,7 @@
                 "symfony/css-selector": ">=2.1,<2.3-dev",
                 "symfony/dom-crawler": ">=2.1,<2.3-dev"
             },
-            "time": "2013-01-02 15:49:55",
+            "time": "2013-01-03 17:40:36",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1252,18 +1203,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpFoundation",
-                "reference": "4dca2c4e4dfca50126ab8099a1db2a76bd48569e"
+                "reference": "2dad2558f9c76857d12b5a299a3e46d1c903d796"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/HttpFoundation/archive/4dca2c4e4dfca50126ab8099a1db2a76bd48569e.zip",
-                "reference": "4dca2c4e4dfca50126ab8099a1db2a76bd48569e",
+                "url": "https://github.com/symfony/HttpFoundation/archive/2dad2558f9c76857d12b5a299a3e46d1c903d796.zip",
+                "reference": "2dad2558f9c76857d12b5a299a3e46d1c903d796",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "2013-01-02 13:34:47",
+            "time": "2013-01-02 21:06:26",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -1508,45 +1459,6 @@
             "keywords": [
                 "templating"
             ]
-        },
-        {
-            "name": "videlalvaro/php-amqplib",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "git://github.com/videlalvaro/php-amqplib.git",
-                "reference": "6ce5a028496a5c68371bd571d47467c583d17154"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/videlalvaro/php-amqplib/archive/6ce5a028496a5c68371bd571d47467c583d17154.zip",
-                "reference": "6ce5a028496a5c68371bd571d47467c583d17154",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "time": "2012-12-04 15:08:38",
-            "type": "library",
-            "installation-source": "source",
-            "autoload": {
-                "psr-0": {
-                    "PhpAmqpLib": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "authors": [
-                {
-                    "name": "Alvaro Videla"
-                }
-            ],
-            "description": "This library is a pure PHP implementation of the AMQP protocol. It's been tested against RabbitMQ.",
-            "homepage": "https://github.com/videlalvaro/php-amqplib/",
-            "keywords": [
-                "queue",
-                "rabbitmq",
-                "message"
-            ]
         }
     ],
     "packages-dev": [
@@ -1561,7 +1473,6 @@
         "gloubster/communications": 20,
         "pimple/pimple": 20,
         "predis/predis-async": 20,
-        "silex/silex": 20,
-        "videlalvaro/php-amqplib": 20
+        "silex/silex": 20
     }
 }

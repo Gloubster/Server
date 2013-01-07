@@ -24,6 +24,9 @@
         "symfony/console" : ">=2.0,<=2.2",
         "twig/twig" : ">=1.9"
     },
+    "post-package-install": [
+        "Gloubster\\Install::postPackageInstall"
+    ],
     "autoload": {
         "psr-0": {
             "Gloubster": "src",

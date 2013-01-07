@@ -15,3 +15,4 @@ then
 fi
 
 /usr/bin/env php composer.phar install
+/usr/bin/env bower install

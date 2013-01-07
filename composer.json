@@ -24,12 +24,14 @@
         "symfony/console" : ">=2.0,<=2.2",
         "twig/twig" : ">=1.9"
     },
-    "post-package-install": [
-        "Gloubster\\ComposerScripts::postPackageInstall"
-    ],
-    "post-install-cmd": [
-        "Gloubster\\ComposerScripts::postInstallCmd"
-    ],
+    "scripts": {
+        "post-package-install": [
+            "Gloubster\\ComposerScripts::postPackageInstall"
+        ],
+        "post-install-cmd": [
+            "Gloubster\\ComposerScripts::postInstallCmd"
+        ]
+    },
     "autoload": {
         "psr-0": {
             "Gloubster": "src",

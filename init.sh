@@ -8,11 +8,4 @@ command -v bower >/dev/null 2>&1 || { echo "Installing Bower http://twitter.gith
 command -v bower >/dev/null 2>&1 || { echo "Unable to install bower. Aborting." >&2; exit 1; }
 
 git submodule update --init
-
-if [ !  -f composer.phar ]
-then
-    curl -s http://getcomposer.org/installer | /usr/bin/env php
-fi
-
-/usr/bin/env php composer.phar install
 /usr/bin/env bower install

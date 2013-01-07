@@ -45,13 +45,14 @@ class HTTPListener implements JobListenerInterface
 
             $request->on('end', function() use ($data, $handler, $response) {
 
-                if ($handler->receive($data->message)) {
+                try {
+                    $handler->receive($data->message);
                     $ack = new JobAcknowledgement();
                     $ack->setCreatedOn(new \DateTime());
-                } else {
+                } catch (RuntimeException $e) {
                     $ack = new JobNotAcknowledgement();
                     $ack->setCreatedOn(new \DateTime());
-                    $ack->setReason('Job as been refused');
+                    $ack->setReason($e->getMessage());
                 }
 
                 $json = $ack->toJson();

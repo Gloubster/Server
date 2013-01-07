@@ -2,6 +2,7 @@
 
 namespace Gloubster\Tests\Server\Listener;
 
+use Gloubster\Exception\RuntimeException;
 use Gloubster\Message\Factory as MessageFactory;
 use Gloubster\Server\Listener\HTTPListener;
 use Gloubster\Tests\GloubsterTest;
@@ -67,7 +68,7 @@ class HTTPListenerTest extends GloubsterTest
         $handler->expects($this->once())
             ->method('receive')
             ->with($this->equalTo('WRONG MESSAGE'))
-            ->will($this->returnValue(false));
+            ->will($this->throwException(new RuntimeException('Wrong message')));
 
         $httpListener = new HTTPListener($server, $reactor, $this->getLogger());
         $httpListener->attach($handler);

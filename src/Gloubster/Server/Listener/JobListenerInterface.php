@@ -30,8 +30,8 @@ interface JobListenerInterface
     /**
      * Public method to create the listener
      *
-     * @param GloubsterServerInterface  $server  The gloubster server
-     * @param array            $options An array of options to build the listener
+     * @param GloubsterServerInterface $server  The gloubster server
+     * @param array                    $options An array of options to build the listener
      *
      * @return JobListenerInterface The new listener
      */

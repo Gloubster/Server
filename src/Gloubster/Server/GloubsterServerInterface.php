@@ -29,9 +29,9 @@ interface GloubsterServerInterface extends \ArrayAccess
     /**
      * GloubsterServer builder
      *
-     * @param LoopInterface $loop The event loop object
-     * @param Configuration $conf The server configuration
-     * @param Logger $logger      A logger
+     * @param LoopInterface $loop   The event loop object
+     * @param Configuration $conf   The server configuration
+     * @param Logger        $logger A logger
      *
      * @return GloubsterServerInterface
      */

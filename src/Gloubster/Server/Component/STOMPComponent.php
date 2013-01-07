@@ -29,7 +29,6 @@ class STOMPComponent implements ComponentInterface
             ));
         });
 
-
         $server['dispatcher']->on('stop', function ($server) {
             $server['stomp-client']->disconnect();
             $server['stomp-client.started'] = false;

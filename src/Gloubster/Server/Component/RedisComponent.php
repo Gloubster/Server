@@ -15,7 +15,6 @@ class RedisComponent implements ComponentInterface
     {
         $server['redis-client.started'] = false;
 
-
         $server['dispatcher']->on('start', function ($server) {
 
             $redisErrorHandler = function (PredisClient $client, \Exception $e, PredisConnection $conn) use ($server) {

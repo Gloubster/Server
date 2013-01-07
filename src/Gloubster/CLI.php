@@ -19,10 +19,10 @@ class CLI extends WebApplication
     /**
      * Registers the autoloader and necessary components.
      *
-     * @param string $name Name for this application.
+     * @param string      $name    Name for this application.
      * @param string|null $version Version number for this application.
      */
-    function __construct($name, $version = null, $environment = null)
+    public function __construct($name, $version = null, $environment = null)
     {
         parent::__construct($environment);
 

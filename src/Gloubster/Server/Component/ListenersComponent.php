@@ -4,7 +4,6 @@ namespace Gloubster\Server\Component;
 
 use Gloubster\Server\GloubsterServerInterface;
 use Gloubster\Exception\RuntimeException;
-use React\Stomp\Client;
 
 class ListenersComponent implements ComponentInterface
 {

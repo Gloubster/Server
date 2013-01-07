@@ -8,7 +8,6 @@ use Gloubster\Message\Factory;
 use Gloubster\Exception\RuntimeException;
 use Gloubster\Message\Job\JobInterface;
 use Monolog\Logger;
-use Predis\Async\Connection\ConnectionInterface as PredisConnection;
 use Predis\Async\Client as PredisClient;
 use React\Promise\Deferred;
 use React\Stomp\AckResolver;
@@ -71,7 +70,7 @@ class LogBuilderComponent implements ComponentInterface
         $tx->execute(function ($replies, $redis) use ($component, $deferred, $job) {
             $hashId = 'job-' . $replies[0];
 
-            $hash = array_merge(array($hashId), $component->hashJob($job), array(function() use ($deferred, $hashId){
+            $hash = array_merge(array($hashId), $component->hashJob($job), array(function() use ($deferred, $hashId) {
                 $deferred->resolve($hashId);
             }));
 
@@ -100,7 +99,7 @@ class LogBuilderComponent implements ComponentInterface
         $tx->execute(function ($replies, $redis) use ($deferred, $data) {
             $hashId = 'garbage-' . $replies[0];
 
-            $redis->set($hashId, $data, function() use ($deferred, $hashId){
+            $redis->set($hashId, $data, function() use ($deferred, $hashId) {
                 $deferred->resolve($hashId);
             });
         });
@@ -121,9 +120,8 @@ class LogBuilderComponent implements ComponentInterface
     {
         $hash = array();
 
-        foreach(json_decode($job->toJson(), true) as $key => $value)
-        {
-            if(is_array($value)) {
+        foreach (json_decode($job->toJson(), true) as $key => $value) {
+            if (is_array($value)) {
                 $value = json_encode($value);
             }
             $hash[] = $key;

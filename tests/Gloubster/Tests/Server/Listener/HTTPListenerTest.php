@@ -82,7 +82,7 @@ class HTTPListenerTest extends GloubsterTest
 
         $response->expects($this->once())
             ->method('write')
-            ->will($this->returnCallback(function($json) use ($phpunit, &$catch){
+            ->will($this->returnCallback(function($json) use ($phpunit, &$catch) {
                 $catch = true;
                 $ack = MessageFactory::fromJson($json);
                 $phpunit->assertInstanceOf('Gloubster\\Message\\Acknowledgement\\JobNotAcknowledgement', $ack);
@@ -120,7 +120,7 @@ class HTTPListenerTest extends GloubsterTest
 
         $response->expects($this->once())
             ->method('write')
-            ->will($this->returnCallback(function($json) use ($phpunit, &$catch){
+            ->will($this->returnCallback(function($json) use ($phpunit, &$catch) {
                 $catch = true;
                 $ack = MessageFactory::fromJson($json);
                 $phpunit->assertInstanceOf('Gloubster\\Message\\Acknowledgement\\JobAcknowledgement', $ack);

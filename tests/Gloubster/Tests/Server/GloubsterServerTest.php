@@ -2,8 +2,6 @@
 
 namespace Gloubster\Tests\Server;
 
-use Gloubster\Message\Job\ImageJob;
-use Gloubster\Message\Presence\WorkerPresence;
 use Gloubster\Server\GloubsterServer;
 use Gloubster\Server\GloubsterServerInterface;
 use Gloubster\Server\Component\ComponentInterface;

@@ -81,11 +81,13 @@ abstract class GloubsterTest extends \PHPUnit_Framework_TestCase
 
         if (class_exists('Memcache')) {
             $conf['session-server']['type'] = 'memcache';
+
             return;
         }
 
         if (class_exists('Memcached')) {
             $conf['session-server']['type'] = 'memcached';
+
             return;
         }
 

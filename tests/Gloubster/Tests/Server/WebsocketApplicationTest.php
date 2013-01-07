@@ -114,7 +114,7 @@ class WebsocketApplicationTest extends GloubsterTest
 
         $logger->expects($this->any())
             ->method('addError')
-            ->will($this->returnCallback(function($message) use (&$data){
+            ->will($this->returnCallback(function($message) use (&$data) {
                 $data .= $message;
             }));
 

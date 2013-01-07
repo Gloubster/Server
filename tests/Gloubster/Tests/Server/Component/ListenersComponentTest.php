@@ -137,6 +137,7 @@ class ListenerTester extends EventEmitter implements JobListenerInterface
     public static function create(GloubsterServerInterface $server, array $options)
     {
         $server['created'] = $options;
+
         return new static($server);
     }
 }

@@ -25,9 +25,6 @@
         "twig/twig" : ">=1.9"
     },
     "scripts": {
-        "post-package-install": [
-            "Gloubster\\ComposerScripts::postPackageInstall"
-        ],
         "post-install-cmd": [
             "Gloubster\\ComposerScripts::postInstallCmd"
         ]

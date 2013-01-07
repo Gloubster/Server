@@ -27,6 +27,9 @@
     "post-package-install": [
         "Gloubster\\Install::postPackageInstall"
     ],
+    "post-install-cmd": [
+        "Gloubster\\Install::postInstallCmd"
+    ],
     "autoload": {
         "psr-0": {
             "Gloubster": "src",

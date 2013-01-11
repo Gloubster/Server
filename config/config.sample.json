@@ -6,7 +6,7 @@
         "password": "guest",
         "vhost": "/",
         "server-management": {
-            "port": 55672,
+            "port": 15672,
             "scheme": "http"
         },
         "stomp-gateway": {

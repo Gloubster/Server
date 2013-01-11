@@ -23,7 +23,6 @@ return call_user_func(function() {
 
         $gloubster = new CLI('Gloubster');
 
-//        $gloubster->command(new ProbeConfiguration($conf));
         $gloubster->command(new ServerEnsureConfiguration($conf));
         $gloubster->command(new RunServer($conf));
 

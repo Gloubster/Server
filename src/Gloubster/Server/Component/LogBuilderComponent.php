@@ -2,7 +2,7 @@
 
 namespace Gloubster\Server\Component;
 
-use Gloubster\RabbitMQ\Configuration as RabbitMQConf;
+use Gloubster\Configuration as RabbitMQConf;
 use Gloubster\Server\GloubsterServerInterface;
 use Gloubster\Message\Factory;
 use Gloubster\Exception\RuntimeException;

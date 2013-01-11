@@ -7,7 +7,7 @@ use Gloubster\Message\Job\ImageJob;
 use Gloubster\Message\Job\VideoJob;
 use Gloubster\Message\Factory as MessageFactory;
 use Gloubster\Message\Job\JobInterface;
-use Gloubster\RabbitMQ\Configuration as RabbitMQConf;
+use Gloubster\Configuration as RabbitMQConf;
 use Monolog\Logger;
 use React\Stomp\Client;
 

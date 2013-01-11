@@ -4,7 +4,7 @@ namespace Gloubster\Server\Component;
 
 use Gloubster\Configuration;
 use Gloubster\Server\WebsocketApplication;
-use Gloubster\RabbitMQ\Configuration as RabbitMQConf;
+use Gloubster\Configuration as RabbitMQConf;
 use Gloubster\Server\GloubsterServerInterface;
 use RabbitMQ\Management\AsyncAPIClient;
 use React\Curry\Util as Curry;

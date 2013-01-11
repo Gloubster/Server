@@ -4,7 +4,7 @@ namespace Gloubster\Server\Console;
 
 use Gloubster\Server\Console\AbstractCommand;
 use Gloubster\Configuration;
-use Gloubster\RabbitMQ\Configuration as RabbitMQConf;
+use Gloubster\Configuration as RabbitMQConf;
 use RabbitMQ\Management\APIClient;
 use RabbitMQ\Management\Guarantee;
 use RabbitMQ\Management\Entity\Binding as RabbitMQBinding;

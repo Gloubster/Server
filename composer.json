@@ -24,6 +24,10 @@
         "symfony/console" : ">=2.0,<=2.2",
         "twig/twig" : ">=1.9"
     },
+    "suggest": {
+        "ext-memcache": "Memcache extension for SessionHandler",
+        "ext-memcached": "Memcached extension for SessionHandler"
+    },
     "scripts": {
         "post-install-cmd": [
             "Gloubster\\ComposerScripts::postInstallCmd"

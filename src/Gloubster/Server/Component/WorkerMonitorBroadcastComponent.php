@@ -4,7 +4,7 @@ namespace Gloubster\Server\Component;
 
 use Gloubster\Exception\RuntimeException;
 use Gloubster\Message\Factory as MessageFactory;
-use Gloubster\RabbitMQ\Configuration as RabbitMQConf;
+use Gloubster\Configuration as RabbitMQConf;
 use Gloubster\Server\GloubsterServerInterface;
 use React\Stomp\Client;
 use React\Stomp\Protocol\Frame;

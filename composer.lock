@@ -543,12 +543,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Gloubster/Communications",
-                "reference": "506ebf1f6078c4185b1ae1ccffeceb1964dadf80"
+                "reference": "59ff09981e05af57c25cea07dc5c202641303fce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/Gloubster/Communications/archive/506ebf1f6078c4185b1ae1ccffeceb1964dadf80.zip",
-                "reference": "506ebf1f6078c4185b1ae1ccffeceb1964dadf80",
+                "url": "https://github.com/Gloubster/Communications/archive/59ff09981e05af57c25cea07dc5c202641303fce.zip",
+                "reference": "59ff09981e05af57c25cea07dc5c202641303fce",
                 "shasum": ""
             },
             "require": {
@@ -562,7 +562,7 @@
             "suggest": {
                 "aws/aws-sdk-php": "Amazon SDK library to enable AmazonS3 delivery"
             },
-            "time": "2013-01-14 14:03:25",
+            "time": "2013-01-14 14:13:14",
             "type": "library",
             "installation-source": "source",
             "autoload": {
